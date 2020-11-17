@@ -1,0 +1,108 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Vectors (adapted from basic building blocks of R)
+  Author: Dr Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: In this lesson, we will explore vectors in R with simple examples.
+
+- Class: cmd_question
+  Output: In its simplest form, R can be used as an interactive calculator. Type
+    10 + 7 and press Enter.
+  CorrectAnswer: 10 + 7
+  AnswerTests: omnitest(correctExpr='10 + 7')
+  Hint: Type 10 + 7 and press Enter.
+
+- Class: text
+  Output: R simply prints the result of 17 by default. Our aim however, is to understand R variables in this session.
+
+- Class: text
+  Output: In this case, instead of retyping 10 + 7 every time we need it, we can just create a new variable
+    that stores the result.
+
+- Class: text
+  Output: 'The way you assign a value to a variable in R is by using the assignment
+    operator, which is just a ''less than'' symbol followed by a ''minus'' sign. It
+    looks like this: <-'
+
+- Class: text
+  Output: Think of the assignment operator as an arrow. You are assigning the value
+    on the right side of the arrow to the variable name on the left side of the arrow.
+
+- Class: cmd_question
+  Output: To assign the result of 10 + 7 to a new variable called x, you type x <-
+    10 + 7. This can be read as 'x gets 10 plus 7'. Give it a try now.
+  CorrectAnswer: x <- 10 + 7
+  AnswerTests: any_of_exprs('x <- 10 + 7', 'x <- 7 + 10')
+  Hint: Type x <- 10 + 7. It's important to include a single space on each side of
+    the assignment operator, but do NOT put a space between the `<` and the `-` that
+    form the arrow.
+
+- Class: text
+  Output: You'll notice that R did not print the result of 17 this time. When you
+    use the assignment operator, R assumes that you don't want to see the result immediately,
+    but rather that you intend to use the result for something else later on.
+
+- Class: cmd_question
+  Output: To view the contents of the variable x, just type x and press Enter. Try
+    it now.
+  CorrectAnswer: x
+  AnswerTests: omnitest(correctExpr='x')
+  Hint: Type x and press Enter. This will automatically print the value of x.
+
+- Class: cmd_question
+  Output: Now, store the result of x - 12 in a new variable called y.
+  CorrectAnswer: y <- x - 12
+  AnswerTests: omnitest(correctExpr='y <- x - 12')
+  Hint: Type y <- x - 12 and press Enter. Whether you use x - 12or x-12 is personal
+    preference, but it's good habit to include a space on either side of the assignment
+    operator. Writing a code is one thing, writing a good code is the better thing :-)
+
+- Class: cmd_question
+  Output: What is the value of y? Type y to find out.
+  CorrectAnswer: 'y'
+  AnswerTests: omnitest(correctExpr='y')
+  Hint: Type y and press Enter.
+
+- Class: text
+  Output: Now, let's create a small collection of numbers called a vector. Remember, your video from week 4?
+  Vectors are a collection of numbers. Think of a column of numbers. The number of rows, is called 'length' of a vector.
+  In R, you can have vector of length 1 which will mean you have only 1 row in that column.
+  A vector of length zero will mean, there is nothing in that column, it is empty. 
+
+
+- Class: cmd_question
+  Output: The easiest way to create a vector is with the c() function, which stands
+    for 'concatenate' or 'combine'. To create a vector containing the numbers 1.1,
+    9, and 3.14, type c(1.1, 9, 3.14). Try it now and store the result in a variable
+    called z.
+  CorrectAnswer: z <- c(1.1, 9, 3.14)
+  AnswerTests: omnitest(correctExpr='z <- c(1.1, 9, 3.14)')
+  Hint: Inputting z <- c(1.1, 9, 3.14) will assign the vector (1.1, 9, 3.14) to a
+    new variable called z. Including single spaces after the commas in the vector
+    is not required, but helps make your code less cluttered and more readable. Remember, the better code?
+
+- Class: cmd_question
+  Output: Type z to view its contents. Notice that there are no commas separating
+    the values in the output.
+  CorrectAnswer: z
+  AnswerTests: omnitest(correctExpr='z')
+  Hint: Type z and press Enter to view its contents.
+
+- Class: cmd_question
+  Output: You can combine vectors to make a new vector. Create a new vector that contains
+    z, 50, then z again in that order. Don't assign this vector to a new variable,
+    so that we can just see the result immediately.
+  CorrectAnswer: c(z, 50, z)
+  AnswerTests: omnitest(correctExpr='c(z, 50, z)')
+  Hint: Type c(z, 50, z). Don't create a new variable. We just want to view the result.
+
+- Class: mult_question
+  Output: Do you feel confident about creating vectors in R? Try out Vector_arithmetics when you are ready.
+   CorrectAnswer: NULL
+  AnswerChoices: Yes; No
+  AnswerTests: notify()
+  Hint: NULL
