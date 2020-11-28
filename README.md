@@ -16,6 +16,8 @@ Type back your name and hit enter.
 
 * On being prompted with the following question:
 > | Please choose a course, or type 0 to exit swirl.
+
+
 Choose : Chemometrics DL
 
 * Follow the prompts.
