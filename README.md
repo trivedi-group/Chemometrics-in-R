@@ -34,7 +34,7 @@ The first time you start swirl, you'll be prompted to install a course. You can 
 * On being prompted with the following question, follow the prompts to launch course “Chemometrics_DL-main”:
 | Please choose a course, or type 0 to exit swirl.
 
-*Once you have successfully launched the course, you will be prompted to select a lesson you want to work through. Choose recommend lesson topic and work through the lesson at your own pace.
+* Once you have successfully launched the course, you will be prompted to select a lesson you want to work through. Choose recommend lesson topic and work through the lesson at your own pace.
 
 
 ## troubleshooting
