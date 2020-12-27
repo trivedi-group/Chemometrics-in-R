@@ -44,3 +44,5 @@ Use Blackboard discussion boards to post issues. If you know an answer to posted
 ## for troubles
 
 If you are stuck and there is no help at all, anywhere - drop an email to drupad dot trivedi at manchester dot ac dot uk.
+
+Last edit from RStudio 27122020_131900
