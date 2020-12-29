@@ -24,7 +24,7 @@
   Output: Let us try to view this data. Type 'View(data)' followed by Enter and see what happens.
   CorrectAnswer: View(data)
   AnswerTests: omnitest(correctExpr='View(data)')
-  Hint: Type View(data) and hit Enter.
+  Hint: I'll help you here .. Type View(data) and hit Enter.
   
 - Class: text
   Output: The data contains 5897 continous variables and 1 group variable. First column is sample names as index.
@@ -34,7 +34,7 @@
   AnswerChoices: Quantitative variable; A ordinal variable; A continous variable; A nominal variable
   CorrectAnswer: A nominal variable
   AnswerTests: omnitest(correctVal='A nominal variable')
-  Hint: The group column has labels such as QC, Case and Control. 
+  Hint: Here is a hint .. The group column has labels such as QC, Case and Control. 
   
 - Class: text
   Output: This data has LOTS of variables measured in serum samples. These measurements will have many underlying variations and not all of these can be accounted for using univarite statistics.
@@ -43,7 +43,7 @@
   Output: You can view single variable in a big dataset using '$'. For example to view first continous variable M304T13, you can use command 'View(data$M304T13)'. Try typing this now. 
   CorrectAnswer: View(data$M304T13)
   AnswerTests: omnitest(correctExpr='View(data$M304T13)')
-  Hint: Type View(data$M304T13) and hit Enter.
+  Hint: Need some help? Type View(data$M304T13) and hit Enter.
   
 - Class: text
   Output: Dot plots are simplest graphs to view any variable. Mostly the data is plotted across x-axis. Hit Enter to view dot plot for this variable MT304T13
@@ -68,7 +68,7 @@
   FigureType: new
   
 - Class: text
-  Output: Similar to our dot plot, even as a histogram, we can see majority of our samples have intensity of zero for this variable. But you can also see some samples have really high intensity (to the extremem right of histogram).
+  Output: Similar to our dot plot, even as a histogram, we can see majority of our samples have intensity of zero for this variable. But you can also see some samples have really high intensity (to the extreme right of histogram).
 
 - Class: text
   Output: Histograms are great to visualise the shape of distribution of our data. Data can be left or right skewed. As you can see our data is left skewed. Meaning most of our data points leans towards the left. Hit Enter to view an example of right skewed data.
@@ -99,7 +99,7 @@
   AnswerChoices: Left skewed; Symmetrical; Right skewed
   CorrectAnswer: Right skewed
   AnswerTests: omnitest(correctVal='Right skewed')
-  Hint: The tail of our histogram is longer on the right. 
+  Hint: I'll help you a little here - The tail of our histogram is longer on the right. 
 
 - Class: video
   Output: A special type of histogram is known as Stem and Leaf plot. The numerical data is organised in order of decimal place values. The number of leaves is equal to the number of variables in the dataset. Have a look at Stem and Leaf plot on YouTube.
@@ -108,8 +108,41 @@
 - Class: text
   Output: As you would remember, means are one of the important measures to compare your experimental results to reference or even two or more groups within your data.
 
+- Class: text
+  Output: We can look at means of each of these variables (columns) and compare for each 'group' or we can just create a box plot like we learnt during our first week.
+
 - Class: cmd_question
-  Output: You could find out means of all the variables in your dataset using a simple command. Try 'colMeans()' function. The way functions work in R, you write your values within brackets. For colMeans function, the value within bracket is the name of your data matrix. Here our data matrix is called 'data'.
-  CorrectAnswer: colMeans('data')
-  AnswerTests: omnitest(correctExpr='colMeans('data')')
-  Hint: Type a hint.
+  Output: Boxplots are very informative about spread of our data, mean of the data, median and also interquartile ranges. In order to select a variable from our dataset, we earlier used $ sign. We will do the same for boxplot. Use boxplot() function and within brackets use variable M304T13 from our data.
+  CorrectAnswer: boxplot(data$M304T13)
+  AnswerTests: omnitest(correctExpr='boxplot(data$M304T13)')
+  Hint: Hint to the rescue! To select variable M304T13, use data$M304T13 - we are telling R to use variable M304T13 from 'data'. Use function boxplot('data$M304T13')
+
+- Class: text
+  Output: This is a VERY atypical boxplot. This is due to what we observed in our dot plot and histogram - majority of your data has no values. Do you remember quartiles from week 1? You can see in this box plot that first 3 quartiles have majority of our data but our mean is very close to zero. There are a few samples that had very high intensity of M304T13, so high that they are 'outliers' beyond the whisker!
+
+- Class: text
+  Output: We can compare this particular variable between groups by plotting the boxplots, by groups. We have 3 groups. QC, case and control. QC is quality control group, that represents an average of case and control samples put together. Now is the time to meet 'tilde' operator which is '~' key on your keyboard. Once you've find that key on your keyboard, hit Enter.
+
+- Class: text
+  Output: The tilde operator is used to establish relationship between a dependent variable and independent variables in R. By typing 'M304T13 ~ group' we can tell R that we want to look at M304T13 by groups. You can use this relationship in boxplot() function too. 
+
+- Class: cmd_question
+  Output: Type boxplot(M304T13 ~ group, data = data) and see what happens.
+  CorrectAnswer: boxplot(M304T13 ~ group, data = data)
+  AnswerTests: omnitest(correctExpr='boxplot(M304T13 ~ group, data = data)')
+  Hint: Here is a tip : When you type boxplot(M304T13 ~ group, data = data), you are performing a box plot of variable M304T13 by group in data called 'data'. If your variable was stored in a filename 'file', the you would write data = file. 
+
+- Class: text
+  Output: When you type boxplot(M304T13 ~ group, data = data), you are performing a box plot of variable M304T13 by group in data called 'data'. If your variable was stored in a filename 'file', the you would write data = file. You can see that our variable M304T13 is a poor variable overall. We interrogated it using dotplot, histogram, boxplot and even looked at groups separately. We can clearly see that in case or control, this variable is poorly measured.
+
+- Class: cmd_question
+  Output: Let us look at one of the 'good' variables. Use boxplot() function along with tilde operator to create box plot by groups of variable M313T12 in our data.
+  CorrectAnswer: boxplot(M313T12 ~ group, data = data)
+  AnswerTests: omnitest(correctExpr='boxplot(M313T12 ~ group, data = data)')
+  Hint: Here is a hint - boxplot(M313T12 ~ group, data = data)
+
+- Class: text
+  Output: Now you can clearly see box AND whiskers for this variable. You can see that the variable is nicely distributed and you can compare the black line to compare means of this variable. Of course, there are outlier (hollow circles) that you should not ignore when interpreting boxplots. If there are too many outliers, they may skew your mean.
+
+- Class: text
+  Output: With this, we will end our univariate data visualisation interactive session here. You can use command View(data) to view this data. Practice creating dot plots, boxplots and histograms for other variables within this data. There are 5000+ plots you can make using this data. Can you find variables that are visually different between Case and Control? Can you find more 'poorly measured' variables? Give it a go in your own time!
