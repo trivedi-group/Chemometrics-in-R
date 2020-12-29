@@ -9,4 +9,3 @@
 }
 
 data <- read.csv(file.path(.get_course_path(), "Chemometrics_DL", "Visualisation", "data.csv"))
-data <- as.numeric(data[3:5899])
