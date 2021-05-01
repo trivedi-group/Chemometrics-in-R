@@ -27,6 +27,7 @@ The first time you start swirl, you'll be prompted to install a course. You can 
 * Now assuming you have already installed swirl, type the following in console and
 
 >library(swirl) 
+>
 > swirl()
 
 * When it prompts you with " Welcome to swirl! Please sign in. If you've been here before, use the same name as you did then. If you are new, call yourself something unique." Type back your name and hit enter.
