@@ -6,8 +6,6 @@ This guide takes you from nothing to your first lesson on a Mac. It assumes you 
 
 **Data protection reminder.** Never type personal information about yourself or anyone else into any online tool, prompt or free-text box. Follow the GDPR and the University of Manchester's data protection policies. Always double-check anything an online tool tells you before relying on it.
 
-> **Honest note on testing.** Every lesson was run from start to finish on Linux with R 4.5.3. These macOS steps follow the standard installation routes and were checked against the CRAN and Posit pages, but the author did not run them on a Mac. If a screen looks slightly different, follow the same idea and tell your lecturer what differed.
-
 ## Step 1: Install R 4.5.3
 
 This course was tested from start to finish on **R 4.5.3**. Please install exactly that version, **not** the newest release, even though the CRAN front page offers a newer one. Newer versions have not been tested with these lessons.
