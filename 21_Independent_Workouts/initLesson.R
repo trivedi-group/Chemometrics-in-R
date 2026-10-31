@@ -24,6 +24,53 @@ swirl_options(swirl_logging = TRUE)
 # Synthetic data for the worked example, made up for this exercise
 synth_data <- read.csv(file.path(.get_course_path(), .chem_course_name("21_Independent_Workouts"), "21_Independent_Workouts", "synthetic_example.csv"))
 
+# The three datasets for the independent workout, supplied with the course.
+# Dataset 3 is stored with one row per sample, like the other two.
+.chem_datasets <- c("Dataset1_mediastudy.csv", "Dataset2_micestudy.csv", "Dataset3_oilstudy.csv")
+.chem_dataset_path <- function(f) file.path(.get_course_path(), .chem_course_name("21_Independent_Workouts"), "21_Independent_Workouts", f)
+
+# Loads dataset 1, 2 or 3 as a data frame, for example dataset1 <- load_dataset(1)
+load_dataset <- function(n){
+  if (length(n) != 1 || !(n %in% 1:3)) stop("Choose dataset 1, 2 or 3, for example load_dataset(1).", call. = FALSE)
+  read.csv(.chem_dataset_path(.chem_datasets[n]))
+}
+
+# Copies the three dataset files into the working folder, or into a local folder if the
+# working folder looks cloud-synced, and shows how to load them with read.csv() later.
+save_datasets <- function(){
+  # swirl runs each typed command a second time, silently. Do nothing on that second run.
+  if (any(vapply(sys.calls(), function(cl) identical(cl[[1]], as.name("safeEval")), TRUE))) return(invisible(NULL))
+  wd <- tryCatch(normalizePath(getwd(), winslash = "/", mustWork = FALSE), error = function(err) "")
+  synced <- grepl("OneDrive|Dropbox|Google ?Drive|iCloud|Mobile Documents|CloudStorage|Box Sync|SharePoint|pCloud", wd, ignore.case = TRUE)
+  if (!synced && identical(Sys.info()[["sysname"]], "Darwin")){
+    hm <- normalizePath("~", winslash = "/", mustWork = FALSE)
+    if (dir.exists(file.path(hm, "Library/Mobile Documents/com~apple~CloudDocs/Desktop")) &&
+        grepl(paste0("^", hm, "/(Desktop|Documents)(/|$)"), wd)) synced <- TRUE
+  }
+  local_dir <- tryCatch(tools::R_user_dir("ChemometricsDL", "data"), error = function(err) tempdir())
+  try_copy <- function(dir){
+    tryCatch({
+      if (!dir.exists(dir)) dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+      ok <- file.copy(.chem_dataset_path(.chem_datasets), dir, overwrite = TRUE)
+      if (all(ok) && all(file.exists(file.path(dir, .chem_datasets)))) dir else NA_character_
+    }, error = function(err) NA_character_, warning = function(w) NA_character_)
+  }
+  saved <- NA_character_
+  if (!synced) saved <- try_copy(wd)
+  if (is.na(saved)) saved <- try_copy(local_dir)
+  if (is.na(saved)) saved <- try_copy(tempdir())
+  if (is.na(saved)){
+    cat("\n| I could not copy the datasets. You can still load them in this lesson with load_dataset().\n")
+    return(invisible(NULL))
+  }
+  saved <- normalizePath(saved, winslash = "/")
+  cat("\n| The three datasets have been copied to this folder:\n| ", saved, "\n", sep = "")
+  if (!identical(saved, wd)) cat("| Your working folder looks like a cloud-synced folder, so I saved them locally to avoid sync errors.\n")
+  cat("| To load them later, for example in a new R script, use these commands:\n")
+  for (k in 1:3) cat("dataset", k, " <- read.csv(\"", file.path(saved, .chem_datasets[k]), "\")\n", sep = "")
+  invisible(saved)
+}
+
 
 
 # Reflection step, sending (added)
@@ -126,7 +173,7 @@ print.reflection_command <- function(x, ...){
   if (!is.environment(st) || is.null(st$les) || is.null(st$row)) return(invisible(NULL))
   les <- st$les
   n <- min(nrow(les), st$row - 1)
-  skip <- "^(\\?|View\\(|myedit\\(|submit\\(|reset\\(|skip\\(|nxt\\(|play\\(|send_reflection)"
+  skip <- "^(\\?|View\\(|myedit\\(|submit\\(|reset\\(|skip\\(|nxt\\(|play\\(|send_reflection|save_datasets)"
   first_sentence <- function(x, cmd){
     x <- trimws(gsub("[[:space:]]+", " ", as.character(x)))
     s <- strsplit(x, "(?<=[.?!])\\s+(?=[A-Z\"'])", perl = TRUE)[[1]]
@@ -160,6 +207,7 @@ print.reflection_command <- function(x, ...){
     cmd <- as.character(les[i, "CorrectAnswer"])
     if (is.na(cmd) || !nzchar(trimws(cmd)) || grepl(skip, cmd)) next
     if (grepl("pathtofile\\(", cmd)) cmd <- paste0("# ", cmd, "   (needs files supplied by the lesson)")
+    if (grepl("load_dataset\\([1-3]\\)", cmd)) { k <- as.integer(sub(".*load_dataset\\(([1-3])\\).*", "\\1", cmd)); cmd <- paste0(sub("load_dataset\\([1-3]\\)", paste0("read.csv(\"", .chem_datasets[k], "\")"), cmd), "   # use the full path that save_datasets() showed you") }
     out <- c(out, paste0("# ", first_sentence(les[i, "Output"], cmd)), cmd, "")
   }
   num <- sub("^([0-9]+).*", "\\1", .reflection_lesson)

@@ -20,10 +20,10 @@
   Output: In this particular exercise, I will point out a few key functions that you might find handy. But otherwise, you have your free will on how you deal with the data.
 
 - Class: text
-  Output: There are different datasets that are available as .csv on Canvas. Download these to a folder from where you can import them to R.
+  Output: The three datasets for this exercise come with the course, so you do not need to download anything. I will describe them and show you how to load them at the end of this lesson, after a worked example.
 
 - Class: text
-  Output: One of the handy commands to import files is 'read.csv(file.choose())', it will bring up a pop-up for you to choose your file. 
+  Output: For your own files, one of the handy commands to import them is 'read.csv(file.choose())', it will bring up a pop-up for you to choose your file. 
 
 - Class: text
   Output: The other way to import the files in RStudio is by using the import button.
@@ -194,7 +194,7 @@
   Output: That is the whole pattern. Import the data, check it, visualise it, explore it, test it, validate it, then report what you found, including results that are modest. With many variables you should also think about multiple testing. When you finish this lesson, the commands you typed will be saved as a script, which you can use as a template for the real datasets.
 
 - Class: text
-  Output: Before I finish this exercise, I will describe the three datasets you have on Canvas to give you an idea of what you should be looking for in the data. 
+  Output: Before I finish this exercise, I will describe the three datasets that come with this course to give you an idea of what you should be looking for in the data. 
 
 - Class: text
   Output: Dataset 1 is an output from cell media study. The researcher has measured different essential molecules produced by a set of stem cells. The four types of media are E6, E6R, E8 and E8R. A total of 140 observations were recorded using mass spectrometry. A total of 58 small molecules were quantified by this researcher. Now the data is made available to you. What can you tell the researcher about these media types? What does mass spectrometry tell us about the metabolites produced by stem cells?
@@ -204,6 +204,70 @@
 
 - Class: text
   Output: Dataset 3 is made up of various fats. The researcher wants to know if they use analytical techniques and see what each fat samples consists of, can she find similarities in them? She has used solid oil, liquid oil, three types of fatty acids called fas1, fas2, fas3 and three types of lipids called lb1, lb2 and lb3. In total 8 samples and she ended up with 2683 variables. Can you tell her, the story that her data have to tell?
+
+- Class: text
+  Output: The three datasets come with the course. Dataset 3 was originally stored with the samples as columns. In the copy supplied here it has been turned round, so that each row is one sample and each column one variable, the same layout as the other two datasets and the layout that prcomp(), dist() and most other functions expect.
+
+- Class: text
+  Output: You load them with a helper function made for this course, load_dataset(), with the number of the dataset in the brackets. R adds an X to the front of column names that start with a number, so in datasets 2 and 3 the variables are called X1, X2 and so on.
+
+- Class: cmd_question
+  Output: Load dataset 1 and store it in dataset1, with dataset1 <- load_dataset(1).
+  CorrectAnswer: dataset1 <- load_dataset(1)
+  AnswerTests: omnitest(correctExpr='dataset1 <- load_dataset(1)')
+  Hint: Type dataset1 <- load_dataset(1) and press Enter.
+
+- Class: cmd_question
+  Output: Check its size with dim(dataset1). You should see 140 rows, one for each sample, and 60 columns, which are the sample label, the media type and the 58 molecules.
+  CorrectAnswer: dim(dataset1)
+  AnswerTests: omnitest(correctExpr='dim(dataset1)')
+  Hint: Type dim(dataset1) and press Enter.
+
+- Class: cmd_question
+  Output: Count the samples of each media type with table(dataset1$type).
+  CorrectAnswer: table(dataset1$type)
+  AnswerTests: omnitest(correctExpr='table(dataset1$type)')
+  Hint: Type table(dataset1$type) and press Enter.
+
+- Class: cmd_question
+  Output: Load dataset 2 and store it in dataset2, with dataset2 <- load_dataset(2).
+  CorrectAnswer: dataset2 <- load_dataset(2)
+  AnswerTests: omnitest(correctExpr='dataset2 <- load_dataset(2)')
+  Hint: Type dataset2 <- load_dataset(2) and press Enter.
+
+- Class: cmd_question
+  Output: Count the samples in each group with table(dataset2$group). KO is knock out, KT is knock out treated, WT is wild type, WTT is wild type treated and QC is the pooled quality control.
+  CorrectAnswer: table(dataset2$group)
+  AnswerTests: omnitest(correctExpr='table(dataset2$group)')
+  Hint: Type table(dataset2$group) and press Enter.
+
+- Class: mult_question
+  Output: How many quality control injections does dataset 2 contain?
+  AnswerChoices: 13; 8; 45; 66;
+  CorrectAnswer: 13
+  AnswerTests: omnitest(correctVal='13')
+  Hint: Look at the QC column of the table.
+
+- Class: cmd_question
+  Output: Load dataset 3 and store it in dataset3, with dataset3 <- load_dataset(3).
+  CorrectAnswer: dataset3 <- load_dataset(3)
+  AnswerTests: omnitest(correctExpr='dataset3 <- load_dataset(3)')
+  Hint: Type dataset3 <- load_dataset(3) and press Enter.
+
+- Class: cmd_question
+  Output: Check its size with dim(dataset3). It has eight rows, one for each sample, and 2684 columns, which are the sample name and the 2683 variables.
+  CorrectAnswer: dim(dataset3)
+  AnswerTests: omnitest(correctExpr='dim(dataset3)')
+  Hint: Type dim(dataset3) and press Enter.
+
+- Class: text
+  Output: The files themselves sit inside the swirl course folder, which is hard to find. To keep copies that you can open after this lesson, copy them into your working folder.
+
+- Class: cmd_question
+  Output: Copy the three files with save_datasets(). It tells you where it saved them and shows the read.csv() commands that load them again.
+  CorrectAnswer: save_datasets()
+  AnswerTests: expr_identical_to('save_datasets()')
+  Hint: Type save_datasets() and press Enter.
 
 - Class: text
   Output: Let's not waste too much of your time. You are free to take as long or as little as you need to take to complete this task. Attempt all datasets and see what you find. 
