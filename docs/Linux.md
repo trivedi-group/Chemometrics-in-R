@@ -151,9 +151,9 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
 
 ## Step 5: Download the course from this repository and install it into swirl
 
-1. Open the course page: <https://github.com/drupadt/Chemometrics_DL>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
+1. Open the course page: <https://github.com/trivedi-group/Chemometrics_DL>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
 2. Leave the branch as the default, **main**.
-3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/drupadt/Chemometrics_DL/archive/refs/heads/main.zip>
+3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics_DL/archive/refs/heads/main.zip>
 4. Do **not** unzip the file you will give to swirl. A browser usually saves it in your **Downloads** folder.
 5. In the RStudio Console, type these two lines, pressing Enter after each:
 
