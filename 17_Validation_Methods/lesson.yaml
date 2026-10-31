@@ -109,6 +109,15 @@
   Hint: predictions <- model %>% predict(test.data)
 
 - Class: text
+  Output: To see how good these predictions are, compare them with the true Fertility values in the test data. The root mean squared error, RMSE, is the typical size of a prediction error, in the same units as Fertility. The caret package has a function RMSE() for this.
+
+- Class: cmd_question
+  Output: Calculate it with RMSE(predictions, test.data$Fertility).
+  CorrectAnswer: RMSE(predictions, test.data$Fertility)
+  AnswerTests: omnitest(correctExpr='RMSE(predictions, test.data$Fertility)')
+  Hint: Type RMSE(predictions, test.data$Fertility) and hit Enter.
+
+- Class: text
   Output: When comparing two models, the one that produces the lowest test sample RMSE is the preferred model.
 
 - Class: text
@@ -118,7 +127,7 @@
   Output: For this method, the advantage is we will use all data points and won't need to split our data into two sets.
 
 - Class: cmd_question
-  Output: Let's create training data. We will call this 'train.loocv'. We will use command trainControl() from caret package. The only argument we need to pass on is what method we want to use. Here it will be 'LOOCV' - case sensitive. Give it a go..
+  Output: Let's create the resampling settings. We will call these 'train.loocv'. We will use command trainControl() from caret package. The only argument we need to pass on is what method we want to use. Here it will be 'LOOCV' - case sensitive. Give it a go..
   CorrectAnswer: train.loocv <- trainControl("LOOCV")
   AnswerTests: omnitest(correctExpr='train.loocv <- trainControl("LOOCV")')
   Hint: Type train.loocv <- trainControl("LOOCV") and hit Enter.
@@ -130,7 +139,7 @@
   Output: Like lm() we will have to provide a formula which will be Fertility against all other variables i.e. 'Fertility~.' and also data will be equal to swiss.
 
 - Class: text
-  Output: In addition to these three arguments, one key argument that will make leave one out cross validation possible is trControl. This define what will be training set. For us it will be 'trControl=train.loocv' that we just created. 
+  Output: In addition to these three arguments, one key argument that will make leave one out cross validation possible is trControl. This defines how the training sets are drawn. For us it will be 'trControl=train.loocv' that we just created. 
 
 - Class: cmd_question
   Output: Can you save the model as 'loocvmodel' and use command train(), where your formula is 'Fertility~.', data is swiss, method is lm, trControl is train.loocv?
@@ -160,7 +169,7 @@
   Output: Do you remember what we did for LOOCV? We will do the exact same thing. But this time with slightly different parameters.
 
 - Class: text
-  Output: When we make our training data, we will call it train.kfold. We will again use trainControl() command from caret package.
+  Output: When we make our resampling settings, we will call them train.kfold. We will again use trainControl() command from caret package.
 
 - Class: text
   Output: This time for trainControl() command we will use method="cv" and number=10. These parameter suggests R that we want to do cross validation with 10 folds. If you wanted 5 folds, you would change number to 5.  
@@ -169,7 +178,7 @@
   Output: Then the way we create our kfoldmodel will be same, using train() command. 
 
 - Class: cmd_question
-  Output: So let's define our training data. We want to call it train.kfold. To create train.kfold, we will use trainControl() function with arguments, 'method="cv"' and 'number=10'. See if you can write this bit of code..
+  Output: So let's define our resampling settings. We want to call them train.kfold. To create train.kfold, we will use trainControl() function with arguments, 'method="cv"' and 'number=10'. See if you can write this bit of code..
   CorrectAnswer: train.kfold <- trainControl(method="cv", number=10)
   AnswerTests: omnitest(correctExpr='train.kfold <- trainControl(method="cv", number=10)')
   Hint: Type train.kfold <- trainControl(method="cv", number=10) and hit Enter.
@@ -211,7 +220,7 @@
   Output: Let us see how we will do that. 
 
 - Class: cmd_question
-  Output: This time call your training data, train.boot. Use boot for your method and resample for 100 times. Give it a go..
+  Output: This time call your resampling settings train.boot. Use boot for your method and resample for 100 times. Give it a go..
   CorrectAnswer: train.boot <- trainControl(method="boot", number=100)
   AnswerTests: omnitest(correctExpr='train.boot <- trainControl(method="boot", number=100)')
   Hint: Type train.boot <- trainControl(method="boot", number=100) and hit Enter.

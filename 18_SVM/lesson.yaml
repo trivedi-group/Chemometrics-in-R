@@ -109,7 +109,7 @@
   Hint: Type table(predictions, y) and hit Enter.
 
 - Class: text
-  Output: That's all for this exercise! When you deal with your real data, always have a training set to build your models and a separate test set to test it on. Remember your test set is used in predict() command and your confusionMatrix() will have y-labels from your test set.
+  Output: That's all for this exercise! When you deal with your real data, always have a training set to build your models and a separate test set to test it on. Remember your test set is used in predict() command and your table() comparison will use the y-labels from your test set.
   
 - Class: text
   Output: Once you complete the exercise, all the data will stay in your environment, why don't you try svm() with scale=TRUE and see if it changes anything?

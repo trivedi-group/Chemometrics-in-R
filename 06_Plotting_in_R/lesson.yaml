@@ -64,7 +64,7 @@
   Hint: Type abline(lm(area ~ conc_ugml, data = calib), col = "red") and press Enter.
 
 - Class: text
-  Output: Look closely at the highest concentration. The points sit a little below the line, which hints at detector saturation. You would never see this from the equation of the line alone. Graphs show what summaries hide.
+  Output: Look closely at how the points sit around the line. The middle standards lie slightly above it and the highest standards slightly below, a gentle curve that can hint at the start of detector saturation. The effect is small here, and a plot of the residuals would show it more clearly, but you would never see it from the equation of the line alone. Graphs show what summaries hide.
 
 - Class: text
   Output: Rule four is to choose scales that suit the data. These concentrations span more than two orders of magnitude, so most points are squashed at the left. A logarithmic scale spreads them out, and the argument log = "xy" puts both axes on a log scale.

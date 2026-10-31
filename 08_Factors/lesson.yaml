@@ -45,7 +45,7 @@
   Hint: It is important to create the factors in this same order i.e. male, female, female and male.
 
 - Class: text
-  Output: R will assign 1 to level "female" and 2 to "male". We have covered in our video, why this happens. levels() command is used to check this.
+  Output: R will assign 1 to level "female" and 2 to "male". This is because R orders the levels alphabetically by default. levels() command is used to check this.
 
 - Class: cmd_question
   Output: Check levels in your variable 'gender'
@@ -103,7 +103,7 @@
   Hint: coffee <- factor(coffee, levels = c("high", "medium", "low"), ordered = TRUE)
   
 - Class: text
-  Output: You've now learnt how to handle factors in R. This will come in handy when you learn data visualisation in R. Hit Enter to continue.
+  Output: You've now learnt how to handle factors in R. This will come in handy in later lessons, for example when you colour plots or build models by group. Hit Enter to continue.
 
 - Class: text
   Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.

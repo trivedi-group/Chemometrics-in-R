@@ -7,7 +7,7 @@
   Version: 2.4.5
 
 - Class: text
-  Output: In this exercise, we will get data and perform PCA analysis on it. We will also visualise the scores and loadings plot to see how the observations and variables cluster.
+  Output: In this exercise, we will get data and perform PCA analysis on it. We will also visualise the scores plot to see how the observations cluster.
 
 - Class: text
   Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
@@ -16,7 +16,7 @@
   Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
 
 - Class: text
-  Output: You should have used 'install.packages()' function to install 'mixOmics' package. If not, please quit the exercise and follow instructions on Canvas to first install the required package.
+  Output: You should have installed the 'mixOmics' package from Bioconductor using BiocManager::install('mixOmics'), as shown in the setup guide. If not, please quit the exercise and follow instructions on Canvas to first install the required package.
 
 - Class: text
   Output: mixOmics is one of the many packages you can use to perform multivariate analysis. Different packages name their functions differently and allow a variety of customisations. You can explore other packages once you are confident executing codes and compare against the results you get today.

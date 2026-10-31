@@ -57,7 +57,7 @@
   Hint: View(liver.toxicity)
 
 - Class: text
-  Output: Now let's create our X variables. In this dataset genes were measured. These will be our X-variables and our response variable Y will be treatment given.
+  Output: Now let's create our X variables. In this dataset genes were measured. These will be our X-variables and our response variable Y will be the time at which each rat was examined after it was given paracetamol (six, 18, 24 or 48 hours).
 
 - Class: text
   Output: In R we want to specify that our X is set of variables, a matrix. We can do this using 'as.matrix()' command. We can also tell R, that our response variable Y, is some sort of group i.e. factor. We use 'as.factor()' for this.
@@ -78,16 +78,16 @@
   Output: There are lots of variables in this study. We will only use one of the many columns here. In R, 'data[1,2]' shows you are subsetting to first row and second column of data.
   
 - Class: text
-  Output: We want all rows of treatments but only one column. If you want to subset all rows, you leave row part empty, for example 'data[ ,2]' now tells R that we want all rows but only column 2.
+  Output: We want all rows of the treatment table but only one column. If you want to subset all rows, you leave row part empty, for example 'data[ ,2]' now tells R that we want all rows but only column 2.
   
 - Class: text
-  Output: The column we are interested in for this data, is column four. In the next step, consider this subset option when creating your factor. We want column number 4 and all rows.
+  Output: The column we are interested in for this data, is column four, called Time.Group, which holds the time of examination after dosing. In the next step, consider this subset option when creating your factor. We want column number 4 and all rows.
   
 - Class: cmd_question
   Output: Now let's assign, 'liver.toxicity$treatment' as factor to variable Y. It is fourth column within 'treatment'. 
   CorrectAnswer: Y <- as.factor(liver.toxicity$treatment[,4])
   AnswerTests: omnitest(correctExpr='Y <- as.factor(liver.toxicity$treatment[,4])')
-  Hint: Type Y <- as.factor(liver.toxicity$treatment[,4]) and press Enter. By doing that, you are making sure treatment variable in our liver.toxicity data is assigned to Y as a factor.
+  Hint: Type Y <- as.factor(liver.toxicity$treatment[,4]) and press Enter. By doing that, you are making sure the time group in our liver.toxicity data is assigned to Y as a factor.
 
 - Class: text
   Output: Now that we know what our X and Y variables are, we can start thinking about performing PLS-DA. 
@@ -137,7 +137,7 @@
   Hint: Type plotIndiv(result, group=liver.toxicity$treatment[,4]) and hit Enter.
 
 - Class: text
-  Output: Using simple codes, you have just created a scores plot for your pls-da model! You can see there are four treatment groups in four different colours.
+  Output: Using simple codes, you have just created a scores plot for your pls-da model! You can see there are four time groups, six, 18, 24 and 48 hours after dosing, in four different colours.
 
 - Class: mult_question
   Output: What is the first step you do once you've loaded your data to R, if you want to perform PLS-DA?
