@@ -1,0 +1,215 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: MDS
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+
+- Class: text
+  Output: Welcome to another Swirl for this week. We will learn how to perform MDS and plot the output in this exercise.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: You will also learn a few more tricks of R. Will come in handy going into week 10. 
+
+- Class: text
+  Output: R has a swiss dataset that contains fertility and socio-economic data on 47 French speaking provinces in Switzerland. Let's load that up! 
+
+- Class: cmd_question
+  Output: Do you remember how to do this? We used data() command. The data we are after is swiss - remember case sensitive. 
+  CorrectAnswer: data("swiss")
+  AnswerTests: any_of_exprs('data(swiss)', 'data("swiss")')
+  Hint: Type data("swiss") and hit Enter.
+
+- Class: cmd_question
+  Output: Let's look at the data quickly. But instead of View() command that we've used a few times, we will use head() command this time. This is similar to View() but only shows top few lines of the data. This makes it faster to load. Let's try to use head() command for swiss data. 
+  CorrectAnswer: head(swiss)
+  AnswerTests: any_of_exprs('head(swiss)','head("swiss")')
+  Hint: Type head(swiss) and hit Enter.
+
+- Class: text
+  Output: I hope you've installed the three packages needed for this exercise already. These are magrittr, dplyr and ggpubr. If not, you won't be able to continue.
+
+- Class: cmd_question
+  Output: Let's load the three packages using library command. First is magrittr.
+  CorrectAnswer: library(magrittr)
+  AnswerTests: any_of_exprs('library(magrittr)', 'library("magrittr")', "library('magrittr')")
+  Hint: Type library(magrittr) and hit Enter.
+
+- Class: cmd_question
+  Output: Next one is dplyr. Use the library() command again.
+  CorrectAnswer: library(dplyr)
+  AnswerTests: any_of_exprs('library(dplyr)', 'library("dplyr")', "library('dplyr')")
+  Hint: Type library(dplyr) and hit Enter.
+
+- Class: cmd_question
+  Output: Lastly, ggpubr. Use the library() command again.
+  CorrectAnswer: library(ggpubr)
+  AnswerTests: any_of_exprs('library(ggpubr)', 'library("ggpubr")', "library('ggpubr')")
+  Hint: Type library(ggpubr) and hit Enter.
+
+- Class: text
+  Output: Time to meet 'piping' in R! 
+
+- Class: text
+  Output: Using '%>%' we can create pipes. This is percentage sign, then a greater than sign and again percentage sign. We use these without inverted comma and spaces for examples 'data %>% mds()'
+
+- Class: text
+  Output: By writing 'data %>% mds()' what we are doing is telling R, we want to take data and perform mds on it. We will see more usages in a minute and things will get very clear..
+
+- Class: cmd_question
+  Output: We will use these pipes for our MDS exercise. As you know we need to first calculate our distances. We can do this using dist() command. But instead of writing anything within command, we will pipe our 'swiss' data to it. To do this, we write 'swiss %>% dist()'. Give that a go..
+  CorrectAnswer: swiss %>% dist()
+  AnswerTests: omnitest(correctExpr='swiss %>% dist()')
+  Hint: Type swiss %>% dist() and hit Enter.
+
+- Class: cmd_question
+  Output: Let's start saving these results to a variable called results. 
+  CorrectAnswer: results <- swiss %>% dist()
+  AnswerTests: omnitest(correctExpr='results <- swiss %>% dist()')
+  Hint: Type results <- swiss %>% dist() and hit Enter.
+
+- Class: cmd_question
+  Output: Let us learn how we can pipe multiple commands together. In addition to calculating distances, we want to also perform multidimensional scaling. So we use cmdscale() command to work on distances. We do this as an additional pipe. So swiss %>% dist() %>% cmdscale(). Remember to save this as 'results'.
+  CorrectAnswer: results <- swiss %>% dist() %>% cmdscale()
+  AnswerTests: omnitest(correctExpr='results <- swiss %>% dist() %>% cmdscale()')
+  Hint: Type results <- swiss %>% dist() %>% cmdscale() and hit Enter.
+
+- Class: text
+  Output: Now, you've used pipes to pass data to two functions. cmdscale() works on a distance matrix. So we first used dist() and then we passed on those distances to cmdscale().
+
+
+
+- Class: text
+  Output: The downstream command that we want to use requires data to be in a data.frame format. Our output saved in results is a matrix.
+
+- Class: cmd_question
+  Output: How do we check this? For any element you want to check in R, you can do so by typing 'is.matrix(nameofwhatever)'. Try this for our results. 
+  CorrectAnswer: is.matrix(results)
+  AnswerTests: omnitest(correctExpr='is.matrix(results)')
+  Hint: Type is.matrix(results) and hit Enter.
+
+- Class: cmd_question
+  Output: The output you see in console would be TRUE or FALSE. To convert results to data frame we use a very simple command as.data.frame(). We write it so that we save our output to results. We do this because we simply want to change our 'results' from matrix to a data frame. Give it a go.
+  CorrectAnswer: results <- as.data.frame(results)
+  AnswerTests: omnitest(correctExpr='results <- as.data.frame(results)')
+  Hint: Type results <- as.data.frame(results) and hit Enter.
+
+- Class: cmd_question
+  Output: Now you have results in form of a data.frame. Check it using is.data.frame() command like you just checked if it was a matrix or not.
+  CorrectAnswer: is.data.frame(results)
+  AnswerTests: omnitest(correctExpr='is.data.frame(results)')
+  Hint: Type is.data.frame(results) and hit Enter.
+
+- Class: text
+  Output: Now that you have data in form of a data frame, we can use ggscatter() command. 
+
+- Class: text
+  Output: You are probably thinking how do we know when to use a matrix and when to use a data frame? You generally don't. You aren't expected to. If you use wrong kind of input, you will see an error that may sometimes be self explanatory. 
+
+- Class: text
+  Output: In all the other cases, the more you use a package, the more you'll learn about it. Otherwise it is always a good practice to check out what the input and output arguments are for functions within a package. 
+
+- Class: text
+  Output: To use help, you simply put a question mark in front of the name of function or package. For example, '?(ggscatter)' will tell you about the plotting function we are about to use.
+
+- Class: cmd_question
+  Output: To plot using ggscatter(), we need to know what our data is, what our x and y axis are and if we want to label them. Try to use 'ggscatter(data, x, y, label)' format to see our plot. But our data is results, our x is V1, y is V2 and label will be rownames(swiss).
+  CorrectAnswer: ggscatter(results, "V1", "V2", label=rownames(swiss))
+  AnswerTests: omnitest(correctExpr='ggscatter(results, "V1", "V2", label=rownames(swiss))')
+  Hint: Type ggscatter(results, "V1", "V2", label=rownames(swiss)) and hit Enter.
+
+- Class: text
+  Output: You might have noticed we just used rownames() command to define what our labels are. It is a handy command when you want to pass on string values present in rows as your labels. Generally use this to assign labels when you have one column that has sample1, sample2 etc.
+
+- Class: cmd_question
+  Output: You might have noticed that our ggscatter plot has names overlapping each other or data points. To solve this, the function has a couple of extra arguments. They are repel=TRUE and size=1. By adding these to ggscatter command you just wrote, you can solve the overlap problem. Try it..
+  CorrectAnswer: ggscatter(results, "V1", "V2", label=rownames(swiss), repel=TRUE, size=1)
+  AnswerTests: omnitest(correctExpr='ggscatter(results, "V1", "V2", label=rownames(swiss), repel=TRUE, size=1)')
+  Hint: ggscatter(results, "V1", "V2", label=rownames(swiss), repel=TRUE, size=1)
+
+- Class: text
+  Output: We can introduce a twist here and we can now use k-means clustering on our results to create 3 groups that we can use to highlight our graph.
+
+- Class: cmd_question
+  Output: Let us call our output of clustering, 'clus'. The way to do clustering is using kmeans() function. The only arguments it needs is what you want to do kmeans on, here it will be results and how many clusters, we will do k=3. Use kmeans(results, 3) to perform the clustering and save it to clus. 
+  CorrectAnswer: clus <- kmeans(results, 3)
+  AnswerTests: omnitest(correctExpr='clus <- kmeans(results, 3)')
+  Hint: Type  clus <- kmeans(results, 3) and hit Enter.
+
+- Class: cmd_question
+  Output: The output clus, has cluster. We need to store this as factor. Like we used as.matrix, as.data.frame, we can use as.factor to store a particular element as factor. Use this to save clus$cluster as factors. Store the results to 'cluster'
+  CorrectAnswer: cluster <- as.factor(clus$cluster)
+  AnswerTests: omnitest(correctExpr='cluster <- as.factor(clus$cluster)')
+  Hint: Type cluster <- as.factor(clus$cluster) and hit Enter.
+
+- Class: cmd_question
+  Output: We will now use mutate() function to add a column in our results file. Our results file so far have two columns V1 and V2. We will use pipe operator to pass results to 'mutate(groups = cluster)' in order to add the new factor we just created to 'results'. This way results will have V1, V2 and groups. Groups column is same as clusters we created from k-means. Give it a go now, remember the output has to be saved to results...
+  CorrectAnswer: results <- results %>% mutate(groups = cluster)
+  AnswerTests: omnitest(correctExpr='results <- results %>% mutate(groups = cluster)')
+  Hint: Type results <- results %>% mutate(groups = cluster) and hit Enter.
+
+- Class: cmd_question
+  Output: Now we can re-write our ggscatter() function, that had results, V1, V2, label = rownames(swiss), repel=TRUE and size=1 arguments already. To that we will add one more argument, color = "groups".
+  CorrectAnswer: ggscatter(results, x="V1", y="V2", label= rownames(swiss), repel=TRUE, size=1, color = "groups")
+  AnswerTests: omnitest(correctExpr='ggscatter(results, x="V1", y="V2", label= rownames(swiss), repel=TRUE, size=1, color = "groups")')
+  Hint: Type ggscatter(results, x="V1", y="V2", label= rownames(swiss), repel=TRUE, size=1, color = "groups") and hit Enter.
+
+
+- Class: text
+  Output: Great work! You did great with some complex R language there. The more you practice, the better you'll get. I would advise like all other exercises, either do this one again at your own pace or try to write down commands that you think you need practice with. Then once the exercise is completed, practice writing these commands again on your own to see if you can build a workflow for yourself. 
+
+- Class: text
+  Output: Another pro-tip you can also go to File then to new script and in that new script you can save your commands. That script can then be your offline record of what commands were executed to perform various analysis. That way, when you feel adventurous, you can also use these commands on a new set of data of your own!
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about running MDS, using pipes and plotting the results in R? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

@@ -1,0 +1,260 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: ANOVA_and_Experimental_Design
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on experimental design and analysis of variance. A good design lets you separate the effect you care about from random variation, and ANOVA is the tool that does the separating. You will analyse a one factor experiment and then a two factor experiment in R.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: Three ideas underpin good design. Replication means repeating each condition, so that you can estimate random variation. Randomisation means running the experiments in a random order, so that drift in the instrument or the analyst does not line up with one condition. Blocking means grouping runs that share a nuisance factor, such as the day, so that its effect can be removed.
+
+- Class: text
+  Output: R can help with randomisation. The function sample() shuffles a set of numbers. Setting a seed first makes the shuffle repeatable, so you and a colleague can get the same order.
+
+- Class: cmd_question
+  Output: Set the seed with set.seed(10).
+  CorrectAnswer: set.seed(10)
+  AnswerTests: expr_text_has('set.seed', '10')
+  Hint: Type set.seed(10) and press Enter.
+
+- Class: cmd_question
+  Output: Shuffle the run numbers 1 to 8 with sample(1:8). This is a random running order.
+  CorrectAnswer: sample(1:8)
+  AnswerTests: expr_text_has('sample', '1:8')
+  Hint: Type sample(1:8) and press Enter.
+
+- Class: text
+  Output: Now the data. I have loaded two synthetic data frames, made up for teaching. The data frame solvents holds the phenolic yield in mg per g of plant material, from extractions with four different solvents, with six replicates each. The data frame twofactor holds a second experiment with two factors, temperature and time.
+
+- Class: cmd_question
+  Output: Look at the first six rows of solvents.
+  CorrectAnswer: head(solvents)
+  AnswerTests: omnitest(correctExpr='head(solvents)')
+  Hint: Type head(solvents) and press Enter.
+
+- Class: cmd_question
+  Output: Check that the design is balanced, which means every solvent has the same number of replicates. Use table(solvents$solvent).
+  CorrectAnswer: table(solvents$solvent)
+  AnswerTests: omnitest(correctExpr='table(solvents$solvent)')
+  Hint: Type table(solvents$solvent) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the mean yield for each solvent with tapply(solvents$yield_mgg, solvents$solvent, mean).
+  CorrectAnswer: tapply(solvents$yield_mgg, solvents$solvent, mean)
+  AnswerTests: omnitest(correctExpr='tapply(solvents$yield_mgg, solvents$solvent, mean)')
+  Hint: Type tapply(solvents$yield_mgg, solvents$solvent, mean) and press Enter.
+
+- Class: cmd_question
+  Output: Draw a boxplot of the yield for each solvent with boxplot(yield_mgg ~ solvent, data = solvents).
+  CorrectAnswer: boxplot(yield_mgg ~ solvent, data = solvents)
+  AnswerTests: expr_text_has('boxplot', 'yield_mgg ~ solvent', 'data = solvents')
+  Hint: Type boxplot(yield_mgg ~ solvent, data = solvents) and press Enter.
+
+- Class: text
+  Output: The means differ, but the replicates also scatter. A t test compares two groups, and repeating it for every pair of four groups would inflate the chance of a false positive. One way ANOVA tests all the groups in a single test. The null hypothesis is that all the group means are equal.
+
+- Class: text
+  Output: ANOVA works by splitting the total variation into two parts. The variation between the group means is compared with the variation within the groups. If the between group variation is much larger than the within group variation, the F ratio is large and the p-value is small.
+
+- Class: cmd_question
+  Output: Fit the model and store it using fit <- aov(yield_mgg ~ solvent, data = solvents).
+  CorrectAnswer: fit <- aov(yield_mgg ~ solvent, data = solvents)
+  AnswerTests: omnitest(correctExpr='fit <- aov(yield_mgg ~ solvent, data = solvents)')
+  Hint: Type fit <- aov(yield_mgg ~ solvent, data = solvents) and press Enter.
+
+- Class: cmd_question
+  Output: Show the ANOVA table with summary(fit).
+  CorrectAnswer: summary(fit)
+  AnswerTests: omnitest(correctExpr='summary(fit)')
+  Hint: Type summary(fit) and press Enter.
+
+- Class: mult_question
+  Output: The p-value is far below 0.05. What does this tell you?
+  AnswerChoices: At least one solvent mean differs from the others; All four solvent means are different from each other; The experiment was not randomised; The solvents are all equal;
+  CorrectAnswer: At least one solvent mean differs from the others
+  AnswerTests: omnitest(correctVal='At least one solvent mean differs from the others')
+  Hint: ANOVA does not say which groups differ, only that they are not all equal.
+
+- Class: text
+  Output: To find out which pairs differ, we use a post hoc test. Tukey's honest significant difference test compares every pair, and it adjusts the p-values for the number of comparisons made.
+
+- Class: cmd_question
+  Output: Run it with TukeyHSD(fit).
+  CorrectAnswer: TukeyHSD(fit)
+  AnswerTests: omnitest(correctExpr='TukeyHSD(fit)')
+  Hint: Type TukeyHSD(fit) and press Enter.
+
+- Class: text
+  Output: Look at the p adj column. A pair is significantly different at the 5% level if its adjusted p-value is below 0.05, or equivalently if its confidence interval, from lwr to upr, does not contain zero.
+
+- Class: mult_question
+  Output: Which pair of solvents is the most similar, with an adjusted p-value close to 1?
+  AnswerChoices: Methanol and ethanol; Water and ethanol; Water and methanol; Acetone and water;
+  CorrectAnswer: Methanol and ethanol
+  AnswerTests: omnitest(correctVal='Methanol and ethanol')
+  Hint: Find the largest p adj value.
+
+- Class: cmd_question
+  Output: The labels of the pairs are long, so first make more room on the left of the plot with par(mar = c(4, 9, 3, 1)).
+  CorrectAnswer: par(mar = c(4, 9, 3, 1))
+  AnswerTests: omnitest(correctExpr='par(mar = c(4, 9, 3, 1))')
+  Hint: Type par(mar = c(4, 9, 3, 1)) and press Enter.
+
+- Class: cmd_question
+  Output: Plot the intervals with plot(TukeyHSD(fit), las = 1). The las = 1 turns the labels horizontal. Intervals that cross the dashed zero line are not significant.
+  CorrectAnswer: plot(TukeyHSD(fit), las = 1)
+  AnswerTests: expr_text_has('plot', 'TukeyHSD(fit)', 'las = 1')
+  Hint: Type plot(TukeyHSD(fit), las = 1) and press Enter.
+
+- Class: cmd_question
+  Output: Restore the default margins with par(mar = c(5, 4, 4, 2) + 0.1).
+  CorrectAnswer: par(mar = c(5, 4, 4, 2) + 0.1)
+  AnswerTests: omnitest(correctExpr='par(mar = c(5, 4, 4, 2) + 0.1)')
+  Hint: Type par(mar = c(5, 4, 4, 2) + 0.1) and press Enter.
+
+- Class: text
+  Output: ANOVA assumes that the residuals are roughly normal and that the groups have similar variances. The residuals are what is left over after the group means are removed. You can check both assumptions in R.
+
+- Class: cmd_question
+  Output: Test the equality of variances with bartlett.test(yield_mgg ~ solvent, data = solvents). A p-value above 0.05 is no evidence against equal variances.
+  CorrectAnswer: bartlett.test(yield_mgg ~ solvent, data = solvents)
+  AnswerTests: omnitest(correctExpr='bartlett.test(yield_mgg ~ solvent, data = solvents)')
+  Hint: Type bartlett.test(yield_mgg ~ solvent, data = solvents) and press Enter.
+
+- Class: cmd_question
+  Output: Test the normality of the residuals with shapiro.test(residuals(fit)).
+  CorrectAnswer: shapiro.test(residuals(fit))
+  AnswerTests: omnitest(correctExpr='shapiro.test(residuals(fit))')
+  Hint: Type shapiro.test(residuals(fit)) and press Enter.
+
+- Class: text
+  Output: Both p-values are above 0.05, so neither test rejects its assumption. The residual normality p-value is only just above 0.05, though, and with 24 values these tests have limited power. In real work you should also look at a normal quantile plot of the residuals, as you did in the descriptive statistics lesson. Now the two factor experiment.
+
+- Class: cmd_question
+  Output: Look at the first eight rows of twofactor using head(twofactor, 8).
+  CorrectAnswer: head(twofactor, 8)
+  AnswerTests: omnitest(correctExpr='head(twofactor, 8)')
+  Hint: Type head(twofactor, 8) and press Enter.
+
+- Class: cmd_question
+  Output: Count the replicates in each combination of conditions with table(twofactor$temp, twofactor$time).
+  CorrectAnswer: table(twofactor$temp, twofactor$time)
+  AnswerTests: omnitest(correctExpr='table(twofactor$temp, twofactor$time)')
+  Hint: Type table(twofactor$temp, twofactor$time) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the mean yield for each combination with tapply(twofactor$yield_mgg, list(twofactor$temp, twofactor$time), mean).
+  CorrectAnswer: tapply(twofactor$yield_mgg, list(twofactor$temp, twofactor$time), mean)
+  AnswerTests: omnitest(correctExpr='tapply(twofactor$yield_mgg, list(twofactor$temp, twofactor$time), mean)')
+  Hint: Type tapply(twofactor$yield_mgg, list(twofactor$temp, twofactor$time), mean) and press Enter.
+
+- Class: text
+  Output: Look at the table. Going from 40 to 70 degrees raises the yield at both times, but it raises it by much more at the longer time. When the effect of one factor depends on the level of the other, we say the two factors interact. An interaction plot shows this as lines that are not parallel.
+
+- Class: cmd_question
+  Output: Draw it with interaction.plot(twofactor$time, twofactor$temp, twofactor$yield_mgg).
+  CorrectAnswer: interaction.plot(twofactor$time, twofactor$temp, twofactor$yield_mgg)
+  AnswerTests: expr_text_has('interaction.plot', 'twofactor$time', 'twofactor$temp')
+  Hint: Type interaction.plot(twofactor$time, twofactor$temp, twofactor$yield_mgg) and press Enter.
+
+- Class: text
+  Output: In a formula, a star between two factors means both main effects and their interaction. So temp * time is shorthand for temp + time + temp:time.
+
+- Class: cmd_question
+  Output: Fit the model and store it in fit2 using fit2 <- aov(yield_mgg ~ temp * time, data = twofactor).
+  CorrectAnswer: fit2 <- aov(yield_mgg ~ temp * time, data = twofactor)
+  AnswerTests: omnitest(correctExpr='fit2 <- aov(yield_mgg ~ temp * time, data = twofactor)')
+  Hint: Type fit2 <- aov(yield_mgg ~ temp * time, data = twofactor) and press Enter.
+
+- Class: cmd_question
+  Output: Show the ANOVA table with summary(fit2).
+  CorrectAnswer: summary(fit2)
+  AnswerTests: omnitest(correctExpr='summary(fit2)')
+  Hint: Type summary(fit2) and press Enter.
+
+- Class: mult_question
+  Output: The row temp:time has a p-value of about 0.01. What does this mean?
+  AnswerChoices: The effect of temperature depends on the extraction time; Temperature has no effect; Time has no effect; The interaction is not significant;
+  CorrectAnswer: The effect of temperature depends on the extraction time
+  AnswerTests: omnitest(correctVal='The effect of temperature depends on the extraction time')
+  Hint: A significant interaction means the factors do not act independently.
+
+- Class: text
+  Output: When there is a significant interaction, be careful about reading the main effects alone. Saying that temperature raises the yield is true here, but how much it raises it depends on the time, so you should report the combinations.
+
+- Class: cmd_question
+  Output: Fit a model without the interaction using fit3 <- aov(yield_mgg ~ temp + time, data = twofactor).
+  CorrectAnswer: fit3 <- aov(yield_mgg ~ temp + time, data = twofactor)
+  AnswerTests: omnitest(correctExpr='fit3 <- aov(yield_mgg ~ temp + time, data = twofactor)')
+  Hint: Type fit3 <- aov(yield_mgg ~ temp + time, data = twofactor) and press Enter.
+
+- Class: cmd_question
+  Output: Compare the two models with anova(fit3, fit2). A small p-value says that adding the interaction improves the fit.
+  CorrectAnswer: anova(fit3, fit2)
+  AnswerTests: omnitest(correctExpr='anova(fit3, fit2)')
+  Hint: Type anova(fit3, fit2) and press Enter.
+
+- Class: mult_question
+  Output: Which statement about replication is correct?
+  AnswerChoices: Replicates let you estimate random variation; Replicates remove the need for randomisation; Replicates make the factors interact; Replicates are only useful for one factor designs;
+  CorrectAnswer: Replicates let you estimate random variation
+  AnswerTests: omnitest(correctVal='Replicates let you estimate random variation')
+  Hint: Without replicates there is nothing to compare the differences between groups with.
+
+- Class: text
+  Output: You can now plan a randomised, replicated experiment, analyse one and two factor designs with aov(), find which groups differ with TukeyHSD(), and check the assumptions. The next lessons return to R itself and the data structures that hold your results.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about analysis of variance and experimental design? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

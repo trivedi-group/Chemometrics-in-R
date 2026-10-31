@@ -1,0 +1,232 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Limits_of_Detection
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on limits of detection and quantification. Every method has a lowest concentration it can detect and a somewhat higher one that it can measure with acceptable precision. In this lesson you will estimate both from calibration data and from blank measurements, and use the calibration line to quantify a sample.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: I have loaded two synthetic data frames, made up for teaching. The data frame lowcal holds a low level calibration, with peak areas for seven concentrations in ug/mL, each measured three times. The data frame blanks holds the peak area measured in ten blank injections.
+
+- Class: cmd_question
+  Output: Look at the first six rows of lowcal.
+  CorrectAnswer: head(lowcal)
+  AnswerTests: omnitest(correctExpr='head(lowcal)')
+  Hint: Type head(lowcal) and press Enter.
+
+- Class: cmd_question
+  Output: Plot the calibration with plot(lowcal$conc_ugml, lowcal$area).
+  CorrectAnswer: plot(lowcal$conc_ugml, lowcal$area)
+  AnswerTests: expr_text_has('plot', 'lowcal$conc_ugml', 'lowcal$area')
+  Hint: Type plot(lowcal$conc_ugml, lowcal$area) and press Enter.
+
+- Class: cmd_question
+  Output: Fit a straight line and store it, with fit <- lm(area ~ conc_ugml, data = lowcal).
+  CorrectAnswer: fit <- lm(area ~ conc_ugml, data = lowcal)
+  AnswerTests: omnitest(correctExpr='fit <- lm(area ~ conc_ugml, data = lowcal)')
+  Hint: Type fit <- lm(area ~ conc_ugml, data = lowcal) and press Enter.
+
+- Class: cmd_question
+  Output: Add the fitted line to the plot with abline(fit, col = "red").
+  CorrectAnswer: abline(fit, col = "red")
+  AnswerTests: expr_text_has('abline', 'fit')
+  Hint: Type abline(fit, col = "red") and press Enter.
+
+- Class: cmd_question
+  Output: Show the intercept and slope with coef(fit).
+  CorrectAnswer: coef(fit)
+  AnswerTests: omnitest(correctExpr='coef(fit)')
+  Hint: Type coef(fit) and press Enter.
+
+- Class: text
+  Output: The slope is the sensitivity of the method, the peak area per ug/mL. The intercept is the signal at zero concentration, and here it is small compared with the signals of the standards. It is of the same order as the average blank signal, which we will calculate later.
+
+- Class: cmd_question
+  Output: Show the full regression summary with summary(fit).
+  CorrectAnswer: summary(fit)
+  AnswerTests: omnitest(correctExpr='summary(fit)')
+  Hint: Type summary(fit) and press Enter.
+
+- Class: cmd_question
+  Output: Pick out the coefficient of determination with summary(fit)$r.squared.
+  CorrectAnswer: summary(fit)$r.squared
+  AnswerTests: omnitest(correctExpr='summary(fit)$r.squared')
+  Hint: Type summary(fit)$r.squared and press Enter.
+
+- Class: mult_question
+  Output: A high R squared proves that the calibration is linear.
+  AnswerChoices: False, you must also look at the residuals; True, R squared above 0.99 is enough; True, but only for five or more points; False, because R squared is not used for calibrations;
+  CorrectAnswer: False, you must also look at the residuals
+  AnswerTests: omnitest(correctVal='False, you must also look at the residuals')
+  Hint: A curved relationship can still give a high R squared.
+
+- Class: cmd_question
+  Output: Plot the residuals against concentration with plot(lowcal$conc_ugml, residuals(fit)).
+  CorrectAnswer: plot(lowcal$conc_ugml, residuals(fit))
+  AnswerTests: expr_text_has('plot', 'residuals(fit)')
+  Hint: Type plot(lowcal$conc_ugml, residuals(fit)) and press Enter.
+
+- Class: cmd_question
+  Output: Add a reference line at zero with abline(h = 0, lty = 2).
+  CorrectAnswer: abline(h = 0, lty = 2)
+  AnswerTests: expr_text_has('abline', 'h = 0')
+  Hint: Type abline(h = 0, lty = 2) and press Enter.
+
+- Class: text
+  Output: The residuals scatter around zero and show no obvious curve. With only three replicates at each level it is hard to judge whether the spread is the same at every level, so in real work you would use more replicates, or more levels, before relying on this.
+
+- Class: text
+  Output: Now the detection limits. The idea is to ask how large a signal must be before we can say that it is not just noise. A widely used approach, described in the ICH Q2 guideline on validating analytical methods, sets the limit of detection, LOD, at 3.3 times the standard deviation of the response, divided by the slope of the calibration. The limit of quantification, LOQ, uses ten instead of 3.3.
+
+- Class: text
+  Output: There are two common choices for the standard deviation of the response. One is the residual standard deviation of the regression line. The other is the standard deviation of blank measurements. We will do both.
+
+- Class: cmd_question
+  Output: The residual standard deviation is stored in the summary. Store it in sy using sy <- summary(fit)$sigma.
+  CorrectAnswer: sy <- summary(fit)$sigma
+  AnswerTests: omnitest(correctExpr='sy <- summary(fit)$sigma')
+  Hint: Type sy <- summary(fit)$sigma and press Enter.
+
+- Class: cmd_question
+  Output: Store the slope in b with b <- coef(fit)[2].
+  CorrectAnswer: b <- coef(fit)[2]
+  AnswerTests: omnitest(correctExpr='b <- coef(fit)[2]')
+  Hint: Type b <- coef(fit)[2] and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the LOD from the regression with 3.3 * sy / b.
+  CorrectAnswer: 3.3 * sy / b
+  AnswerTests: omnitest(correctExpr='3.3 * sy / b')
+  Hint: Type 3.3 * sy / b and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the LOQ from the regression with 10 * sy / b.
+  CorrectAnswer: 10 * sy / b
+  AnswerTests: omnitest(correctExpr='10 * sy / b')
+  Hint: Type 10 * sy / b and press Enter.
+
+- Class: mult_question
+  Output: Why is the LOQ larger than the LOD?
+  AnswerChoices: Quantifying with acceptable precision needs a larger signal than just detecting; Because the slope is different; Because the blanks are different; It is not, they are always equal;
+  CorrectAnswer: Quantifying with acceptable precision needs a larger signal than just detecting
+  AnswerTests: omnitest(correctVal='Quantifying with acceptable precision needs a larger signal than just detecting')
+  Hint: Compare the multipliers 3.3 and 10.
+
+- Class: text
+  Output: Now the blank approach. The standard deviation of the blanks reflects the noise of the method at zero concentration.
+
+- Class: cmd_question
+  Output: Calculate the mean of the blanks with mean(blanks$area).
+  CorrectAnswer: mean(blanks$area)
+  AnswerTests: omnitest(correctExpr='mean(blanks$area)')
+  Hint: Type mean(blanks$area) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the standard deviation of the blanks with sd(blanks$area).
+  CorrectAnswer: sd(blanks$area)
+  AnswerTests: omnitest(correctExpr='sd(blanks$area)')
+  Hint: Type sd(blanks$area) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the LOD from the blanks with 3.3 * sd(blanks$area) / b.
+  CorrectAnswer: 3.3 * sd(blanks$area) / b
+  AnswerTests: omnitest(correctExpr='3.3 * sd(blanks$area) / b')
+  Hint: Type 3.3 * sd(blanks$area) / b and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the LOQ from the blanks with 10 * sd(blanks$area) / b.
+  CorrectAnswer: 10 * sd(blanks$area) / b
+  AnswerTests: omnitest(correctExpr='10 * sd(blanks$area) / b')
+  Hint: Type 10 * sd(blanks$area) / b and press Enter.
+
+- Class: text
+  Output: The two approaches give answers of the same order, and both limits are below the lowest standard of 0.5 ug/mL. When they disagree, you should explain which one you used, because the choice matters, and a limit should always be checked experimentally by measuring samples near it.
+
+- Class: cmd_question
+  Output: Compare the LOQ from the regression with the lowest standard, 0.5 ug/mL, using 10 * sy / b < 0.5. The answer is TRUE or FALSE.
+  CorrectAnswer: 10 * sy / b < 0.5
+  AnswerTests: omnitest(correctExpr='10 * sy / b < 0.5')
+  Hint: Type 10 * sy / b < 0.5 and press Enter.
+
+- Class: text
+  Output: We can also use the calibration to find the concentration of an unknown sample. We measured a sample and got a peak area of 2500. The calibration line says area = intercept + slope times concentration, so we rearrange it for concentration.
+
+- Class: cmd_question
+  Output: Calculate the concentration with (2500 - coef(fit)[1]) / coef(fit)[2].
+  CorrectAnswer: (2500 - coef(fit)[1]) / coef(fit)[2]
+  AnswerTests: omnitest(correctExpr='(2500 - coef(fit)[1]) / coef(fit)[2]')
+  Hint: Type (2500 - coef(fit)[1]) / coef(fit)[2] and press Enter.
+
+- Class: text
+  Output: This result is a point estimate. The uncertainty of the slope and intercept carries over into it. The function confint() gives the 95% confidence intervals of the line's coefficients.
+
+- Class: cmd_question
+  Output: Show them with confint(fit).
+  CorrectAnswer: confint(fit)
+  AnswerTests: omnitest(correctExpr='confint(fit)')
+  Hint: Type confint(fit) and press Enter.
+
+- Class: mult_question
+  Output: A sample gives a peak area that corresponds to a concentration between the LOD and the LOQ. What can you report?
+  AnswerChoices: It is detected but not reliably quantified; It is accurately quantified; It is absent; The calibration is invalid;
+  CorrectAnswer: It is detected but not reliably quantified
+  AnswerTests: omnitest(correctVal='It is detected but not reliably quantified')
+  Hint: Detection and quantification are different limits.
+
+- Class: text
+  Output: You can now fit a calibration line, check it with residuals, estimate the LOD and LOQ from the regression and from blanks, and use the line to quantify a sample. The next lesson on dimension reduction moves from a single variable to many variables at once.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about calibration lines and detection limits? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

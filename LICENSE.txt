@@ -1,0 +1,11 @@
+Chemometrics DL, copyright © 2026 Drupad Trivedi, The University of Manchester. All rights reserved.
+
+1. Permitted use. This material is provided to students enrolled on the relevant course at the University of Manchester, for their own personal study on that course.
+
+2. Not permitted. Without prior written permission from the author and the University of Manchester, you may not copy, share, publish, upload, redistribute, sell or reuse this material, in whole or in part, or any adaptation of it, outside the course.
+
+3. Third-party software. The lessons run in R and use swirl and other publicly available R packages. These are separate software, provided under their own licences, and they are not covered by this notice.
+
+4. No warranty. The material is provided as it is, with no warranty of any kind.
+
+5. Permissions. To request permission, email drupad.trivedi@manchester.ac.uk.

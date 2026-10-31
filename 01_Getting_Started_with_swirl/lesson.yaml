@@ -1,0 +1,152 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Getting_Started_with_swirl
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to the course. This short lesson shows you how swirl works, so that every later lesson runs smoothly. There is nothing to memorise, and you cannot break anything. If you get stuck at any point, type info() at the prompt to see the list of swirl commands.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: swirl teaches R inside R itself. Text from swirl starts with a vertical bar. Whenever you see the prompt, which is the greater-than sign, it is your turn to type. Press Enter after each command, and R will run it straight away.
+
+- Class: text
+  Output: When swirl waits with a line of text and no question, just press Enter to move on. When it asks a question, type your answer at the prompt and press Enter.
+
+- Class: cmd_question
+  Output: Let us try one. R is also a calculator. Type 12 + 30 and press Enter.
+  CorrectAnswer: 12 + 30
+  AnswerTests: omnitest(correctExpr='12 + 30')
+  Hint: Type 12 + 30 exactly as shown, then press Enter.
+
+- Class: text
+  Output: If you type something swirl does not expect, it will show a hint and let you try again. Mistakes are a normal and useful part of learning to code. R is also fussy about capital letters, so Mean and mean are different things.
+
+- Class: cmd_question
+  Output: Try giving a wrong answer on purpose. Type 12 + 31 and read the message swirl gives you.
+  CorrectAnswer: 12 + 30
+  AnswerTests: omnitest(correctExpr='12 + 30')
+  Hint: Read the hint, then type 12 + 30 to carry on.
+
+- Class: text
+  Output: Most of the time you will store values with a name, so that you can use them again. You do this with the assignment arrow, which is a less-than sign followed by a hyphen, as in x <- 5.
+
+- Class: cmd_question
+  Output: Store the number 25 in a variable called conc using the assignment arrow.
+  CorrectAnswer: conc <- 25
+  AnswerTests: omnitest(correctExpr='conc <- 25')
+  Hint: Type conc <- 25 and press Enter.
+
+- Class: cmd_question
+  Output: Now type the name conc on its own to see what it contains.
+  CorrectAnswer: conc
+  AnswerTests: omnitest(correctExpr='conc')
+  Hint: Type conc and press Enter.
+
+- Class: cmd_question
+  Output: A variable can be used in later calculations. Multiply conc by 4.
+  CorrectAnswer: conc * 4
+  AnswerTests: omnitest(correctExpr='conc * 4')
+  Hint: Type conc * 4 and press Enter.
+
+- Class: mult_question
+  Output: Which command stops swirl for now and saves your progress, so that you can come back later?
+  AnswerChoices: bye(); skip(); play(); main();
+  CorrectAnswer: bye()
+  AnswerTests: omnitest(correctVal='bye()')
+  Hint: Think of saying goodbye.
+
+- Class: mult_question
+  Output: Which command lets you try things in R freely while swirl ignores what you type, until you type nxt()?
+  AnswerChoices: play(); skip(); bye(); info();
+  CorrectAnswer: play()
+  AnswerTests: omnitest(correctVal='play()')
+  Hint: Think of playing around.
+
+- Class: mult_question
+  Output: A question is much too hard and you want to move past it. Which command skips it?
+  AnswerChoices: skip(); bye(); nxt(); main();
+  CorrectAnswer: skip()
+  AnswerTests: omnitest(correctVal='skip()')
+  Hint: The name says what it does.
+
+- Class: text
+  Output: When you start swirl again later, type your name exactly as you did the first time, including capital letters. swirl will then offer to carry on where you left off.
+
+- Class: text
+  Output: Every lesson ends with a short reflection. You will rate the lesson and write a few sentences about what you learned. The commands you typed during the lesson are saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later, and it makes a useful starting point for your own analyses.
+
+- Class: text
+  Output: R has a built-in help system. Typing a question mark followed by a function name, for example ?mean, opens the help page for that function in RStudio. Help pages can look dense at first, but the Usage and Examples sections are the most useful parts.
+
+- Class: cmd_question
+  Output: Calculate the mean of the numbers 4, 8 and 15 using the function mean() and the combine function c().
+  CorrectAnswer: mean(c(4, 8, 15))
+  AnswerTests: omnitest(correctExpr='mean(c(4, 8, 15))')
+  Hint: Type mean(c(4, 8, 15)) and press Enter.
+
+- Class: text
+  Output: A very common source of errors is a missing bracket or quotation mark. If R seems to be waiting and shows a plus sign instead of the greater-than sign, it thinks your command is unfinished. Press the Escape key to cancel it and start the line again.
+
+- Class: mult_question
+  Output: R shows a plus sign instead of the greater-than sign after you press Enter. What has most likely happened?
+  AnswerChoices: The command is unfinished, for example a bracket is missing; R has finished and shows a result; The computer has crashed; swirl has marked your answer as correct;
+  CorrectAnswer: The command is unfinished, for example a bracket is missing
+  AnswerTests: omnitest(correctVal='The command is unfinished, for example a bracket is missing')
+  Hint: Look at the last line you typed.
+
+- Class: text
+  Output: That is everything you need to get started. The lessons are matched to the weekly topics of the course, so take them in order, and do them in a quiet block of time. Reading the explanation before you type is more important than typing quickly. Good luck.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about using swirl and the R console? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

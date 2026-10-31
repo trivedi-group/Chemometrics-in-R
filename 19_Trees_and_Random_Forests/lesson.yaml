@@ -1,0 +1,244 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Trees_and_Random_Forests
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on decision trees and random forests. A decision tree classifies samples by asking a series of yes or no questions about the measurements, and a random forest combines hundreds of such trees to give a more stable answer. You will build both for a synthetic authenticity problem and test them on samples they have not seen.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: 'I have loaded a synthetic data frame called oils, made up for teaching. Each row is an oil sample that is either authentic or adulterated, with five measured quality indicators: acidity, peroxide, k270, k232 and sterol.'
+
+- Class: cmd_question
+  Output: Look at the first six rows of oils.
+  CorrectAnswer: head(oils)
+  AnswerTests: omnitest(correctExpr='head(oils)')
+  Hint: Type head(oils) and press Enter.
+
+- Class: cmd_question
+  Output: The class column holds text, but for classification R needs a factor. Convert it with oils$class <- factor(oils$class).
+  CorrectAnswer: oils$class <- factor(oils$class)
+  AnswerTests: omnitest(correctExpr='oils$class <- factor(oils$class)')
+  Hint: Type oils$class <- factor(oils$class) and press Enter.
+
+- Class: cmd_question
+  Output: Count the samples in each class with table(oils$class).
+  CorrectAnswer: table(oils$class)
+  AnswerTests: omnitest(correctExpr='table(oils$class)')
+  Hint: Type table(oils$class) and press Enter.
+
+- Class: text
+  Output: Whenever you build a classifier you must test it on samples that were not used to build it. Otherwise you only learn how well it memorised. We will keep 90 randomly chosen samples for training and test on the remaining 30. The seed makes the random choice repeatable.
+
+- Class: cmd_question
+  Output: Set the seed with set.seed(1).
+  CorrectAnswer: set.seed(1)
+  AnswerTests: expr_text_has('set.seed', '1')
+  Hint: Type set.seed(1) and press Enter.
+
+- Class: cmd_question
+  Output: Choose the row numbers for training with train <- sample(nrow(oils), 90).
+  CorrectAnswer: train <- sample(nrow(oils), 90)
+  AnswerTests: expr_text_has('train', 'sample', 'nrow(oils)', '90')
+  Hint: Type train <- sample(nrow(oils), 90) and press Enter.
+
+- Class: cmd_question
+  Output: Check how many classes are in the test rows with table(oils$class[-train]). The minus sign means all the rows except the training rows.
+  CorrectAnswer: table(oils$class[-train])
+  AnswerTests: omnitest(correctExpr='table(oils$class[-train])')
+  Hint: Type table(oils$class[-train]) and press Enter.
+
+- Class: text
+  Output: Now the decision tree. We use the rpart package, which comes with R. The formula class ~ . means predict class from all the other columns. We take out the first column, which is just a sample label, by using -1 as the column index.
+
+- Class: cmd_question
+  Output: Load the package with library(rpart).
+  CorrectAnswer: library(rpart)
+  AnswerTests: omnitest(correctExpr='library(rpart)')
+  Hint: Type library(rpart) and press Enter.
+
+- Class: cmd_question
+  Output: Build the tree from the training rows with tree <- rpart(class ~ ., data = oils[train, -1]).
+  CorrectAnswer: tree <- rpart(class ~ ., data = oils[train, -1])
+  AnswerTests: expr_text_has('tree', 'rpart', 'class ~ .', 'oils[train, -1]')
+  Hint: Type tree <- rpart(class ~ ., data = oils[train, -1]) and press Enter.
+
+- Class: cmd_question
+  Output: Print the tree with print(tree). Each numbered line is a question, and an asterisk marks a final group.
+  CorrectAnswer: print(tree)
+  AnswerTests: omnitest(correctExpr='print(tree)')
+  Hint: Type print(tree) and press Enter.
+
+- Class: text
+  Output: Read the tree from the top. Each split asks whether a measurement is above or below a threshold, and samples follow the yes or no branch. The final groups, marked with an asterisk, give the predicted class and the fraction of training samples in each class.
+
+- Class: cmd_question
+  Output: Draw the tree with plot(tree).
+  CorrectAnswer: plot(tree)
+  AnswerTests: expr_text_has('plot', 'tree')
+  Hint: Type plot(tree) and press Enter.
+
+- Class: cmd_question
+  Output: Add the labels with text(tree).
+  CorrectAnswer: text(tree)
+  AnswerTests: expr_text_has('text', 'tree')
+  Hint: Type text(tree) and press Enter.
+
+- Class: cmd_question
+  Output: Predict the classes of the test samples with pred_tree <- predict(tree, oils[-train, -1], type = "class").
+  CorrectAnswer: pred_tree <- predict(tree, oils[-train, -1], type = "class")
+  AnswerTests: expr_text_has('pred_tree', 'predict', 'tree', 'oils[-train, -1]', 'class')
+  Hint: Type pred_tree <- predict(tree, oils[-train, -1], type = "class") and press Enter.
+
+- Class: cmd_question
+  Output: Compare the predictions with the truth in a confusion table, using table(pred_tree, oils$class[-train]).
+  CorrectAnswer: table(pred_tree, oils$class[-train])
+  AnswerTests: omnitest(correctExpr='table(pred_tree, oils$class[-train])')
+  Hint: Type table(pred_tree, oils$class[-train]) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the accuracy, the fraction of correct predictions, with mean(pred_tree == oils$class[-train]).
+  CorrectAnswer: mean(pred_tree == oils$class[-train])
+  AnswerTests: omnitest(correctExpr='mean(pred_tree == oils$class[-train])')
+  Hint: Type mean(pred_tree == oils$class[-train]) and press Enter.
+
+- Class: mult_question
+  Output: Why do we measure the accuracy on the test samples and not on the training samples?
+  AnswerChoices: The training accuracy is too optimistic because the model has seen those samples; The test samples are easier; Training samples are not labelled; It makes no difference;
+  CorrectAnswer: The training accuracy is too optimistic because the model has seen those samples
+  AnswerTests: omnitest(correctVal='The training accuracy is too optimistic because the model has seen those samples')
+  Hint: Think about memorising versus learning.
+
+- Class: text
+  Output: A single tree is easy to read, but it can change a lot if the training samples change slightly. A random forest fixes this by growing many trees, each on a random resample of the samples and using a random subset of the variables at every split. The trees then vote.
+
+- Class: cmd_question
+  Output: Load the package with library(randomForest).
+  CorrectAnswer: library(randomForest)
+  AnswerTests: omnitest(correctExpr='library(randomForest)')
+  Hint: Type library(randomForest) and press Enter.
+
+- Class: cmd_question
+  Output: Set the seed again with set.seed(2), because growing a forest uses random numbers.
+  CorrectAnswer: set.seed(2)
+  AnswerTests: expr_text_has('set.seed', '2')
+  Hint: Type set.seed(2) and press Enter.
+
+- Class: cmd_question
+  Output: Grow the forest with rf <- randomForest(class ~ ., data = oils[train, -1]).
+  CorrectAnswer: rf <- randomForest(class ~ ., data = oils[train, -1])
+  AnswerTests: expr_text_has('rf', 'randomForest', 'class ~ .', 'oils[train, -1]')
+  Hint: Type rf <- randomForest(class ~ ., data = oils[train, -1]) and press Enter.
+
+- Class: cmd_question
+  Output: Print the forest with print(rf).
+  CorrectAnswer: print(rf)
+  AnswerTests: omnitest(correctExpr='print(rf)')
+  Hint: Type print(rf) and press Enter.
+
+- Class: text
+  Output: The printout includes the out of bag error. Each tree is grown on a resample that leaves out roughly a third of the samples, and those left out samples can be used to test it. The out of bag error estimate therefore comes free with the forest, without needing a separate test set.
+
+- Class: mult_question
+  Output: What does the out of bag error estimate tell you?
+  AnswerChoices: The error on samples that each tree did not use for training; The error on the training samples; How many trees were grown; Which variable is most important;
+  CorrectAnswer: The error on samples that each tree did not use for training
+  AnswerTests: omnitest(correctVal='The error on samples that each tree did not use for training')
+  Hint: Think about the samples left out of each resample.
+
+- Class: cmd_question
+  Output: Predict the test samples with pred_rf <- predict(rf, oils[-train, -1]).
+  CorrectAnswer: pred_rf <- predict(rf, oils[-train, -1])
+  AnswerTests: expr_text_has('pred_rf', 'predict', 'rf', 'oils[-train, -1]')
+  Hint: Type pred_rf <- predict(rf, oils[-train, -1]) and press Enter.
+
+- Class: cmd_question
+  Output: Make the confusion table with table(pred_rf, oils$class[-train]).
+  CorrectAnswer: table(pred_rf, oils$class[-train])
+  AnswerTests: omnitest(correctExpr='table(pred_rf, oils$class[-train])')
+  Hint: Type table(pred_rf, oils$class[-train]) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the accuracy of the forest with mean(pred_rf == oils$class[-train]).
+  CorrectAnswer: mean(pred_rf == oils$class[-train])
+  AnswerTests: omnitest(correctExpr='mean(pred_rf == oils$class[-train])')
+  Hint: Type mean(pred_rf == oils$class[-train]) and press Enter.
+
+- Class: text
+  Output: A forest is harder to read than a single tree, but it tells you which variables mattered. The importance is measured by how much the splits on each variable improve the purity of the groups.
+
+- Class: cmd_question
+  Output: Show the importance values with importance(rf).
+  CorrectAnswer: importance(rf)
+  AnswerTests: omnitest(correctExpr='importance(rf)')
+  Hint: Type importance(rf) and press Enter.
+
+- Class: cmd_question
+  Output: Draw them with varImpPlot(rf).
+  CorrectAnswer: varImpPlot(rf)
+  AnswerTests: expr_text_has('varImpPlot', 'rf')
+  Hint: Type varImpPlot(rf) and press Enter.
+
+- Class: mult_question
+  Output: A very important variable is one that...
+  AnswerChoices: Splits the classes well when it is used in the trees; Has the largest numerical values; Has no missing values; Is listed first in the data frame;
+  CorrectAnswer: Splits the classes well when it is used in the trees
+  AnswerTests: omnitest(correctVal='Splits the classes well when it is used in the trees')
+  Hint: Importance is about how well a variable separates the classes.
+
+- Class: text
+  Output: Whatever the accuracy on 30 test samples, remember that it is an estimate with a lot of uncertainty. One test set of 30 samples can give a different answer from another. The validation methods lesson shows how to do this more reliably with repeated resampling. You can now build and test trees and forests, read a tree, and rank variables by importance.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about decision trees and random forests? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

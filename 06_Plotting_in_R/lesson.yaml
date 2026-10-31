@@ -1,0 +1,295 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Plotting_in_R
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on plotting. A graph is an argument, and a good one lets the reader see the answer without being misled. You will draw the standard analytical plots with the base R graphics functions, learn the rules that make them honest and readable, and save them to a file.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: I have loaded two synthetic data frames, made up for teaching. The data frame calib holds calibration standards, with three replicate peak areas at each of eight concentrations. The data frame chrom holds results for 40 samples and five compounds, one row for each compound in each sample.
+
+- Class: cmd_question
+  Output: Look at the first six rows of calib.
+  CorrectAnswer: head(calib)
+  AnswerTests: omnitest(correctExpr='head(calib)')
+  Hint: Type head(calib) and press Enter.
+
+- Class: cmd_question
+  Output: The function plot() draws a scatter plot of one variable against another. Draw the peak area against concentration with plot(calib$conc_ugml, calib$area).
+  CorrectAnswer: plot(calib$conc_ugml, calib$area)
+  AnswerTests: expr_text_has('plot', 'calib$conc_ugml', 'calib$area')
+  Hint: Type plot(calib$conc_ugml, calib$area) and press Enter.
+
+- Class: text
+  Output: This is the base graphics system. It works like drawing on paper. A function such as plot() starts the page, and further functions add to it one at a time. You cannot change what has been drawn, only draw on top of it.
+
+- Class: text
+  Output: Rule one is to show the raw data whenever you can. Every replicate is a point, so you see both the trend and the scatter. A summary alone can hide how well the points agree.
+
+- Class: text
+  Output: Rule two is to label everything. A reader should never have to guess what the axes are or what the units are. The arguments xlab and ylab label the axes, and main gives a title.
+
+- Class: cmd_question
+  Output: 'Draw the plot again with labels: plot(calib$conc_ugml, calib$area, xlab = "Concentration (ug/mL)", ylab = "Peak area", main = "Calibration standards").'
+  CorrectAnswer: plot(calib$conc_ugml, calib$area, xlab = "Concentration (ug/mL)", ylab = "Peak area", main = "Calibration standards")
+  AnswerTests: expr_text_has('plot', 'xlab', 'ylab', 'main')
+  Hint: Type plot(calib$conc_ugml, calib$area, xlab = "Concentration (ug/mL)", ylab = "Peak area", main = "Calibration standards") and press Enter.
+
+- Class: text
+  Output: You can change how the points look. The argument pch sets the plotting symbol, where 19 is a solid circle. The argument col sets the colour, cex sets the size and lwd sets the line width.
+
+- Class: cmd_question
+  Output: Draw it with solid blue circles using plot(calib$conc_ugml, calib$area, pch = 19, col = "blue").
+  CorrectAnswer: plot(calib$conc_ugml, calib$area, pch = 19, col = "blue")
+  AnswerTests: expr_text_has('plot', 'pch = 19', 'col = "blue"')
+  Hint: Type plot(calib$conc_ugml, calib$area, pch = 19, col = "blue") and press Enter.
+
+- Class: text
+  Output: Rule three is to draw the model you are claiming. If you say the response is linear, show the line. The function lm() fits a straight line, and abline() draws a fitted line on top of the current plot.
+
+- Class: cmd_question
+  Output: Add a red fitted line with abline(lm(area ~ conc_ugml, data = calib), col = "red").
+  CorrectAnswer: abline(lm(area ~ conc_ugml, data = calib), col = "red")
+  AnswerTests: expr_text_has('abline', 'lm(area ~ conc_ugml', 'data = calib')
+  Hint: Type abline(lm(area ~ conc_ugml, data = calib), col = "red") and press Enter.
+
+- Class: text
+  Output: Look closely at the highest concentration. The points sit a little below the line, which hints at detector saturation. You would never see this from the equation of the line alone. Graphs show what summaries hide.
+
+- Class: text
+  Output: Rule four is to choose scales that suit the data. These concentrations span more than two orders of magnitude, so most points are squashed at the left. A logarithmic scale spreads them out, and the argument log = "xy" puts both axes on a log scale.
+
+- Class: cmd_question
+  Output: Draw the plot with logarithmic axes using plot(calib$conc_ugml, calib$area, log = "xy").
+  CorrectAnswer: plot(calib$conc_ugml, calib$area, log = "xy")
+  AnswerTests: expr_text_has('plot', 'log = "xy"')
+  Hint: Type plot(calib$conc_ugml, calib$area, log = "xy") and press Enter.
+
+- Class: mult_question
+  Output: On a log-log plot, a straight proportional relationship between concentration and area appears as what?
+  AnswerChoices: A straight line; A curve bending upwards; A flat line; A cloud with no pattern;
+  CorrectAnswer: A straight line
+  AnswerTests: omnitest(correctVal='A straight line')
+  Hint: If area is proportional to concentration, then log area is a constant plus log concentration.
+
+- Class: text
+  Output: Rule five is to make comparisons easy. We will compare the caffeine results of two groups of samples. First pick out the caffeine rows.
+
+- Class: cmd_question
+  Output: Create caff containing only the caffeine rows, using caff <- subset(chrom, compound == "caffeine").
+  CorrectAnswer: caff <- subset(chrom, compound == "caffeine")
+  AnswerTests: omnitest(correctExpr='caff <- subset(chrom, compound == "caffeine")')
+  Hint: Type caff <- subset(chrom, compound == "caffeine") and press Enter.
+
+- Class: cmd_question
+  Output: A boxplot summarises a distribution with five numbers. Compare the groups with boxplot(conc_ugml ~ group, data = caff, ylab = "Caffeine (ug/mL)"). The tilde means as a function of.
+  CorrectAnswer: boxplot(conc_ugml ~ group, data = caff, ylab = "Caffeine (ug/mL)")
+  AnswerTests: expr_text_has('boxplot', 'conc_ugml ~ group', 'data = caff')
+  Hint: Type boxplot(conc_ugml ~ group, data = caff, ylab = "Caffeine (ug/mL)") and press Enter.
+
+- Class: text
+  Output: A boxplot hides the number of points and their exact positions, so rule one applies again. You can overlay the points with stripchart(). The setting method = "jitter" nudges points sideways so they do not sit on top of each other.
+
+- Class: cmd_question
+  Output: Add the points with stripchart(conc_ugml ~ group, data = caff, vertical = TRUE, method = "jitter", add = TRUE, pch = 19).
+  CorrectAnswer: stripchart(conc_ugml ~ group, data = caff, vertical = TRUE, method = "jitter", add = TRUE, pch = 19)
+  AnswerTests: expr_text_has('stripchart', 'add = TRUE', 'jitter')
+  Hint: Type stripchart(conc_ugml ~ group, data = caff, vertical = TRUE, method = "jitter", add = TRUE, pch = 19) and press Enter.
+
+- Class: text
+  Output: Rule six is to give panels the same axes when you want to compare them. If each panel chooses its own scale, the eye is fooled. The function par() sets graphical parameters, and mfrow = c(1, 2) puts two plots side by side, in one row and two columns. First, we need the range of the data.
+
+- Class: cmd_question
+  Output: Find the smallest and largest caffeine concentration with range(caff$conc_ugml).
+  CorrectAnswer: range(caff$conc_ugml)
+  AnswerTests: omnitest(correctExpr='range(caff$conc_ugml)')
+  Hint: Type range(caff$conc_ugml) and press Enter.
+
+- Class: cmd_question
+  Output: Set up two panels with par(mfrow = c(1, 2)).
+  CorrectAnswer: par(mfrow = c(1, 2))
+  AnswerTests: omnitest(correctExpr='par(mfrow = c(1, 2))')
+  Hint: Type par(mfrow = c(1, 2)) and press Enter.
+
+- Class: cmd_question
+  Output: Draw the Control histogram with hist(caff$conc_ugml[caff$group == "Control"], xlim = c(20, 70), main = "Control", xlab = "Caffeine (ug/mL)").
+  CorrectAnswer: hist(caff$conc_ugml[caff$group == "Control"], xlim = c(20, 70), main = "Control", xlab = "Caffeine (ug/mL)")
+  AnswerTests: expr_text_has('hist', 'Control', 'xlim = c(20, 70)')
+  Hint: Type hist(caff$conc_ugml[caff$group == "Control"], xlim = c(20, 70), main = "Control", xlab = "Caffeine (ug/mL)") and press Enter.
+
+- Class: cmd_question
+  Output: 'Draw the Treated histogram with the same xlim: hist(caff$conc_ugml[caff$group == "Treated"], xlim = c(20, 70), main = "Treated", xlab = "Caffeine (ug/mL)").'
+  CorrectAnswer: hist(caff$conc_ugml[caff$group == "Treated"], xlim = c(20, 70), main = "Treated", xlab = "Caffeine (ug/mL)")
+  AnswerTests: expr_text_has('hist', 'Treated', 'xlim = c(20, 70)')
+  Hint: Type hist(caff$conc_ugml[caff$group == "Treated"], xlim = c(20, 70), main = "Treated", xlab = "Caffeine (ug/mL)") and press Enter.
+
+- Class: cmd_question
+  Output: Go back to one plot per page with par(mfrow = c(1, 1)).
+  CorrectAnswer: par(mfrow = c(1, 1))
+  AnswerTests: omnitest(correctExpr='par(mfrow = c(1, 1))')
+  Hint: Type par(mfrow = c(1, 1)) and press Enter.
+
+- Class: text
+  Output: Rule seven is to be honest about uncertainty. A mean without an error bar suggests more certainty than you have. We will calculate the mean and standard deviation of the peak area at each concentration.
+
+- Class: cmd_question
+  Output: Calculate the mean area at each concentration and store it in m, with m <- tapply(calib$area, calib$conc_ugml, mean).
+  CorrectAnswer: m <- tapply(calib$area, calib$conc_ugml, mean)
+  AnswerTests: omnitest(correctExpr='m <- tapply(calib$area, calib$conc_ugml, mean)')
+  Hint: Type m <- tapply(calib$area, calib$conc_ugml, mean) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the standard deviations and store them in s, in the same way but with sd.
+  CorrectAnswer: s <- tapply(calib$area, calib$conc_ugml, sd)
+  AnswerTests: omnitest(correctExpr='s <- tapply(calib$area, calib$conc_ugml, sd)')
+  Hint: Type s <- tapply(calib$area, calib$conc_ugml, sd) and press Enter.
+
+- Class: cmd_question
+  Output: Make a numeric vector x from the names of m, which are the concentrations, with x <- as.numeric(names(m)).
+  CorrectAnswer: x <- as.numeric(names(m))
+  AnswerTests: omnitest(correctExpr='x <- as.numeric(names(m))')
+  Hint: Type x <- as.numeric(names(m)) and press Enter.
+
+- Class: cmd_question
+  Output: Plot the means with plot(x, m, pch = 19, ylim = range(m - s, m + s)). The ylim makes sure that the whole error bar will fit.
+  CorrectAnswer: plot(x, m, pch = 19, ylim = range(m - s, m + s))
+  AnswerTests: expr_text_has('plot', 'x, m', 'ylim = range(m - s, m + s)')
+  Hint: Type plot(x, m, pch = 19, ylim = range(m - s, m + s)) and press Enter.
+
+- Class: cmd_question
+  Output: Draw the error bars with suppressWarnings(arrows(x, m - s, x, m + s, angle = 90, code = 3, length = 0.05)). The angle of 90 degrees turns the arrowheads into caps.
+  CorrectAnswer: suppressWarnings(arrows(x, m - s, x, m + s, angle = 90, code = 3, length = 0.05))
+  AnswerTests: expr_text_has('arrows', 'm - s', 'm + s', 'angle = 90')
+  Hint: Type suppressWarnings(arrows(x, m - s, x, m + s, angle = 90, code = 3, length = 0.05)) and press Enter.
+
+- Class: text
+  Output: We wrapped the call in suppressWarnings() for a reason. At the lowest concentrations the standard deviation is so small, compared with the whole axis, that the error bar is shorter than the plotting resolution. R would skip those bars and print a warning, so we hide that one harmless message.
+
+- Class: text
+  Output: Rule eight is to be careful with bar charts. A bar stands for an amount that starts at zero, so the axis of a bar chart should start at zero. Cutting the axis exaggerates differences.
+
+- Class: cmd_question
+  Output: Calculate the mean caffeine for each group and store it in gm, with gm <- tapply(caff$conc_ugml, caff$group, mean).
+  CorrectAnswer: gm <- tapply(caff$conc_ugml, caff$group, mean)
+  AnswerTests: omnitest(correctExpr='gm <- tapply(caff$conc_ugml, caff$group, mean)')
+  Hint: Type gm <- tapply(caff$conc_ugml, caff$group, mean) and press Enter.
+
+- Class: cmd_question
+  Output: Draw the bar chart with barplot(gm, ylim = c(0, 60), ylab = "Mean caffeine (ug/mL)").
+  CorrectAnswer: barplot(gm, ylim = c(0, 60), ylab = "Mean caffeine (ug/mL)")
+  AnswerTests: expr_text_has('barplot', 'gm', 'ylim = c(0, 60)')
+  Hint: Type barplot(gm, ylim = c(0, 60), ylab = "Mean caffeine (ug/mL)") and press Enter.
+
+- Class: mult_question
+  Output: Why should the vertical axis of a bar chart normally start at zero?
+  AnswerChoices: Because bar length should be proportional to the value; Because R does not allow other starting values; Because it saves ink; Because it makes the bars narrower;
+  CorrectAnswer: Because bar length should be proportional to the value
+  AnswerTests: omnitest(correctVal='Because bar length should be proportional to the value')
+  Hint: A bar is a length that stands for an amount.
+
+- Class: text
+  Output: Rule nine is to use colour with purpose, and always explain it with a legend.
+
+- Class: cmd_question
+  Output: Plot caffeine against sampling day, coloured by group, with plot(caff$day, caff$conc_ugml, col = ifelse(caff$group == "Treated", "red", "blue"), pch = 19).
+  CorrectAnswer: plot(caff$day, caff$conc_ugml, col = ifelse(caff$group == "Treated", "red", "blue"), pch = 19)
+  AnswerTests: expr_text_has('plot', 'ifelse(caff$group == "Treated"', 'pch = 19')
+  Hint: Type plot(caff$day, caff$conc_ugml, col = ifelse(caff$group == "Treated", "red", "blue"), pch = 19) and press Enter.
+
+- Class: cmd_question
+  Output: Explain the colours with legend("topright", legend = c("Control", "Treated"), col = c("blue", "red"), pch = 19).
+  CorrectAnswer: legend("topright", legend = c("Control", "Treated"), col = c("blue", "red"), pch = 19)
+  AnswerTests: expr_text_has('legend', 'topright', 'legend = c("Control", "Treated")')
+  Hint: Type legend("topright", legend = c("Control", "Treated"), col = c("blue", "red"), pch = 19) and press Enter.
+
+- Class: text
+  Output: Finally, saving a plot. Drawing normally goes to the screen, which R calls a device. To save a plot, you open a file device such as png() or pdf(), draw your plot, and then close the device with dev.off(). Nothing is written to the file until the device is closed. We will save into the temporary folder, which R cleans up for you. For a real report you would give a path in your own folder.
+
+- Class: cmd_question
+  Output: Open a png file device with png(file.path(tempdir(), "calibration.png"), width = 800, height = 600).
+  CorrectAnswer: png(file.path(tempdir(), "calibration.png"), width = 800, height = 600)
+  AnswerTests: expr_text_has('png', 'tempdir()', 'calibration.png')
+  Hint: Type png(file.path(tempdir(), "calibration.png"), width = 800, height = 600) and press Enter.
+
+- Class: cmd_question
+  Output: Draw the calibration plot into the file with plot(calib$conc_ugml, calib$area, pch = 19).
+  CorrectAnswer: plot(calib$conc_ugml, calib$area, pch = 19)
+  AnswerTests: expr_text_has('plot', 'calib$conc_ugml')
+  Hint: Type plot(calib$conc_ugml, calib$area, pch = 19) and press Enter.
+
+- Class: cmd_question
+  Output: Close the device and write the file with dev.off().
+  CorrectAnswer: dev.off()
+  AnswerTests: expr_text_has('dev.off')
+  Hint: Type dev.off() and press Enter.
+
+- Class: cmd_question
+  Output: Check that the file exists with file.exists(file.path(tempdir(), "calibration.png")).
+  CorrectAnswer: file.exists(file.path(tempdir(), "calibration.png"))
+  AnswerTests: omnitest(correctExpr='file.exists(file.path(tempdir(), "calibration.png"))')
+  Hint: Type file.exists(file.path(tempdir(), "calibration.png")) and press Enter.
+
+- Class: mult_question
+  Output: What does the function dev.off() do?
+  AnswerChoices: It closes the graphics device and finishes the file; It deletes the plot; It turns the computer off; It removes the title;
+  CorrectAnswer: It closes the graphics device and finishes the file
+  AnswerTests: omnitest(correctVal='It closes the graphics device and finishes the file')
+  Hint: Think about when the file is completed.
+
+- Class: text
+  Output: Your checklist for analytical graphs is to show the data, label everything with units, draw the model you claim, choose suitable scales, use common axes for comparisons, show uncertainty, start bar charts at zero, and use colour with a legend. The optional ggplot2 lesson shows another way of drawing the same graphs.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about drawing clear, honest analytical graphs? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

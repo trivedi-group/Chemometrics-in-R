@@ -1,0 +1,250 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Significance_Tests
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on significance tests. Two results will almost never be exactly equal, so the real question is whether a difference is larger than random error would explain. In this lesson you will run the standard tests in R and learn to read their output.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: I have loaded three synthetic data frames, made up for teaching. The data frame paired holds the same 12 samples measured by HPLC and by UV spectrophotometry, in mg/L. The data frame replicates holds replicate results from two analysts. The data frame recovery holds percentage recoveries for two extraction methods.
+
+- Class: cmd_question
+  Output: Look at the first six rows of paired using head().
+  CorrectAnswer: head(paired)
+  AnswerTests: omnitest(correctExpr='head(paired)')
+  Hint: Type head(paired) and press Enter.
+
+- Class: text
+  Output: Every test starts with a null hypothesis, which says that there is no real difference. The test gives a p-value, which is the probability of seeing a difference at least as large as yours if the null hypothesis were true. If the p-value is below the significance level, usually 0.05, we reject the null hypothesis.
+
+- Class: text
+  Output: First, a one-sample t test. It compares the mean of one set of results with a fixed reference value. Suppose the HPLC results should have a mean of 45 mg/L.
+
+- Class: cmd_question
+  Output: Run the test with t.test(paired$hplc, mu = 45). The argument mu is the reference value.
+  CorrectAnswer: t.test(paired$hplc, mu = 45)
+  AnswerTests: omnitest(correctExpr='t.test(paired$hplc, mu = 45)')
+  Hint: Type t.test(paired$hplc, mu = 45) and press Enter.
+
+- Class: text
+  Output: Look at the output. It reports the t statistic, the degrees of freedom, the p-value, a 95% confidence interval for the true mean and the sample mean. The p-value here is well above 0.05, and the confidence interval contains 45, so there is no evidence that the mean differs from 45.
+
+- Class: mult_question
+  Output: Based on this test, at the 5% level, what should you conclude?
+  AnswerChoices: There is no significant difference from 45 mg/L; The mean is significantly different from 45 mg/L; The test is invalid; The mean is exactly 45 mg/L;
+  CorrectAnswer: There is no significant difference from 45 mg/L
+  AnswerTests: omnitest(correctVal='There is no significant difference from 45 mg/L')
+  Hint: Compare the p-value with 0.05.
+
+- Class: text
+  Output: Not rejecting the null hypothesis is not the same as proving it. It only means that you do not have enough evidence to say there is a difference.
+
+- Class: text
+  Output: Next, a paired t test. Each sample was measured twice, once by each method, so the two measurements belong together. A paired test works on the difference for each sample, which removes the variation between samples.
+
+- Class: cmd_question
+  Output: Run a paired t test with t.test(paired$hplc, paired$uv, paired = TRUE).
+  CorrectAnswer: t.test(paired$hplc, paired$uv, paired = TRUE)
+  AnswerTests: omnitest(correctExpr='t.test(paired$hplc, paired$uv, paired = TRUE)')
+  Hint: Type t.test(paired$hplc, paired$uv, paired = TRUE) and press Enter.
+
+- Class: text
+  Output: The p-value is small, so the two methods give significantly different results. The confidence interval for the mean difference does not include zero, which tells the same story. UV reads about 1.3 mg/L higher on average.
+
+- Class: text
+  Output: What would have happened if we had ignored the pairing? The variation between samples is large, and an unpaired test treats it as noise.
+
+- Class: cmd_question
+  Output: Run the unpaired test with t.test(paired$hplc, paired$uv).
+  CorrectAnswer: t.test(paired$hplc, paired$uv)
+  AnswerTests: omnitest(correctExpr='t.test(paired$hplc, paired$uv)')
+  Hint: Type t.test(paired$hplc, paired$uv) and press Enter.
+
+- Class: mult_question
+  Output: The unpaired test finds no significant difference, while the paired test does. Why?
+  AnswerChoices: The paired test removes the large variation between samples; The unpaired test is more powerful; The data changed between the tests; Paired tests always give smaller p-values;
+  CorrectAnswer: The paired test removes the large variation between samples
+  AnswerTests: omnitest(correctVal='The paired test removes the large variation between samples')
+  Hint: Think about what the differences between samples do to the noise.
+
+- Class: text
+  Output: Now compare two independent groups, the two extraction methods in recovery. The formula notation recovery_pct ~ method means recovery as a function of method. Before comparing the means, we should ask whether the two methods are equally precise, since this decides which form of the t test is appropriate.
+
+- Class: cmd_question
+  Output: Calculate the standard deviation of the recovery for each method with tapply(recovery$recovery_pct, recovery$method, sd).
+  CorrectAnswer: tapply(recovery$recovery_pct, recovery$method, sd)
+  AnswerTests: omnitest(correctExpr='tapply(recovery$recovery_pct, recovery$method, sd)')
+  Hint: Type tapply(recovery$recovery_pct, recovery$method, sd) and press Enter.
+
+- Class: text
+  Output: The F test compares two variances. The null hypothesis is that the two variances are equal.
+
+- Class: cmd_question
+  Output: Run it with var.test(recovery_pct ~ method, data = recovery).
+  CorrectAnswer: var.test(recovery_pct ~ method, data = recovery)
+  AnswerTests: omnitest(correctExpr='var.test(recovery_pct ~ method, data = recovery)')
+  Hint: Type var.test(recovery_pct ~ method, data = recovery) and press Enter.
+
+- Class: mult_question
+  Output: The p-value of the F test is about 0.01. What does this mean at the 5% level?
+  AnswerChoices: The two precisions are significantly different; The two precisions are the same; The means are different; The test failed;
+  CorrectAnswer: The two precisions are significantly different
+  AnswerTests: omnitest(correctVal='The two precisions are significantly different')
+  Hint: The p-value is below 0.05.
+
+- Class: text
+  Output: Because the variances differ, we should not pool them. R's default t.test uses the Welch version, which does not assume equal variances, so it is a safe choice.
+
+- Class: cmd_question
+  Output: Compare the mean recoveries with t.test(recovery_pct ~ method, data = recovery).
+  CorrectAnswer: t.test(recovery_pct ~ method, data = recovery)
+  AnswerTests: omnitest(correctExpr='t.test(recovery_pct ~ method, data = recovery)')
+  Hint: Type t.test(recovery_pct ~ method, data = recovery) and press Enter.
+
+- Class: cmd_question
+  Output: You can store a test result and pick out parts of it. Store the result in res using res <- t.test(recovery_pct ~ method, data = recovery).
+  CorrectAnswer: res <- t.test(recovery_pct ~ method, data = recovery)
+  AnswerTests: omnitest(correctExpr='res <- t.test(recovery_pct ~ method, data = recovery)')
+  Hint: Type res <- t.test(recovery_pct ~ method, data = recovery) and press Enter.
+
+- Class: cmd_question
+  Output: Show the p-value only with res$p.value.
+  CorrectAnswer: res$p.value
+  AnswerTests: omnitest(correctExpr='res$p.value')
+  Hint: Type res$p.value and press Enter.
+
+- Class: cmd_question
+  Output: Show the 95% confidence interval for the difference in means with res$conf.int.
+  CorrectAnswer: res$conf.int
+  AnswerTests: omnitest(correctExpr='res$conf.int')
+  Hint: Type res$conf.int and press Enter.
+
+- Class: text
+  Output: Now look at the two analysts in replicates. Their precision also differs, so let us check it formally first.
+
+- Class: cmd_question
+  Output: Run var.test(conc_mgl ~ analyst, data = replicates).
+  CorrectAnswer: var.test(conc_mgl ~ analyst, data = replicates)
+  AnswerTests: omnitest(correctExpr='var.test(conc_mgl ~ analyst, data = replicates)')
+  Hint: Type var.test(conc_mgl ~ analyst, data = replicates) and press Enter.
+
+- Class: text
+  Output: Suppose you wrongly assumed equal variances, which is what a pooled t test does. You switch that on with var.equal = TRUE.
+
+- Class: cmd_question
+  Output: Run t.test(conc_mgl ~ analyst, data = replicates, var.equal = TRUE).
+  CorrectAnswer: t.test(conc_mgl ~ analyst, data = replicates, var.equal = TRUE)
+  AnswerTests: omnitest(correctExpr='t.test(conc_mgl ~ analyst, data = replicates, var.equal = TRUE)')
+  Hint: Type t.test(conc_mgl ~ analyst, data = replicates, var.equal = TRUE) and press Enter.
+
+- Class: text
+  Output: The p-value is just above 0.05, so we do not reject the null hypothesis. A value of 0.056 and a value of 0.049 are not really very different, so it is better to report the p-value and the confidence interval than only to say significant or not significant.
+
+- Class: text
+  Output: Finally, categorical data. Suppose two methods were each used to analyse 25 samples, and each result was marked as pass or fail against a specification. A chi-squared test asks whether the pass rate depends on the method.
+
+- Class: cmd_question
+  Output: Build the table of counts with tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail"))).
+  CorrectAnswer: tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail")))
+  AnswerTests: omnitest(correctExpr='tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail")))')
+  Hint: Type tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail"))) and press Enter.
+
+- Class: cmd_question
+  Output: Show the table.
+  CorrectAnswer: tab
+  AnswerTests: omnitest(correctExpr='tab')
+  Hint: Type tab and press Enter.
+
+- Class: cmd_question
+  Output: Run the test with chisq.test(tab).
+  CorrectAnswer: chisq.test(tab)
+  AnswerTests: omnitest(correctExpr='chisq.test(tab)')
+  Hint: Type chisq.test(tab) and press Enter.
+
+- Class: mult_question
+  Output: The p-value is about 0.02. What do you conclude at the 5% level?
+  AnswerChoices: The pass rate depends on the method; The pass rate does not depend on the method; Nothing, the sample is too small to run the test; Method A fails more often;
+  CorrectAnswer: The pass rate depends on the method
+  AnswerTests: omnitest(correctVal='The pass rate depends on the method')
+  Hint: A p-value below 0.05 means the null hypothesis of independence is rejected.
+
+- Class: text
+  Output: A word of caution about running many tests. If you run 20 tests at the 5% level, you expect about one false positive by chance alone. The function p.adjust() corrects a set of p-values for this. The Bonferroni method simply multiplies each p-value by the number of tests.
+
+- Class: cmd_question
+  Output: Adjust the p-values 0.01, 0.04 and 0.03 with p.adjust(c(0.01, 0.04, 0.03), method = "bonferroni").
+  CorrectAnswer: p.adjust(c(0.01, 0.04, 0.03), method = "bonferroni")
+  AnswerTests: omnitest(correctExpr='p.adjust(c(0.01, 0.04, 0.03), method = "bonferroni")')
+  Hint: Type p.adjust(c(0.01, 0.04, 0.03), method = "bonferroni") and press Enter.
+
+- Class: mult_question
+  Output: After the adjustment, which of the three results remains significant at the 5% level?
+  AnswerChoices: Only the first; All three; None of them; Only the last two;
+  CorrectAnswer: Only the first
+  AnswerTests: omnitest(correctVal='Only the first')
+  Hint: Look at which adjusted values are below 0.05.
+
+- Class: mult_question
+  Output: A Type I error means what?
+  AnswerChoices: Rejecting a null hypothesis that is actually true; Failing to reject a null hypothesis that is false; Using the wrong table; Making a typing mistake;
+  CorrectAnswer: Rejecting a null hypothesis that is actually true
+  AnswerTests: omnitest(correctVal='Rejecting a null hypothesis that is actually true')
+  Hint: It is also called a false positive.
+
+- Class: text
+  Output: You can now choose and run a one-sample, paired, two-sample, variance and chi-squared test, and read the p-value and the confidence interval. The next topic is designing experiments so that these tests have the power to find what you are looking for.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about running and interpreting significance tests? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

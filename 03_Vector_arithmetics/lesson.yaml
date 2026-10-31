@@ -1,0 +1,266 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Vector_arithmetics
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: In this lesson you will do arithmetic on whole vectors at once. This is how R turns a column of raw instrument responses into concentrations, recoveries or log values with a single short command, and without a loop.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: We will work with a small calibration experiment. Five standards of known concentration were injected and the peak area of each was recorded.
+
+- Class: cmd_question
+  Output: Create a vector called conc holding the concentrations 1, 2, 4, 10 and 20 micrograms per millilitre.
+  CorrectAnswer: conc <- c(1, 2, 4, 10, 20)
+  AnswerTests: omnitest(correctExpr='conc <- c(1, 2, 4, 10, 20)')
+  Hint: Type conc <- c(1, 2, 4, 10, 20) and press Enter.
+
+- Class: cmd_question
+  Output: Create a vector called area holding the matching peak areas 1500, 3100, 6200, 15800 and 30900.
+  CorrectAnswer: area <- c(1500, 3100, 6200, 15800, 30900)
+  AnswerTests: omnitest(correctExpr='area <- c(1500, 3100, 6200, 15800, 30900)')
+  Hint: Type area <- c(1500, 3100, 6200, 15800, 30900) and press Enter.
+
+- Class: text
+  Output: When you apply an arithmetic operator to two vectors of the same length, R works element by element. The first value is combined with the first value, the second with the second, and so on.
+
+- Class: cmd_question
+  Output: Divide area by conc to get the response per unit concentration for each standard. Store the result in rf.
+  CorrectAnswer: rf <- area / conc
+  AnswerTests: omnitest(correctExpr='rf <- area / conc')
+  Hint: Type rf <- area / conc and press Enter.
+
+- Class: cmd_question
+  Output: Print rf.
+  CorrectAnswer: rf
+  AnswerTests: omnitest(correctExpr='rf')
+  Hint: Type rf and press Enter.
+
+- Class: cmd_question
+  Output: Round the values to one decimal place using round(), with digits = 1.
+  CorrectAnswer: round(rf, digits = 1)
+  AnswerTests: omnitest(correctExpr='round(rf, digits = 1)')
+  Hint: Type round(rf, digits = 1) and press Enter.
+
+- Class: text
+  Output: When one of the two vectors is a single number, R applies it to every element. A single number is simply a vector of length one that gets reused.
+
+- Class: cmd_question
+  Output: Double every concentration by multiplying conc by 2.
+  CorrectAnswer: conc * 2
+  AnswerTests: omnitest(correctExpr='conc * 2')
+  Hint: Type conc * 2 and press Enter.
+
+- Class: cmd_question
+  Output: Subtract a blank signal of 100 from every peak area and store the corrected areas in area_corr.
+  CorrectAnswer: area_corr <- area - 100
+  AnswerTests: omnitest(correctExpr='area_corr <- area - 100')
+  Hint: Type area_corr <- area - 100 and press Enter.
+
+- Class: text
+  Output: Suppose a calibration line has a slope of 1550 and an intercept of 20. To go back from a signal to a concentration you rearrange the line, giving concentration equal to the area minus the intercept, all divided by the slope. Remember to use brackets so the subtraction happens first.
+
+- Class: cmd_question
+  Output: Create slope with the value 1550.
+  CorrectAnswer: slope <- 1550
+  AnswerTests: omnitest(correctExpr='slope <- 1550')
+  Hint: Type slope <- 1550 and press Enter.
+
+- Class: cmd_question
+  Output: Create intercept with the value 20.
+  CorrectAnswer: intercept <- 20
+  AnswerTests: omnitest(correctExpr='intercept <- 20')
+  Hint: Type intercept <- 20 and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the estimated concentration of each standard from its area and store it in est.
+  CorrectAnswer: est <- (area - intercept) / slope
+  AnswerTests: omnitest(correctExpr='est <- (area - intercept) / slope')
+  Hint: Type est <- (area - intercept) / slope and press Enter.
+
+- Class: cmd_question
+  Output: Round est to two decimal places so that it is easier to compare with conc.
+  CorrectAnswer: round(est, 2)
+  AnswerTests: omnitest(correctExpr='round(est, 2)')
+  Hint: Type round(est, 2) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the percentage recovery of each standard, which is est divided by conc and then multiplied by 100. Store it in recovery and round it to one decimal place at the same time, as round(est / conc * 100, 1).
+  CorrectAnswer: recovery <- round(est / conc * 100, 1)
+  AnswerTests: omnitest(correctExpr='recovery <- round(est / conc * 100, 1)')
+  Hint: Type recovery <- round(est / conc * 100, 1) and press Enter.
+
+- Class: text
+  Output: What happens if the two vectors have different lengths? R recycles the shorter one, repeating it from the start until it matches the longer one. If the longer length is an exact multiple of the shorter length, this happens silently.
+
+- Class: cmd_question
+  Output: Add c(10, 20) to the vector 1:6. The colon builds a whole sequence of integers.
+  CorrectAnswer: 1:6 + c(10, 20)
+  AnswerTests: omnitest(correctExpr='1:6 + c(10, 20)')
+  Hint: Type 1:6 + c(10, 20) and press Enter.
+
+- Class: mult_question
+  Output: What does 1:6 + c(10, 20) give?
+  AnswerChoices: 11 22 13 24 15 26; 11 22 33 44 55 66; 11 12 13 14 15 16; 11 22;
+  CorrectAnswer: 11 22 13 24 15 26
+  AnswerTests: omnitest(correctVal='11 22 13 24 15 26')
+  Hint: The pair 10, 20 is used again and again.
+
+- Class: text
+  Output: If the lengths are not an exact multiple, R still gives an answer but prints a warning. A warning is not an error, but it is often a sign that your data are not what you intended, so read warnings carefully.
+
+- Class: text
+  Output: Comparison operators such as greater than, less than and equal to also work on whole vectors. Note that to test equality you need two equals signs, written ==.
+
+- Class: cmd_question
+  Output: Ask which concentrations are greater than 5.
+  CorrectAnswer: conc > 5
+  AnswerTests: omnitest(correctExpr='conc > 5')
+  Hint: Type conc > 5 and press Enter.
+
+- Class: cmd_question
+  Output: Count how many of the concentrations are greater than 5. TRUE counts as one and FALSE as zero, so sum() does the counting.
+  CorrectAnswer: sum(conc > 5)
+  AnswerTests: omnitest(correctExpr='sum(conc > 5)')
+  Hint: Type sum(conc > 5) and press Enter.
+
+- Class: text
+  Output: You can combine tests. The symbol & means AND, so both conditions must hold. The symbol | means OR, so at least one must hold.
+
+- Class: cmd_question
+  Output: Find the concentrations that are greater than 1 and also less than 20.
+  CorrectAnswer: conc > 1 & conc < 20
+  AnswerTests: omnitest(correctExpr='conc > 1 & conc < 20')
+  Hint: Type conc > 1 & conc < 20 and press Enter.
+
+- Class: cmd_question
+  Output: Use that combined test as an index to keep only those concentrations.
+  CorrectAnswer: conc[conc > 1 & conc < 20]
+  AnswerTests: omnitest(correctExpr='conc[conc > 1 & conc < 20]')
+  Hint: Type conc[conc > 1 & conc < 20] and press Enter.
+
+- Class: cmd_question
+  Output: The function any() says whether at least one value is TRUE. Is any area above 30000?
+  CorrectAnswer: any(area > 30000)
+  AnswerTests: omnitest(correctExpr='any(area > 30000)')
+  Hint: Type any(area > 30000) and press Enter.
+
+- Class: cmd_question
+  Output: The function all() says whether every value is TRUE. Is every area above 1000?
+  CorrectAnswer: all(area > 1000)
+  AnswerTests: omnitest(correctExpr='all(area > 1000)')
+  Hint: Type all(area > 1000) and press Enter.
+
+- Class: text
+  Output: Some functions turn a vector into a new vector of the same or a similar length. These are handy for transforming data. For example, log10() gives the base ten logarithm of each value, and cumsum() gives a running total.
+
+- Class: cmd_question
+  Output: Take the base ten logarithm of conc.
+  CorrectAnswer: log10(conc)
+  AnswerTests: omnitest(correctExpr='log10(conc)')
+  Hint: Type log10(conc) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the running total of conc with cumsum().
+  CorrectAnswer: cumsum(conc)
+  AnswerTests: omnitest(correctExpr='cumsum(conc)')
+  Hint: Type cumsum(conc) and press Enter.
+
+- Class: cmd_question
+  Output: The function diff() gives the difference between neighbouring values. Use it on area.
+  CorrectAnswer: diff(area)
+  AnswerTests: omnitest(correctExpr='diff(area)')
+  Hint: Type diff(area) and press Enter.
+
+- Class: cmd_question
+  Output: Find the position of the largest area with which.max().
+  CorrectAnswer: which.max(area)
+  AnswerTests: omnitest(correctExpr='which.max(area)')
+  Hint: Type which.max(area) and press Enter.
+
+- Class: text
+  Output: To label values according to a rule, the function ifelse() is very useful. It takes a test, a value for TRUE and a value for FALSE.
+
+- Class: cmd_question
+  Output: Label each area as "high" if it is above 10000 and "low" otherwise, with ifelse(area > 10000, "high", "low").
+  CorrectAnswer: ifelse(area > 10000, "high", "low")
+  AnswerTests: omnitest(correctExpr='ifelse(area > 10000, "high", "low")')
+  Hint: Type ifelse(area > 10000, "high", "low") and press Enter.
+
+- Class: text
+  Output: Missing values need care in arithmetic. Anything combined with NA gives NA, and some functions need to be told to skip it.
+
+- Class: cmd_question
+  Output: Create a vector called rep_area with the values 5200, NA, 5100 and 5350.
+  CorrectAnswer: rep_area <- c(5200, NA, 5100, 5350)
+  AnswerTests: omnitest(correctExpr='rep_area <- c(5200, NA, 5100, 5350)')
+  Hint: Type rep_area <- c(5200, NA, 5100, 5350) and press Enter.
+
+- Class: cmd_question
+  Output: Find the mean of rep_area ignoring the missing value.
+  CorrectAnswer: mean(rep_area, na.rm = TRUE)
+  AnswerTests: omnitest(correctExpr='mean(rep_area, na.rm = TRUE)')
+  Hint: Type mean(rep_area, na.rm = TRUE) and press Enter.
+
+- Class: cmd_question
+  Output: Find the relative standard deviation as a percentage, which is the standard deviation divided by the mean and multiplied by 100, ignoring the missing value. Use sd() and mean() both with na.rm = TRUE.
+  CorrectAnswer: sd(rep_area, na.rm = TRUE) / mean(rep_area, na.rm = TRUE) * 100
+  AnswerTests: omnitest(correctExpr='sd(rep_area, na.rm = TRUE) / mean(rep_area, na.rm = TRUE) * 100')
+  Hint: Type sd(rep_area, na.rm = TRUE) / mean(rep_area, na.rm = TRUE) * 100 and press Enter.
+
+- Class: text
+  Output: Excellent. You can now transform, compare and combine whole vectors without writing a single loop. These skills are used all the time when processing analytical data.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about doing arithmetic on vectors? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

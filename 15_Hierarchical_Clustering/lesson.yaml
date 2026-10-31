@@ -1,0 +1,226 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Hierarchical_Clustering
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on hierarchical clustering. Unlike k-means, this method does not need you to choose the number of groups first. It builds a whole tree of similarity, called a dendrogram, and you decide afterwards where to cut it.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: The method works from the bottom up. At the start every sample is its own cluster. The two closest clusters are merged, then the next closest pair, and so on, until only one cluster remains. The order of the merges is what the dendrogram shows.
+
+- Class: text
+  Output: I have loaded a data frame called herbs. It contains 30 dried herb samples of three types, with five measured variables v1 to v5. The values are synthetic, made up for this lesson.
+
+- Class: cmd_question
+  Output: Look at the first six rows of herbs.
+  CorrectAnswer: head(herbs)
+  AnswerTests: omnitest(correctExpr='head(herbs)')
+  Hint: Type head(herbs) and press Enter.
+
+- Class: cmd_question
+  Output: Count the samples of each type by applying table() to herbs$origin.
+  CorrectAnswer: table(herbs$origin)
+  AnswerTests: omnitest(correctExpr='table(herbs$origin)')
+  Hint: Type table(herbs$origin) and press Enter.
+
+- Class: text
+  Output: As in k-means, variables on different scales should be put on a common footing before distances are calculated. We will scale columns 3 to 7, which hold v1 to v5.
+
+- Class: cmd_question
+  Output: Scale the five variables and store the result in z.
+  CorrectAnswer: z <- scale(herbs[, 3:7])
+  AnswerTests: omnitest(correctExpr='z <- scale(herbs[, 3:7])')
+  Hint: Type z <- scale(herbs[, 3:7]) and press Enter.
+
+- Class: text
+  Output: Clustering needs a measure of how far apart every pair of samples is. The function dist() calculates these distances. By default it uses straight-line Euclidean distance.
+
+- Class: cmd_question
+  Output: Calculate the distance between all pairs of samples in z and store it in d.
+  CorrectAnswer: d <- dist(z)
+  AnswerTests: omnitest(correctExpr='d <- dist(z)')
+  Hint: Type d <- dist(z) and press Enter.
+
+- Class: cmd_question
+  Output: The object d stores only half of the distance table. To see part of it as a full square, use round(as.matrix(d)[1:4, 1:4], 2).
+  CorrectAnswer: round(as.matrix(d)[1:4, 1:4], 2)
+  AnswerTests: omnitest(correctExpr='round(as.matrix(d)[1:4, 1:4], 2)')
+  Hint: Type round(as.matrix(d)[1:4, 1:4], 2) and press Enter.
+
+- Class: mult_question
+  Output: What is the distance in that table between a sample and itself?
+  AnswerChoices: 0; 1; It depends on the sample; NA;
+  CorrectAnswer: '0'
+  AnswerTests: omnitest(correctVal='0')
+  Hint: Look at the diagonal of the matrix.
+
+- Class: text
+  Output: Now we can build the tree with hclust(). It also needs a rule for the distance between two clusters of several samples, called the linkage. With complete linkage, the distance between two clusters is the distance between their furthest members.
+
+- Class: cmd_question
+  Output: Build a tree using hclust() on d with method = "complete", and store it in hc.
+  CorrectAnswer: hc <- hclust(d, method = "complete")
+  AnswerTests: omnitest(correctExpr='hc <- hclust(d, method = "complete")')
+  Hint: Type hc <- hclust(d, method = "complete") and press Enter.
+
+- Class: cmd_question
+  Output: Draw the dendrogram. Use plot(hc, labels = herbs$sample, cex = 0.7), where cex makes the labels smaller.
+  CorrectAnswer: plot(hc, labels = herbs$sample, cex = 0.7)
+  AnswerTests: expr_text_has('plot', 'hc', 'labels = herbs$sample')
+  Hint: Type plot(hc, labels = herbs$sample, cex = 0.7) and press Enter.
+
+- Class: text
+  Output: The height at which two branches join tells you how different those clusters were when they merged. Tall branches mean very different clusters. A natural place to cut the tree is across the longest vertical gaps.
+
+- Class: cmd_question
+  Output: Draw boxes around three clusters on the dendrogram. Add rect.hclust(hc, k = 3).
+  CorrectAnswer: rect.hclust(hc, k = 3)
+  AnswerTests: expr_text_has('rect.hclust', 'hc', 'k = 3')
+  Hint: Type rect.hclust(hc, k = 3) and press Enter.
+
+- Class: cmd_question
+  Output: Now cut the tree into three groups with cutree(), and store the group labels in groups.
+  CorrectAnswer: groups <- cutree(hc, k = 3)
+  AnswerTests: omnitest(correctExpr='groups <- cutree(hc, k = 3)')
+  Hint: Type groups <- cutree(hc, k = 3) and press Enter.
+
+- Class: cmd_question
+  Output: Count the samples in each group.
+  CorrectAnswer: table(groups)
+  AnswerTests: omnitest(correctExpr='table(groups)')
+  Hint: Type table(groups) and press Enter.
+
+- Class: cmd_question
+  Output: Compare the groups with the true types, using table(groups, herbs$origin).
+  CorrectAnswer: table(groups, herbs$origin)
+  AnswerTests: omnitest(correctExpr='table(groups, herbs$origin)')
+  Hint: Type table(groups, herbs$origin) and press Enter.
+
+- Class: text
+  Output: The table shows that the grouping is close to the truth but not perfect. Types that overlap a little in the measurements are hard to separate. Different linkage rules make different trade-offs, so it is worth trying more than one.
+
+- Class: cmd_question
+  Output: Build a second tree called hc_ward using method = "ward.D2", which merges clusters so that the increase in within-cluster variance is as small as possible.
+  CorrectAnswer: hc_ward <- hclust(d, method = "ward.D2")
+  AnswerTests: omnitest(correctExpr='hc_ward <- hclust(d, method = "ward.D2")')
+  Hint: Type hc_ward <- hclust(d, method = "ward.D2") and press Enter.
+
+- Class: cmd_question
+  Output: Cut hc_ward into three groups and compare them with the true types in one command. Use table(cutree(hc_ward, k = 3), herbs$origin).
+  CorrectAnswer: table(cutree(hc_ward, k = 3), herbs$origin)
+  AnswerTests: omnitest(correctExpr='table(cutree(hc_ward, k = 3), herbs$origin)')
+  Hint: Type table(cutree(hc_ward, k = 3), herbs$origin) and press Enter.
+
+- Class: mult_question
+  Output: Which of the two methods, complete or ward.D2, matched the three herb types better in this data?
+  AnswerChoices: complete; ward.D2; They were identical; Neither found any real groups;
+  CorrectAnswer: ward.D2
+  AnswerTests: omnitest(correctVal='ward.D2')
+  Hint: Count the samples that sit in the wrong column in each table.
+
+- Class: cmd_question
+  Output: Now try single linkage, where the distance between clusters is the distance between their nearest members. Store the tree in hc_single.
+  CorrectAnswer: hc_single <- hclust(d, method = "single")
+  AnswerTests: omnitest(correctExpr='hc_single <- hclust(d, method = "single")')
+  Hint: Type hc_single <- hclust(d, method = "single") and press Enter.
+
+- Class: cmd_question
+  Output: Count the samples in each of three groups from hc_single, largest first. Use sort(table(cutree(hc_single, k = 3)), decreasing = TRUE).
+  CorrectAnswer: sort(table(cutree(hc_single, k = 3)), decreasing = TRUE)
+  AnswerTests: omnitest(correctExpr='sort(table(cutree(hc_single, k = 3)), decreasing = TRUE)')
+  Hint: Type sort(table(cutree(hc_single, k = 3)), decreasing = TRUE) and press Enter.
+
+- Class: mult_question
+  Output: How many samples are in the largest group from single linkage?
+  AnswerChoices: 10; 15; 20; 27;
+  CorrectAnswer: '27'
+  AnswerTests: omnitest(correctVal='27')
+  Hint: Look at the first number of the output.
+
+- Class: text
+  Output: This is a well known weakness of single linkage. It tends to chain samples together one at a time, producing one huge cluster and a few tiny ones. For compact groups, complete or Ward linkage are usually safer choices.
+
+- Class: cmd_question
+  Output: Distance can also be defined in other ways. Calculate the Manhattan distance, which adds up the absolute differences along each variable, with dist(z, method = "manhattan"). Store it in d_man.
+  CorrectAnswer: d_man <- dist(z, method = "manhattan")
+  AnswerTests: omnitest(correctExpr='d_man <- dist(z, method = "manhattan")')
+  Hint: Type d_man <- dist(z, method = "manhattan") and press Enter.
+
+- Class: cmd_question
+  Output: Build a complete linkage tree from d_man and store it in hc_man.
+  CorrectAnswer: hc_man <- hclust(d_man, method = "complete")
+  AnswerTests: omnitest(correctExpr='hc_man <- hclust(d_man, method = "complete")')
+  Hint: Type hc_man <- hclust(d_man, method = "complete") and press Enter.
+
+- Class: cmd_question
+  Output: Compare the two groupings by cutting hc_man into three groups and tabulating against groups. Use table(cutree(hc_man, k = 3), groups).
+  CorrectAnswer: table(cutree(hc_man, k = 3), groups)
+  AnswerTests: omnitest(correctExpr='table(cutree(hc_man, k = 3), groups)')
+  Hint: Type table(cutree(hc_man, k = 3), groups) and press Enter.
+
+- Class: text
+  Output: A last check on the tree itself. The cophenetic distance is the height at which two samples first join the same cluster. If the tree is a faithful summary of the data, the cophenetic distances should correlate well with the original distances.
+
+- Class: cmd_question
+  Output: Calculate the correlation between d and cophenetic(hc), rounded to two decimal places.
+  CorrectAnswer: round(cor(d, cophenetic(hc)), 2)
+  AnswerTests: omnitest(correctExpr='round(cor(d, cophenetic(hc)), 2)')
+  Hint: Type round(cor(d, cophenetic(hc)), 2) and press Enter.
+
+- Class: text
+  Output: Well done. You have scaled data, measured distances, built trees with several linkage rules, cut a tree into groups and compared the groups with known labels. Remember that the choice of distance and linkage is part of your analysis, and you should say which you used.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about building and cutting a hierarchical clustering? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.
