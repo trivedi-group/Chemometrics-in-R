@@ -22,15 +22,15 @@
   Output: R can help with randomisation. The function sample() shuffles a set of numbers. Setting a seed first makes the shuffle repeatable, so you and a colleague can get the same order.
 
 - Class: cmd_question
-  Output: Set the seed with set.seed(10).
-  CorrectAnswer: set.seed(10)
-  AnswerTests: expr_text_has('set.seed', '10')
-  Hint: Type set.seed(10) and press Enter.
+  Output: Set the seed with set.seed(15).
+  CorrectAnswer: set.seed(15)
+  AnswerTests: expr_identical_to('set.seed(15)')
+  Hint: Type set.seed(15) and press Enter.
 
 - Class: cmd_question
   Output: Shuffle the run numbers 1 to 8 with sample(1:8). This is a random running order.
   CorrectAnswer: sample(1:8)
-  AnswerTests: expr_text_has('sample', '1:8')
+  AnswerTests: expr_identical_to('sample(1:8)')
   Hint: Type sample(1:8) and press Enter.
 
 - Class: text

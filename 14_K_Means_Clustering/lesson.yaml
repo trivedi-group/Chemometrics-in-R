@@ -19,7 +19,7 @@
   Output: The idea behind k-means is simple. You choose how many groups you want, called k. The algorithm places k centres in the data, assigns every sample to its nearest centre, moves each centre to the middle of its samples, and repeats until nothing changes.
 
 - Class: text
-  Output: I have loaded a data frame called extracts. It holds 45 extracts from three regions. Each row is one extract, and the columns m1 to m6 are the measured intensities of six metabolites. These values are synthetic and were generated for teaching, they are not real measurements.
+  Output: I have loaded a data frame called extracts. It holds 45 extracts from three regions. Each row is one extract, and the columns m1 to m6 are the intensities of six metabolites on a log scale, so a few values fall below zero. These values are synthetic and were generated for teaching, they are not real measurements.
 
 - Class: cmd_question
   Output: Look at the first six rows with head().
@@ -78,7 +78,7 @@
 - Class: cmd_question
   Output: Run kmeans() on z with centers = 3 and nstart = 25, and store the result in km.
   CorrectAnswer: km <- kmeans(z, centers = 3, nstart = 25)
-  AnswerTests: expr_text_has('kmeans', 'centers = 3', 'nstart')
+  AnswerTests: expr_text_has('kmeans', 'centers = 3', 'nstart = 25')
   Hint: Type km <- kmeans(z, centers = 3, nstart = 25) and press Enter.
 
 - Class: cmd_question

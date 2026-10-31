@@ -96,14 +96,14 @@
   Hint: Type var.test(recovery_pct ~ method, data = recovery) and press Enter.
 
 - Class: mult_question
-  Output: The p-value of the F test is about 0.01. What does this mean at the 5% level?
-  AnswerChoices: The two precisions are significantly different; The two precisions are the same; The means are different; The test failed;
-  CorrectAnswer: The two precisions are significantly different
-  AnswerTests: omnitest(correctVal='The two precisions are significantly different')
-  Hint: The p-value is below 0.05.
+  Output: The p-value of the F test is about 0.14. What does this mean at the 5% level?
+  AnswerChoices: There is no significant difference between the two precisions; The two precisions are significantly different; The means are different; The test failed;
+  CorrectAnswer: There is no significant difference between the two precisions
+  AnswerTests: omnitest(correctVal='There is no significant difference between the two precisions')
+  Hint: The p-value is above 0.05.
 
 - Class: text
-  Output: Because the variances differ, we should not pool them. R's default t.test uses the Welch version, which does not assume equal variances, so it is a safe choice.
+  Output: The F test finds no significant difference in precision. That does not prove that the variances are equal, because with ten results per method the test has little power. R's default t.test uses the Welch version, which does not assume equal variances, so it is a safe choice either way.
 
 - Class: cmd_question
   Output: Compare the mean recoveries with t.test(recovery_pct ~ method, data = recovery).
@@ -130,7 +130,7 @@
   Hint: Type res$conf.int and press Enter.
 
 - Class: text
-  Output: Now look at the two analysts in replicates. Their precision also differs, so let us check it formally first.
+  Output: Now look at the two analysts in replicates. Their precision looked different in the descriptive statistics lesson, so let us check it formally first.
 
 - Class: cmd_question
   Output: Run var.test(conc_mgl ~ analyst, data = replicates).
@@ -154,10 +154,10 @@
   Output: Finally, categorical data. Suppose two methods were each used to analyse 25 samples, and each result was marked as pass or fail against a specification. A chi-squared test asks whether the pass rate depends on the method.
 
 - Class: cmd_question
-  Output: Build the table of counts with tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail"))).
-  CorrectAnswer: tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail")))
-  AnswerTests: omnitest(correctExpr='tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail")))')
-  Hint: Type tab <- matrix(c(18, 7, 9, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail"))) and press Enter.
+  Output: Build the table of counts with tab <- matrix(c(18, 9, 7, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail"))).
+  CorrectAnswer: tab <- matrix(c(18, 9, 7, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail")))
+  AnswerTests: omnitest(correctExpr='tab <- matrix(c(18, 9, 7, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail")))')
+  Hint: Type tab <- matrix(c(18, 9, 7, 16), nrow = 2, dimnames = list(method = c("A", "B"), result = c("pass", "fail"))) and press Enter.
 
 - Class: cmd_question
   Output: Show the table.

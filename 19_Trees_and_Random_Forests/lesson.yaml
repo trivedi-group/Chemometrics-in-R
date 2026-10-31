@@ -42,13 +42,13 @@
 - Class: cmd_question
   Output: Set the seed with set.seed(1).
   CorrectAnswer: set.seed(1)
-  AnswerTests: expr_text_has('set.seed', '1')
+  AnswerTests: expr_identical_to('set.seed(1)')
   Hint: Type set.seed(1) and press Enter.
 
 - Class: cmd_question
   Output: Choose the row numbers for training with train <- sample(nrow(oils), 90).
   CorrectAnswer: train <- sample(nrow(oils), 90)
-  AnswerTests: expr_text_has('train', 'sample', 'nrow(oils)', '90')
+  AnswerTests: expr_identical_to('train <- sample(nrow(oils), 90)')
   Hint: Type train <- sample(nrow(oils), 90) and press Enter.
 
 - Class: cmd_question
@@ -130,7 +130,7 @@
 - Class: cmd_question
   Output: Set the seed again with set.seed(2), because growing a forest uses random numbers.
   CorrectAnswer: set.seed(2)
-  AnswerTests: expr_text_has('set.seed', '2')
+  AnswerTests: expr_identical_to('set.seed(2)')
   Hint: Type set.seed(2) and press Enter.
 
 - Class: cmd_question

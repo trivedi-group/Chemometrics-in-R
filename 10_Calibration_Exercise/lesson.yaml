@@ -54,7 +54,7 @@
   Output: Within your caldata, you can see two columns. intensity and concentration. We use '$' dollar sign, to talk about vectors within data.
 
 - Class: text
-  Output: For example, 'caldata$intensity' tells R that you are talking about file called caldata and within that file, it is the column with header 'intensity'.
+  Output: For example, 'caldata$intensity' tells R that you are talking about the data frame called caldata and within that data frame, it is the column with header 'intensity'.
 
 - Class: cmd_question
   Output: Similarly, what will be the command to tell R, that we are talking about concentration column in our calibration data file?
@@ -131,7 +131,7 @@
   Hint: lm(intensity ~ concentration, data=caldata)
 
 - Class: text
-  Output: You will see an output with previous answer. Intercept and your slope. Slope in this function is just whatever you called your x-variable. The slope is 1.946 and intercept is 1.464
+  Output: You will see an output with previous answer. Intercept and your slope. In the output, the slope is listed under the name of your x-variable, here concentration. The slope is 1.946 and intercept is 1.464
 
 - Class: text
   Output: Since we have our intercept and slope, we can draw that line of best fit. To do this the command we use is 'abline'.
