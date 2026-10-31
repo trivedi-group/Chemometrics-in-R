@@ -145,7 +145,7 @@
   Output: Let us call our output of clustering, 'clus'. The way to do clustering is using kmeans() function. The only arguments it needs is what you want to do kmeans on, here it will be results and how many clusters, we will do k=3. Use kmeans(results, 3) to perform the clustering and save it to clus. 
   CorrectAnswer: clus <- kmeans(results, 3)
   AnswerTests: omnitest(correctExpr='clus <- kmeans(results, 3)')
-  Hint: Type  clus <- kmeans(results, 3) and hit Enter.
+  Hint: Type clus <- kmeans(results, 3) and hit Enter.
 
 - Class: cmd_question
   Output: The output clus, has cluster. We need to store this as factor. Like we used as.matrix, as.data.frame, we can use as.factor to store a particular element as factor. Use this to save clus$cluster as factors. Store the results to 'cluster'
