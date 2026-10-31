@@ -42,8 +42,6 @@ Each guide has the same six steps:
 
 **Important: install R 4.5.3.** This course was tested from start to finish on R 4.5.3. Each system guide links to that exact version. Please use it, and do not install a newer R for this course, because newer versions have not been tested with these lessons.
 
-Every lesson was run from start to finish on Linux. The Windows and macOS guides follow the standard routes and were not run on those systems by the author. If you find a step that does not match your screen, tell your lecturer so that the guide can be corrected.
-
 ## Part 2: Start the course
 
 Do this every time you want to work on the course.
