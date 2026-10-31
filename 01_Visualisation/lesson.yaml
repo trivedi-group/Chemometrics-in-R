@@ -1,0 +1,160 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Data Visualisation
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson! So far, we have looked at a few statistical tests. Data analysis you perform using those tests is called univariate analysis. 
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: A good chemometrician will always visualise their data first before starting with statistical analysis. Why? Because it gives a good summary of your data. 
+
+
+- Class: text
+  Output: We learnt in the previous week that knowing your data structure is very important. From this week on, we will use R more often to get hands on experience with exploring data structure and also for data analysis.
+
+- Class: text
+  Output: Now that you are comfortable with using R and Swirl, let us learn a few basic commands. I have included a mass spectrometry data for you in this lesson.
+
+
+- Class: cmd_question
+  Output: Let us try to view this data. Type 'View(data)' followed by Enter and see what happens.
+  CorrectAnswer: View(data)
+  AnswerTests: omnitest(correctExpr='View(data)')
+  Hint: Type View(data) and hit Enter.
+  
+- Class: text
+  Output: The data contains 181 samples. Each sample has one group label, in the first column, followed by 5897 continuous variables.
+
+- Class: mult_question
+  Output: The group column is..
+  AnswerChoices: Quantitative variable; An ordinal variable; A continuous variable; A nominal variable
+  CorrectAnswer: A nominal variable
+  AnswerTests: omnitest(correctVal='A nominal variable')
+  Hint: The group column has labels such as QC, Case and Control. 
+  
+- Class: text
+  Output: This data has LOTS of variables measured in serum samples. These measurements will have many underlying variations and not all of these can be accounted for using univariate statistics.
+
+- Class: cmd_question
+  Output: You can view single variable in a big dataset using '$'. For example to view first continuous variable M304T13, you can use command 'View(data$M304T13)'. Try typing this now. 
+  CorrectAnswer: View(data$M304T13)
+  AnswerTests: omnitest(correctExpr='View(data$M304T13)')
+  Hint: Type View(data$M304T13) and hit Enter.
+  
+- Class: text
+  Output: Dot plots are simplest graphs to view any variable. Mostly the data is plotted across x-axis. Hit Enter to view dot plot for this variable M304T13
+
+- Class: figure
+  Output: You are now viewing our variable as a dot plot. 
+  Figure: dotplot.R
+  FigureType: new
+  
+- Class: text
+  Output: We can see from this dot plot that most of our samples have a low intensity for this variable, while some samples have very high intensities.
+
+- Class: text
+  Output: Dot plots are very effective in displaying individual variables by samples. They are useful in small dataset. But can you imagine doing this plot for each variable, when you have thousands of variables?
+
+- Class: text
+  Output: You have come across histograms earlier. These are sort of dot plots, but instead of individual numerical value, we visualise 'data bins' where data is partitioned to represent our data in a condensed form. Hit Enter to view M304T13 as a histogram.
+
+- Class: figure
+  Output: M304T13 histogram is now displayed as a figure. 
+  Figure: histogram.R
+  FigureType: new
+  
+- Class: text
+  Output: Similar to our dot plot, even as a histogram, we can see the majority of our samples have a low intensity for this variable. But you can also see some samples have really high intensity (to the extreme right of the histogram).
+
+- Class: text
+  Output: Histograms are great to visualise the shape of distribution of our data. Data can be left or right skewed. Hit Enter to view an example of right skewed data.
+
+- Class: figure
+  Output: Here the distribution is skewed to the right. 
+  Figure: mod1_rightskew.R
+  FigureType: new
+  
+- Class: text
+  Output: Similarly, some datasets can be left skewed where the left tail of the plot is longer. We decide skewness by looking at the tail. Hit Enter to see what I mean by left skewed data.
+
+- Class: figure
+  Output: Now this is a left skewed data example. Note that the blue line in both cases is MEAN and black line is MEDIAN.
+  Figure: mod1_leftskew.R
+  FigureType: new
+  
+- Class: text
+  Output: 'Let us go back to our histogram.'
+
+- Class: figure
+  Output: M304T13 histogram is now displayed as a figure. 
+  Figure: histogram.R
+  FigureType: new
+  
+- Class: mult_question
+  Output: What can you tell about the skewness of this variable?
+  AnswerChoices: Left skewed; Symmetrical; Right skewed
+  CorrectAnswer: Right skewed
+  AnswerTests: omnitest(correctVal='Right skewed')
+  Hint: The tail of our histogram is longer on the right. 
+
+- Class: video
+  Output: A special type of histogram is known as Stem and Leaf plot. The numerical data is organised in order of decimal place values. The number of leaves is equal to the number of observations in the dataset. Have a look at Stem and Leaf plot on YouTube.
+  VideoLink: http://youtu.be/OaJXJduRiIE
+  
+- Class: text
+  Output: That's all for quick visualisations in R. You've learned dot plots, histograms and stem and leaf plots. There are scripts for it too, which will be made available to you if you need them later in this unit.
+  
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about reading dot plots and histograms and recognising skewed data? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

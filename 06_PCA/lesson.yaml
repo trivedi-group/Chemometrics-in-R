@@ -1,0 +1,161 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: PCA
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: In this exercise, we will get data and perform PCA analysis on it. We will also visualise the scores and loadings plot to see how the observations and variables cluster.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: You should have used 'install.packages()' function to install 'mixOmics' package. If not, please quit the exercise and follow instructions on Canvas to first install the required package.
+
+- Class: text
+  Output: mixOmics is one of the many packages you can use to perform multivariate analysis. Different packages name their functions differently and allow a variety of customisations. You can explore other packages once you are confident executing codes and compare against the results you get today.
+
+- Class: cmd_question
+  Output: Let's see if you can use 'library()' function to load mixOmics package. Give it a go.. 
+  CorrectAnswer: library(mixOmics)
+  AnswerTests: any_of_exprs('library(mixOmics)', 'library("mixOmics")', "library('mixOmics')")
+  Hint: Type library(mixOmics) and hit Enter. Any package you want to load, should be put within brackets, in inverted commas.
+
+- Class: text
+  Output: Once you have loaded required packages in R, what you need next is data. Normally you would import data from a '.csv' file but for simplicity, we have data included in this exercise.
+
+- Class: text
+  Output: To load this data, use 'data()' function. The name of data you need to load using this function is 'nutrimouse'
+
+- Class: cmd_question
+  Output: Give it a go.. load the nutrimouse data using the function. Don't forget to put the name within inverted commas ("").
+  CorrectAnswer: data("nutrimouse")
+  AnswerTests: any_of_exprs('data("nutrimouse")', 'data(nutrimouse)', "data('nutrimouse')")
+  Hint: Type data("nutrimouse") and hit Enter.
+
+- Class: text
+  Output: You will see the nutrimouse data is now loaded in your RStudio environment.
+
+- Class: text
+  Output: PCA only uses information in your 'X' variable. We don't need to worry about what our groups are at this stage. But we need to know what our data looks like. To do this, you use View() function.
+
+- Class: cmd_question
+  Output: Try using View() to look at nutrimouse data.
+  CorrectAnswer: View(nutrimouse)
+  AnswerTests: omnitest(correctExpr='View(nutrimouse)')
+  Hint: Type View(nutrimouse) and hit Enter.
+
+- Class: text
+  Output: Now it is time to tell R, what our X variables are. We want to look at lipids, within nutrimouse. You can use dollar sign '$' as an operator to tell R that you are referring to a specific part of data or a specific column within data. For example, nutrimouse$lipid will tell R, that you are talking about lipid within nutrimouse, not nutrimouse as a whole set.
+
+- Class: cmd_question
+  Output: You've tried View(nutrimouse) earlier. Now try to use the same function but only look at lipid.
+  CorrectAnswer: View(nutrimouse$lipid)
+  AnswerTests: omnitest(correctExpr='View(nutrimouse$lipid)')
+  Hint: Type View(nutrimouse$lipid) and hit Enter.
+
+- Class: cmd_question
+  Output: We want to assign these lipids in nutrimouse to a variable called X. In order to assign a variable, we've learnt earlier that we use '<-'. Can you try to create our X variable?
+  CorrectAnswer: X <- nutrimouse$lipid
+  AnswerTests: omnitest(correctExpr='X <- nutrimouse$lipid')
+  Hint: Type X <- nutrimouse$lipid and hit Enter.
+
+- Class: cmd_question
+  Output: For PCA, we will use function pca() within mixOmics package. This function only needs two arguments, our X variable and number of components (ncomp). Give it a go and see if you can write pca function with 10 components using our X variable that we just created.
+  CorrectAnswer: pca(X, ncomp=10)
+  AnswerTests: omnitest(correctExpr='pca(X, ncomp=10)')
+  Hint: Type pca(X, ncomp=10) and hit Enter.
+
+- Class: text
+  Output: We haven't saved our results so we can't do much with it! Let us save it as 'results'
+
+- Class: cmd_question
+  Output: To achieve this, run the same function you used earlier to perform PCA analysis with 10 components, but assign the output to variable called 'results'
+  CorrectAnswer: results <- pca(X, ncomp=10)
+  AnswerTests: omnitest(correctExpr='results <- pca(X, ncomp=10)')
+  Hint: Type results <- pca(X, ncomp=10) and hit Enter.
+
+- Class: cmd_question
+  Output: Remember, we talked about standardising the data? You can do that by adding two more arguments to 'pca()' function. Add 'scale=TRUE' and 'center=TRUE' and this time save the output as results_scaled.
+  CorrectAnswer: results_scaled <- pca(X, ncomp=10, scale=TRUE, center=TRUE)
+  AnswerTests: omnitest(correctExpr='results_scaled <- pca(X, ncomp=10, scale=TRUE, center=TRUE)')
+  Hint: Type results_scaled <- pca(X, ncomp=10, scale=TRUE, center=TRUE) and hit Enter.
+
+- Class: text
+  Output: We have now saved the results, but we can't see them. In mixOmics package, you can plot samples from multivariate analysis using 'plotIndiv()' function.
+
+- Class: cmd_question
+  Output: The function 'plotIndiv()' has many arguments that you can use, but for now, let us just use this with one argument that is our 'results_scaled'. Let's give it a go! Try 'plotIndiv()' and see what you get. Remember as an argument within brackets, you need to tell the function, what do you want to see. We want to see output results_scaled.
+  CorrectAnswer: plotIndiv(results_scaled)
+  AnswerTests: omnitest(correctExpr='plotIndiv(results_scaled)')
+  Hint: Type plotIndiv(results_scaled) and hit Enter.
+
+- Class: cmd_question
+  Output: Now, let's try to add plot title. Again, use the same command as before. We will use title= "PCA scores plot" here.
+  CorrectAnswer: plotIndiv(results_scaled, title = "PCA scores plot")
+  AnswerTests: omnitest(correctExpr='plotIndiv(results_scaled, title = "PCA scores plot")')
+  Hint: Type plotIndiv(results_scaled, title= "PCA scores plot") and hit Enter.
+
+- Class: cmd_question
+  Output: We have a nice plot but wouldn't it be nice if we could colour these by our groups? The groups in our data are different mice genotypes. We again will need to use '$' operator to tell R that we want to fetch genotype from nutrimouse data. We will use group = nutrimouse$genotype as an extra argument to what we used before. Give it a go.. 
+  CorrectAnswer: plotIndiv(results_scaled, title = "PCA scores plot", group = nutrimouse$genotype)
+  AnswerTests: omnitest(correctExpr='plotIndiv(results_scaled, title = "PCA scores plot", group = nutrimouse$genotype)')
+  Hint: Type plotIndiv(results_scaled, title= "PCA scores plot", group = nutrimouse$genotype) and hit Enter.
+
+- Class: mult_question
+  Output: What command did we use to create scores plot?
+  AnswerChoices: PlotIndiv(); Plotindive(); plotindiv(); plotIndiv();
+  CorrectAnswer: plotIndiv()
+  AnswerTests: omnitest(correctVal='plotIndiv()')
+  Hint: Remember, the functions are CASEsensiTIve.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about running a PCA and plotting a scores plot in R? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.
