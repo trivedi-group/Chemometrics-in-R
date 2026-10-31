@@ -28,10 +28,13 @@ Pick the guide for your computer. Each one takes you through every step, with di
 | Windows 10 or 11 | [Setting up on Windows](docs/Windows.md) | <https://cran.r-project.org/bin/windows/base/> |
 | Mac (Apple silicon or Intel) | [Setting up on macOS](docs/macOS.md) | <https://cran.r-project.org/bin/macosx/> |
 | Linux (Ubuntu, Debian, Fedora, Red Hat) | [Setting up on Linux](docs/Linux.md) | <https://cran.r-project.org/bin/linux/> |
+| No installation, in your web browser | [Running the course on Posit Cloud](docs/PositCloud.md) | Posit Cloud provides R and RStudio for you |
 
 RStudio Desktop, the friendly window for using R, is free and downloads from <https://docs.posit.co/ide/user/download.html>.
 
-Each guide has the same six steps:
+If you cannot install software on your computer, use the Posit Cloud guide. It runs RStudio in your web browser on the free plan, and every step has a picture.
+
+The guides for Windows, macOS and Linux have the same six steps:
 
 1. Install R. This must come first.
 2. Install RStudio.
