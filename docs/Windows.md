@@ -1,4 +1,4 @@
-# Chemometrics DL: setting up on Windows
+# Chemometrics in R: setting up on Windows
 
 [Back to the main guide](../README.md) | [Windows](Windows.md) | [macOS](macOS.md) | [Linux](Linux.md)
 
@@ -116,9 +116,9 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
 
 ## Step 5: Download the course from this repository and install it into swirl
 
-1. Open the course page: <https://github.com/trivedi-group/Chemometrics_DL>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
+1. Open the course page: <https://github.com/trivedi-group/Chemometrics-in-R>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
 2. Leave the branch as the default, **main**.
-3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics_DL/archive/refs/heads/main.zip>
+3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics-in-R/archive/refs/heads/main.zip>
 4. Do **not** unzip the file you will give to swirl. Windows saves it in your **Downloads** folder by default. If your Downloads, Documents or Desktop folders are backed up to OneDrive, move the zip to `C:/Chemometrics` first and install from there.
 5. In the RStudio Console, type these two lines, pressing Enter after each:
 
@@ -127,13 +127,13 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
    install_course_zip(file.choose())
    ```
 
-6. A file window opens. Find the downloaded zip file, usually called `Chemometrics_DL-main.zip`, select it and click **Open**.
-7. Wait for swirl to finish. The course will appear in swirl with a name that starts with **Chemometrics DL** and ends with the branch name, for example **Chemometrics DL-main**. Choose that one when swirl lists the courses.
+6. A file window opens. Find the downloaded zip file, usually called `Chemometrics-in-R-main.zip`, select it and click **Open**.
+7. Wait for swirl to finish. The course will appear in swirl with a name that starts with **Chemometrics-in-R** and ends with the branch name, for example **Chemometrics-in-R-main**. Choose that one when swirl lists the courses.
 
 If the file window does not appear, give R the path instead. Use forward slashes and put the path in quotation marks:
 
 ```
-install_course_zip("C:/Users/yourname/Downloads/Chemometrics_DL-main.zip")
+install_course_zip("C:/Users/yourname/Downloads/Chemometrics-in-R-main.zip")
 ```
 
 Replace `yourname` with your Windows user name. Do not use backslashes in the path. If you must, double them, like `C:\\Users\\yourname\\Downloads`.
