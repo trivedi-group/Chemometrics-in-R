@@ -1,0 +1,153 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Vector arithmetics
+  Author: Dr Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+  
+- Class: text
+  Output: Now that you are familiar with vectors, let us learn how we can do maths with vectors, not just numbers but entire vectors! 
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: cmd_question
+  Output: Let us create a vector z with values 10, 20, 30
+  CorrectAnswer: z <- c(10,20,30)
+  AnswerTests: omnitest(correctExpr='z <- c(10,20,30)')
+  Hint: 'We use c() to concatenate these values and create a vector. z <- c(10,20,30)'
+
+  
+- Class: cmd_question
+  Output: 'Numeric vectors can be used in arithmetic expressions. Type the following
+    to see what happens: z * 20 + 100.'
+  CorrectAnswer: z * 20 + 100
+  AnswerTests: omnitest(correctExpr='z * 20 + 100')
+  Hint: Enter z * 20 + 100, without assigning the result to a variable. The `*` symbol is used for multiplication and shares a key with the number 8 on many keyboards.
+
+- Class: text
+  Output: First, R multiplied each of the three elements in z by 20. Then it added 100 to each element to get the result.
+    
+- Class: cmd_question
+  Output: You can store this result to another variable. Let's call it 'result'. Can you re-do the above step but this time, save the results to a new variable called 'result'?
+  CorrectAnswer: result <- z * 20 + 100
+  AnswerTests: omnitest(correctExpr='result <- z * 20 + 100')
+  Hint: The correct way to write it is - 'result <- z * 20 + 100' without the parenthesis of course.
+
+
+- Class: text
+  Output: Other common arithmetic operators are `+`, `-`, `/`, and `^` (where x^2
+    means 'x squared'). To take the square root, use the sqrt() function and to take
+    the absolute value, use the abs() function.
+
+- Class: text
+  Output: When given two vectors of the same length, R simply performs the specified
+    arithmetic operation (`+`, `-`, `*`, etc.) element-by-element. If the vectors
+    are of different lengths, R 'recycles' the shorter vector until it is the same
+    length as the longer vector.
+
+- Class: text
+  Output: When we did z * 20 + 100 in our earlier example, z was a vector of length
+    3, but technically 20 and 100 are each vectors of length 1.
+
+- Class: text
+  Output: 'Behind the scenes, R is ''recycling'' the 20 to make a vector of 20s and
+    the 100 to make a vector of 100s. In other words, when you ask R to compute z
+    * 20 + 100, what it really computes is this: z * c(20, 20, 20) + c(100, 100, 100).'
+
+- Class: cmd_question
+  Output: To see another example of how this vector 'recycling' works, try adding
+    c(1, 2, 3, 4) and c(0, 10). Don't worry about saving the result in a new variable.
+  CorrectAnswer: c(1, 2, 3, 4) + c(0, 10)
+  AnswerTests: omnitest(correctExpr='c(1, 2, 3, 4) + c(0, 10)')
+  Hint: Enter c(1, 2, 3, 4) + c(0, 10) in the console to see how R adds two vectors
+    of different length. Don't assign the result to a variable.
+
+- Class: text
+  Output: If the length of the shorter vector does not divide evenly into the length
+    of the longer vector, R will still apply the 'recycling' method, but will throw
+    a warning to let you know something fishy might be going on.
+
+- Class: cmd_question
+  Output: Try c(1, 2, 3, 4) + c(0, 10, 100) for an example.
+  CorrectAnswer: c(1, 2, 3, 4) + c(0, 10, 100)
+  AnswerTests: omnitest(correctExpr='c(1, 2, 3, 4) + c(0, 10, 100)')
+  Hint: Type c(1, 2, 3, 4) + c(0, 10, 100) to see how R handles adding two vectors,
+    when the shorter vector's length does not divide evenly into the longer vector's
+    length. Don't worry about assigning the result to a variable.
+
+- Class: text
+  Output: You can perform all the other arithmetic operations using other operators such as / for division, + for sum, - for subtraction and sqrt() for square root. You have now learnt basics of vector arithmetics in R. Many algorithms in machine learning and complex multivariate statistical analysis use vector arithmetics numerous times to get you a result!
+
+- Class: mult_question
+  Output: You cannot add vectors of different lengths in R. True or False?
+  AnswerChoices: True; False
+  CorrectAnswer: False
+  AnswerTests: omnitest(correctVal='False')
+  Hint: You can add vectors of different lengths in R. The vectors in last example where you added c(1,2,3,4) and c(0, 10, 100) were of lengths 4 and 3 respectively.
+
+- Class: text
+  Output: One more thing before we finish. Let's learn about the 'modulo' operator. This is used to output remainder after division of two numbers. The modulo operator is written as '%%' i.e. two percentage signs next to each other, no inverted commas of course. 
+
+- Class: text
+  Output: 'You can divide a vector c(3, 6, 9) by c(3) and get remainder of this using modulo operator. To do this in console you type c(3,6,9) %% c(3).'
+
+
+- Class: cmd_question
+  Output: Can you now use modulo for c(55,54,53) and get the remainder when you divide it by c(3)?
+  CorrectAnswer: c(55,54,53) %% c(3)
+  AnswerTests: omnitest(correctExpr='c(55,54,53) %% c(3)')
+  Hint: 'Remember, the modulo operator is %% - you place it between the vector you want to divide and the divisor. So you type this: c(55,54,53) %% c(3)'
+
+
+- Class: text
+  Output: That's all for this exercise, the fun continues in next exercise! 
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about doing arithmetic with vectors in R? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

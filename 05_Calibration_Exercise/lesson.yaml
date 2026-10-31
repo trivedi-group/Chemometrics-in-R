@@ -1,0 +1,206 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Calibration_Exercise
+  Author: Dr Drupad K Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+  
+  
+
+- Class: text
+  Output: Welcome to this Swirl exercise for Week 5. By now I hope you are comfortable using RStudio.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: mult_question
+  Output: I have loaded the same data we've seen in PowerPoints this week. This data is in your workspace with a name caldata. Do you see it?
+  AnswerChoices: Yes;No
+  CorrectAnswer: Yes
+  AnswerTests: omnitest(correctVal='Yes')
+  Hint: In RStudio, your data is found under "Environment" tab.
+
+- Class: mult_question
+  Output: How many observations does the data have?
+  AnswerChoices: 2;5;7;9
+  CorrectAnswer: 7
+  AnswerTests: omnitest(correctVal='7')
+  Hint: The description will give it away in RStudio! 7 obs. means 7 observations.
+
+- Class: mult_question
+  Output: How many variables does the data have?
+  AnswerChoices: 2;5;7;9
+  CorrectAnswer: 2
+  AnswerTests: omnitest(correctVal='2')
+  Hint: The description will give it away in RStudio! 2 variables!
+
+- Class: text
+  Output: This week onwards we will learn how to do stats in R and how to execute commands.
+
+- Class: text
+  Output: You can use View() command to look at your data. Within parentheses you should put the data name. Here it is 'caldata'.
+
+- Class: cmd_question
+  Output: Do you want to try it? View caldata.
+  CorrectAnswer: View('caldata')
+  AnswerTests: any_of_exprs('View(caldata)', 'View("caldata")', "View('caldata')")
+  Hint: You should use file names within inverted commas. In RStudio it won't matter much, but the correct way to do this is using 'caldata'
+
+- Class: text
+  Output: Within your caldata, you can see two columns. intensity and concentration. We use '$' dollar sign, to talk about vectors within data.
+
+- Class: text
+  Output: For example, 'caldata$intensity' tells R that you are talking about file called caldata and within that file, it is the column with header 'intensity'.
+
+- Class: cmd_question
+  Output: Similarly, what will be the command to tell R, that we are talking about concentration column in our calibration data file?
+  CorrectAnswer: caldata$concentration
+  AnswerTests: omnitest(correctExpr='caldata$concentration')
+  Hint: Use dollar sign between your dataname and variable name.
+
+
+- Class: cmd_question
+  Output: Now you know how to call two variables from a single file. plot() function is used to plot variables. For instance 'plot(x,y)' plots x and y against each other and 'plot(a$x, a$y)' plots variables x and y from data 'a' against each other. Can you plot concentration as x and intensity as y?
+  CorrectAnswer: plot(caldata$concentration,caldata$intensity)
+  AnswerTests: omnitest(correctExpr='plot(caldata$concentration,caldata$intensity)')
+  Hint: plot(caldata$concentration,caldata$intensity)
+
+- Class: text
+  Output: As you can see, the axis labels look very ugly when we do this. But we can see a scatter plot! There are different ways to beautify your plot.
+
+- Class: text
+  Output: In your plot expression that you just used to create the graph, you can add more commands in addition to your variables.
+
+- Class: text
+  Output: For example, col="red" will make your circles red. pch=16 will also fill the circles. I think you should try to make circles blue.
+
+- Class: cmd_question
+  Output: Use col argument to make circles blue. Remember, on its own it will do nothing. You will have to write the plot function with variables! 
+  CorrectAnswer: plot(caldata$concentration,caldata$intensity, col="blue")
+  AnswerTests: omnitest(correctExpr='plot(caldata$concentration,caldata$intensity,col="blue")')
+  Hint: plot(caldata$concentration,caldata$intensity, col="blue")
+
+- Class: cmd_question
+  Output: Now it's time to fill the circles! Use pch=16 along with everything you had typed previously.
+  CorrectAnswer: plot(caldata$concentration,caldata$intensity, col="blue", pch=16)
+  AnswerTests: omnitest(correctExpr='plot(caldata$concentration,caldata$intensity, col="blue", pch=16)')
+  Hint: plot(caldata$concentration,caldata$intensity, col="blue", pch=16)
+
+- Class: cmd_question
+  Output: See what happens if you change pch from 16 to 10.
+  CorrectAnswer: plot(caldata$concentration,caldata$intensity, col="blue", pch=10)
+  AnswerTests: omnitest(correctExpr='plot(caldata$concentration,caldata$intensity, col="blue", pch=10)')
+  Hint: plot(caldata$concentration,caldata$intensity, col="blue", pch=10)
+
+- Class: cmd_question
+  Output: We can change x and y axis label by adding two more arguments. xlab and ylab. Let's call our x-axis concentration and our y-axis intensity. Give it a go.
+  CorrectAnswer: plot(caldata$concentration,caldata$intensity, col="blue", pch=10, xlab="concentration", ylab="intensity")
+  AnswerTests: omnitest(correctExpr='plot(caldata$concentration,caldata$intensity, col="blue", pch=10, xlab="concentration", ylab="intensity")')
+  Hint: plot(caldata$concentration,caldata$intensity, col="blue", pch=10, xlab="concentration", ylab="intensity")
+
+- Class: text
+  Output: You just transformed your graph to a publication quality graph! How about we give it a title now? Use 'main="titlegoeshere"' in the next step.
+
+- Class: cmd_question
+  Output: Let's call this graph, "Calibration Graph" - follow the upper case letters here.
+  CorrectAnswer: plot(caldata$concentration,caldata$intensity, col="blue", pch=10, xlab="concentration", ylab="intensity", main="Calibration Graph")
+  AnswerTests: omnitest(correctExpr='plot(caldata$concentration,caldata$intensity, col="blue", pch=10, xlab="concentration", ylab="intensity", main="Calibration Graph")')
+  Hint: plot(caldata$concentration,caldata$intensity, col="blue", pch=10, xlab="concentration", ylab="intensity", main="Calibration Graph")
+
+- Class: mult_question
+  Output: So far this looks like a scatter plot. We haven't really drawn a line of best fit. Do you remember how we calculate a line of best fit?
+  AnswerChoices: Yes;No
+  CorrectAnswer: Yes
+  AnswerTests: omnitest(correctVal='Yes')
+  Hint: You have a video on Canvas that covers this!
+
+- Class: cmd_question
+  Output: To perform regression, we have to use function 'lm()'. To see arguments that you can use with a function, you can type 'help()' command. Within brackets you write the name of the function or package. Try it..
+  CorrectAnswer: help(lm)
+  AnswerTests: omnitest(correctExpr='help(lm)')
+  Hint: help(lm)
+
+- Class: cmd_question
+  Output: To create linear regression model between x and y, the command to use is lm(y ~ x), where y is the response and x is the predictor. But in our case we are not dealing with variables. We have a dataset within which the variables are. So we either call the variable columns how we did earlier for the plots or we use arguments within the function. When you used help command, you saw, lm(y ~ x, data = data). Here our data will be caldata. Try to create a linear model between intensity and concentration.
+  CorrectAnswer: lm(intensity ~ concentration, data=caldata)
+  AnswerTests: omnitest(correctExpr='lm(intensity ~ concentration, data=caldata)')
+  Hint: lm(intensity ~ concentration, data=caldata)
+
+- Class: text
+  Output: You will see an output with previous answer. Intercept and your slope. Slope in this function is just whatever you called your x-variable. The slope is 1.946 and intercept is 1.464
+
+- Class: text
+  Output: Since we have our intercept and slope, we can draw that line of best fit. To do this the command we use is 'abline'.
+
+- Class: cmd_question
+  Output: abline(intercept, slope) will draw the line. Try abline with our intercept value of 1.464 and slope value of 1.946.
+  CorrectAnswer: abline(1.464, 1.946)
+  AnswerTests: omnitest(correctExpr='abline(1.464, 1.946)')
+  Hint: abline(1.464, 1.946)
+
+- Class: text
+  Output: Well done! You've just created a beautiful calibration graph in R! What if we want more information about the model we created? We use 'summary()' function.
+
+- Class: cmd_question
+  Output: But before we use 'summary()' function we must store our model. So this time create a linear model lm but store it as my_model.
+  CorrectAnswer: my_model <- lm(intensity ~ concentration, data=caldata)
+  AnswerTests: omnitest(correctExpr='my_model <- lm(intensity ~ concentration, data=caldata)')
+  Hint: my_model <- lm(intensity ~ concentration, data=caldata)
+
+- Class: cmd_question
+  Output: Now that our model called 'my_model' is stored, we can use summary() function to find out about it. Your turn to give it a shot!
+  CorrectAnswer:  summary(my_model)
+  AnswerTests: omnitest(correctExpr=' summary(my_model)')
+  Hint:  summary(my_model)
+
+- Class: text
+  Output: That's great! Now you see the R-squared value? What other stats do you see? Copy and paste this last output you just got and save it in a Word doc. Then paste the output on the discussion board and tell us what can you say about this model and output. Also, use the discussion board thread to discuss how easy or hard you found this exercise. If you are feeling adventurous, ask for more data in your post and draw more calibration plots on your own in R! 
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about plotting a calibration graph and fitting a line of best fit in R? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.
