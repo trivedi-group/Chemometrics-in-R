@@ -37,7 +37,7 @@ Each guide has the same six steps:
 2. Install RStudio.
 3. Choose a working folder.
 4. Install the packages the course needs.
-5. Download this course from the repository (<https://github.com/drupadt/Chemometrics_DL>, branch **main**) and install it into swirl.
+5. Download this course from the repository (<https://github.com/trivedi-group/Chemometrics_DL>, branch **main**) and install it into swirl.
 6. Come back here and start the course.
 
 **Important: install R 4.5.3.** This course was tested from start to finish on R 4.5.3. Each system guide links to that exact version. Please use it, and do not install a newer R for this course, because newer versions have not been tested with these lessons.
