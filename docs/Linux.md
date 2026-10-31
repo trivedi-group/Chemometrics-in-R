@@ -83,10 +83,10 @@ You should see `[1] 2`. R is working.
 On Linux, R packages are often built from source, and this fails if system libraries are missing. If an installation stops with a message such as `fatal error: ... .h: No such file or directory` or `Configuration failed because ... was not found`, install the library it names. On Ubuntu and Debian this set covers most of the course packages:
 
 ```
-sudo apt install build-essential libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff-dev libjpeg-dev libcairo2-dev
+sudo apt install build-essential libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff-dev libjpeg-dev libcairo2-dev libglpk-dev
 ```
 
-Package names vary between releases, so treat this as a starting point. On Fedora and Red Hat the equivalents end in `-devel`, for example `libcurl-devel`. Then run the failed `install.packages(...)` command again.
+The library libglpk-dev is needed by mixOmics. Without it, mixOmics stops with a message about libglpk.so. Package names vary between releases, so treat this as a starting point. On Fedora and Red Hat the equivalents end in `-devel`, for example `libcurl-devel`. Then run the failed `install.packages(...)` command again.
 
 ## Step 4: Install the packages the course needs
 
