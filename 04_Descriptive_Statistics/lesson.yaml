@@ -1,0 +1,292 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Descriptive_Statistics
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on descriptive statistics. Every analytical result needs a measure of its centre and a measure of its spread. In this lesson you will calculate these in R from replicate measurements, draw their distribution, and use the normal distribution to answer practical questions.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: I have loaded two synthetic data frames, made up for teaching. The data frame qc holds 60 injections of a check standard with a nominal concentration of 50 mg/L. The data frame replicates holds eight replicate results from each of two analysts, who measured the same 25 mg/L solution.
+
+- Class: cmd_question
+  Output: Look at the first six rows of qc using head().
+  CorrectAnswer: head(qc)
+  AnswerTests: omnitest(correctExpr='head(qc)')
+  Hint: Type head(qc) and press Enter.
+
+- Class: cmd_question
+  Output: How many injections are there? Use nrow().
+  CorrectAnswer: nrow(qc)
+  AnswerTests: omnitest(correctExpr='nrow(qc)')
+  Hint: Type nrow(qc) and press Enter.
+
+- Class: text
+  Output: The dollar sign picks one column out of a data frame. So qc$conc_mgl is the vector of 60 measured concentrations. Everything we calculate below is applied to that vector.
+
+- Class: cmd_question
+  Output: Find the mean concentration.
+  CorrectAnswer: mean(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='mean(qc$conc_mgl)')
+  Hint: Type mean(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Find the median, which is the middle value when the results are sorted.
+  CorrectAnswer: median(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='median(qc$conc_mgl)')
+  Hint: Type median(qc$conc_mgl) and press Enter.
+
+- Class: mult_question
+  Output: The mean and the median here are very close. What does that usually suggest about the distribution?
+  AnswerChoices: It is roughly symmetrical; It is strongly skewed; It has two peaks; It contains missing values;
+  CorrectAnswer: It is roughly symmetrical
+  AnswerTests: omnitest(correctVal='It is roughly symmetrical')
+  Hint: A few extreme values would pull the mean away from the median.
+
+- Class: cmd_question
+  Output: Find the sample standard deviation using sd().
+  CorrectAnswer: sd(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='sd(qc$conc_mgl)')
+  Hint: Type sd(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: The variance is the square of the standard deviation. Calculate it with var().
+  CorrectAnswer: var(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='var(qc$conc_mgl)')
+  Hint: Type var(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Find the smallest and largest value with range().
+  CorrectAnswer: range(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='range(qc$conc_mgl)')
+  Hint: Type range(qc$conc_mgl) and press Enter.
+
+- Class: text
+  Output: The relative standard deviation, written %RSD, expresses the spread as a percentage of the mean. It is the usual way to report precision in analytical chemistry, because it lets you compare results at different concentrations. The formula is 100 times the standard deviation divided by the mean.
+
+- Class: cmd_question
+  Output: Store the %RSD of the concentrations in a variable called rsd.
+  CorrectAnswer: rsd <- 100 * sd(qc$conc_mgl) / mean(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='rsd <- 100 * sd(qc$conc_mgl) / mean(qc$conc_mgl)')
+  Hint: Type rsd <- 100 * sd(qc$conc_mgl) / mean(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Show rsd.
+  CorrectAnswer: rsd
+  AnswerTests: omnitest(correctExpr='rsd')
+  Hint: Type rsd and press Enter.
+
+- Class: text
+  Output: The standard error of the mean tells you how precisely the mean itself is known. It is the standard deviation divided by the square root of the number of measurements, so it shrinks as you add more measurements, while the standard deviation does not.
+
+- Class: cmd_question
+  Output: Calculate the standard error of the mean concentration, as sd(qc$conc_mgl) / sqrt(nrow(qc)).
+  CorrectAnswer: sd(qc$conc_mgl) / sqrt(nrow(qc))
+  AnswerTests: omnitest(correctExpr='sd(qc$conc_mgl) / sqrt(nrow(qc))')
+  Hint: Type sd(qc$conc_mgl) / sqrt(nrow(qc)) and press Enter.
+
+- Class: mult_question
+  Output: You double the number of measurements. What happens to the standard error of the mean, other things being equal?
+  AnswerChoices: It gets smaller; It gets larger; It stays exactly the same; It becomes zero;
+  CorrectAnswer: It gets smaller
+  AnswerTests: omnitest(correctVal='It gets smaller')
+  Hint: The number of measurements is in the denominator, inside the square root.
+
+- Class: cmd_question
+  Output: The function quantile() splits the data at chosen fractions. Find the quartiles with quantile(qc$conc_mgl).
+  CorrectAnswer: quantile(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='quantile(qc$conc_mgl)')
+  Hint: Type quantile(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Get a quick overall summary with summary().
+  CorrectAnswer: summary(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='summary(qc$conc_mgl)')
+  Hint: Type summary(qc$conc_mgl) and press Enter.
+
+- Class: text
+  Output: Numbers alone can hide the shape of the data, so always plot it. A histogram counts how many results fall into each interval.
+
+- Class: cmd_question
+  Output: Draw a histogram of the concentrations with hist(qc$conc_mgl).
+  CorrectAnswer: hist(qc$conc_mgl)
+  AnswerTests: expr_text_has('hist', 'qc$conc_mgl')
+  Hint: Type hist(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Add a vertical line at the nominal value of 50 mg/L using abline(v = 50, col = "red").
+  CorrectAnswer: abline(v = 50, col = "red")
+  AnswerTests: expr_text_has('abline', 'v = 50')
+  Hint: Type abline(v = 50, col = "red") and press Enter.
+
+- Class: text
+  Output: This bell shape is typical for random errors, and it is described by the normal distribution. A normal distribution is fully described by its mean and its standard deviation. For a normal distribution, about 68% of results lie within one standard deviation of the mean, and about 95% lie within two.
+
+- Class: cmd_question
+  Output: Store the mean in m and the standard deviation in s. First, type m <- mean(qc$conc_mgl).
+  CorrectAnswer: m <- mean(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='m <- mean(qc$conc_mgl)')
+  Hint: Type m <- mean(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Now store the standard deviation in s.
+  CorrectAnswer: s <- sd(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='s <- sd(qc$conc_mgl)')
+  Hint: Type s <- sd(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: What fraction of the measurements lie within one standard deviation of the mean? Use mean(abs(qc$conc_mgl - m) < s). A comparison gives TRUE or FALSE, and the mean of those is the fraction of TRUE values.
+  CorrectAnswer: mean(abs(qc$conc_mgl - m) < s)
+  AnswerTests: omnitest(correctExpr='mean(abs(qc$conc_mgl - m) < s)')
+  Hint: Type mean(abs(qc$conc_mgl - m) < s) and press Enter.
+
+- Class: text
+  Output: With only 60 values, you do not expect exactly 68%. The more measurements you have, the closer the fraction gets to the theory.
+
+- Class: text
+  Output: R has three functions for the normal distribution that you will use all the time. The function pnorm() gives the probability of a result at or below a value. The function qnorm() does the opposite, it gives the value for a given probability. The function dnorm() gives the height of the bell curve.
+
+- Class: cmd_question
+  Output: What is the probability of a result of 52 mg/L or lower, if results follow a normal distribution with mean m and standard deviation s? Use pnorm(52, mean = m, sd = s).
+  CorrectAnswer: pnorm(52, mean = m, sd = s)
+  AnswerTests: omnitest(correctExpr='pnorm(52, mean = m, sd = s)')
+  Hint: Type pnorm(52, mean = m, sd = s) and press Enter.
+
+- Class: cmd_question
+  Output: The probability of a result above 52 is one minus that. Calculate it.
+  CorrectAnswer: 1 - pnorm(52, mean = m, sd = s)
+  AnswerTests: omnitest(correctExpr='1 - pnorm(52, mean = m, sd = s)')
+  Hint: Type 1 - pnorm(52, mean = m, sd = s) and press Enter.
+
+- Class: cmd_question
+  Output: Out of 60 injections, how many do you expect above 52? Multiply the previous probability by 60.
+  CorrectAnswer: 60 * (1 - pnorm(52, mean = m, sd = s))
+  AnswerTests: omnitest(correctExpr='60 * (1 - pnorm(52, mean = m, sd = s))')
+  Hint: Type 60 * (1 - pnorm(52, mean = m, sd = s)) and press Enter.
+
+- Class: cmd_question
+  Output: Count how many were actually above 52 with sum(qc$conc_mgl > 52).
+  CorrectAnswer: sum(qc$conc_mgl > 52)
+  AnswerTests: omnitest(correctExpr='sum(qc$conc_mgl > 52)')
+  Hint: Type sum(qc$conc_mgl > 52) and press Enter.
+
+- Class: text
+  Output: The expected and observed counts agree well, which supports using the normal distribution for this method.
+
+- Class: cmd_question
+  Output: The qnorm() function with no mean or standard deviation uses the standard normal distribution. Find the value that leaves 2.5% in the upper tail with qnorm(0.975).
+  CorrectAnswer: qnorm(0.975)
+  AnswerTests: omnitest(correctExpr='qnorm(0.975)')
+  Hint: Type qnorm(0.975) and press Enter.
+
+- Class: cmd_question
+  Output: You will meet this number, about 1.96, again. Use it to find the upper limit of the range that holds 95% of results, using qnorm(0.975, mean = m, sd = s).
+  CorrectAnswer: qnorm(0.975, mean = m, sd = s)
+  AnswerTests: omnitest(correctExpr='qnorm(0.975, mean = m, sd = s)')
+  Hint: Type qnorm(0.975, mean = m, sd = s) and press Enter.
+
+- Class: text
+  Output: A normal quantile plot gives a more sensitive check of normality than a histogram. If the data are normal, the points fall close to a straight line.
+
+- Class: cmd_question
+  Output: Draw it with qqnorm(qc$conc_mgl).
+  CorrectAnswer: qqnorm(qc$conc_mgl)
+  AnswerTests: expr_text_has('qqnorm', 'qc$conc_mgl')
+  Hint: Type qqnorm(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: Add the reference line with qqline(qc$conc_mgl).
+  CorrectAnswer: qqline(qc$conc_mgl)
+  AnswerTests: expr_text_has('qqline', 'qc$conc_mgl')
+  Hint: Type qqline(qc$conc_mgl) and press Enter.
+
+- Class: cmd_question
+  Output: A formal test of normality is the Shapiro Wilk test. Run shapiro.test(qc$conc_mgl). A p-value above 0.05 means there is no evidence against normality.
+  CorrectAnswer: shapiro.test(qc$conc_mgl)
+  AnswerTests: omnitest(correctExpr='shapiro.test(qc$conc_mgl)')
+  Hint: Type shapiro.test(qc$conc_mgl) and press Enter.
+
+- Class: text
+  Output: Now we turn to the two analysts. Accuracy is how close the mean is to the true value, and precision is how closely repeated results agree with each other. They are different things, and you need to look at both.
+
+- Class: cmd_question
+  Output: Calculate the mean result for each analyst using tapply(replicates$conc_mgl, replicates$analyst, mean).
+  CorrectAnswer: tapply(replicates$conc_mgl, replicates$analyst, mean)
+  AnswerTests: omnitest(correctExpr='tapply(replicates$conc_mgl, replicates$analyst, mean)')
+  Hint: Type tapply(replicates$conc_mgl, replicates$analyst, mean) and press Enter.
+
+- Class: cmd_question
+  Output: Calculate the standard deviation for each analyst in the same way, using sd.
+  CorrectAnswer: tapply(replicates$conc_mgl, replicates$analyst, sd)
+  AnswerTests: omnitest(correctExpr='tapply(replicates$conc_mgl, replicates$analyst, sd)')
+  Hint: Type tapply(replicates$conc_mgl, replicates$analyst, sd) and press Enter.
+
+- Class: mult_question
+  Output: The true value is 25 mg/L. Which analyst is both more accurate and more precise?
+  AnswerChoices: Analyst A; Analyst B; Both are the same; It cannot be told from these numbers;
+  CorrectAnswer: Analyst A
+  AnswerTests: omnitest(correctVal='Analyst A')
+  Hint: Compare the means with 25, then compare the standard deviations.
+
+- Class: cmd_question
+  Output: Compare the two sets of results visually with boxplot(conc_mgl ~ analyst, data = replicates).
+  CorrectAnswer: boxplot(conc_mgl ~ analyst, data = replicates)
+  AnswerTests: expr_text_has('boxplot', 'conc_mgl ~ analyst', 'data = replicates')
+  Hint: Type boxplot(conc_mgl ~ analyst, data = replicates) and press Enter.
+
+- Class: text
+  Output: You can now describe a set of replicate measurements, plot its distribution and use the normal distribution to answer practical questions. In the next lesson you will use these ideas to decide whether differences between results are real or just random noise.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about describing replicate measurements and the normal distribution? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

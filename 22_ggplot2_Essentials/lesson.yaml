@@ -1,0 +1,195 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: ggplot2_Essentials
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this optional lesson on ggplot2. It is a popular plotting package that builds a graph from layers. If you are happy with base R graphics you can skip this lesson, but many published figures and many online examples use ggplot2, so it is worth knowing the basics.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: I have loaded two synthetic data frames, made up for teaching. The data frame calib holds calibration standards, and the data frame chrom holds results for 40 samples and five compounds, one row per compound per sample.
+
+- Class: cmd_question
+  Output: Load the package with library(ggplot2).
+  CorrectAnswer: library(ggplot2)
+  AnswerTests: omnitest(correctExpr='library(ggplot2)')
+  Hint: Type library(ggplot2) and press Enter.
+
+- Class: text
+  Output: A ggplot2 graph is built from three ingredients. You start with the data. You then say which columns map to which visual properties, such as the x position, the y position and the colour. This mapping goes inside aes(). Finally you add layers, called geoms, which draw the shapes. The layers are joined with a plus sign.
+
+- Class: cmd_question
+  Output: Draw a scatter plot of the calibration with ggplot(calib, aes(x = conc_ugml, y = area)) + geom_point().
+  CorrectAnswer: ggplot(calib, aes(x = conc_ugml, y = area)) + geom_point()
+  AnswerTests: expr_text_has('ggplot', 'calib', 'aes', 'geom_point')
+  Hint: Type ggplot(calib, aes(x = conc_ugml, y = area)) + geom_point() and press Enter.
+
+- Class: text
+  Output: The result of a ggplot2 command is an object, so you can store it and add to it later. This is a real difference from the base graphics system, where each drawing command acts on the screen immediately.
+
+- Class: cmd_question
+  Output: Store the plot in p with p <- ggplot(calib, aes(x = conc_ugml, y = area)) + geom_point().
+  CorrectAnswer: p <- ggplot(calib, aes(x = conc_ugml, y = area)) + geom_point()
+  AnswerTests: expr_text_has('p <-', 'ggplot', 'geom_point')
+  Hint: Type p <- ggplot(calib, aes(x = conc_ugml, y = area)) + geom_point() and press Enter.
+
+- Class: cmd_question
+  Output: Add axis labels and a title with p + labs(x = "Concentration (ug/mL)", y = "Peak area", title = "Calibration standards").
+  CorrectAnswer: p + labs(x = "Concentration (ug/mL)", y = "Peak area", title = "Calibration standards")
+  AnswerTests: expr_text_has('p + labs', 'x = "Concentration (ug/mL)"', 'y = "Peak area"', 'title')
+  Hint: Type p + labs(x = "Concentration (ug/mL)", y = "Peak area", title = "Calibration standards") and press Enter.
+
+- Class: cmd_question
+  Output: Add a fitted straight line with p + geom_smooth(method = "lm"). The grey band is a confidence interval for the line.
+  CorrectAnswer: p + geom_smooth(method = "lm")
+  AnswerTests: expr_text_has('p + geom_smooth', 'method = "lm"')
+  Hint: Type p + geom_smooth(method = "lm") and press Enter.
+
+- Class: cmd_question
+  Output: Put both axes on a log scale with p + scale_x_log10() + scale_y_log10().
+  CorrectAnswer: p + scale_x_log10() + scale_y_log10()
+  AnswerTests: expr_text_has('p + scale_x_log10()', 'scale_y_log10()')
+  Hint: Type p + scale_x_log10() + scale_y_log10() and press Enter.
+
+- Class: text
+  Output: Themes change the overall look. The default has a grey background, and theme_bw() gives a plain white one that is often preferred in reports.
+
+- Class: cmd_question
+  Output: Apply it with p + theme_bw().
+  CorrectAnswer: p + theme_bw()
+  AnswerTests: expr_text_has('p + theme_bw()')
+  Hint: Type p + theme_bw() and press Enter.
+
+- Class: text
+  Output: Now the data with several compounds. Mapping a column to colour inside aes() gives each value its own colour, and ggplot2 adds a legend automatically.
+
+- Class: cmd_question
+  Output: Plot area against concentration, coloured by compound, with ggplot(chrom, aes(x = conc_ugml, y = area, colour = compound)) + geom_point().
+  CorrectAnswer: ggplot(chrom, aes(x = conc_ugml, y = area, colour = compound)) + geom_point()
+  AnswerTests: expr_text_has('ggplot', 'chrom', 'colour = compound', 'geom_point')
+  Hint: Type ggplot(chrom, aes(x = conc_ugml, y = area, colour = compound)) + geom_point() and press Enter.
+
+- Class: text
+  Output: The compounds have very different sensitivities, so one set of axes squeezes some of them. A better approach is one panel per compound. This is called faceting, and facet_wrap() does it from a single extra term.
+
+- Class: cmd_question
+  Output: Draw one panel per compound, each with its own axes, with ggplot(chrom, aes(x = conc_ugml, y = area)) + geom_point() + facet_wrap(~ compound, scales = "free").
+  CorrectAnswer: ggplot(chrom, aes(x = conc_ugml, y = area)) + geom_point() + facet_wrap(~ compound, scales = "free")
+  AnswerTests: expr_text_has('facet_wrap', 'compound', 'scales = "free"')
+  Hint: Type ggplot(chrom, aes(x = conc_ugml, y = area)) + geom_point() + facet_wrap(~ compound, scales = "free") and press Enter.
+
+- Class: mult_question
+  Output: What does scales = "free" do in facet_wrap()?
+  AnswerChoices: Each panel gets its own axis range; It removes the axes; It makes the points free of colour; It plots only a free sample;
+  CorrectAnswer: Each panel gets its own axis range
+  AnswerTests: omnitest(correctVal='Each panel gets its own axis range')
+  Hint: Look at how the panels differ.
+
+- Class: text
+  Output: Comparing distributions between groups works well with boxplots, and jittered points show the data underneath. First we keep the caffeine rows.
+
+- Class: cmd_question
+  Output: Store the caffeine rows in caff with caff <- subset(chrom, compound == "caffeine").
+  CorrectAnswer: caff <- subset(chrom, compound == "caffeine")
+  AnswerTests: omnitest(correctExpr='caff <- subset(chrom, compound == "caffeine")')
+  Hint: Type caff <- subset(chrom, compound == "caffeine") and press Enter.
+
+- Class: cmd_question
+  Output: Draw the boxplot with ggplot(caff, aes(x = group, y = conc_ugml)) + geom_boxplot().
+  CorrectAnswer: ggplot(caff, aes(x = group, y = conc_ugml)) + geom_boxplot()
+  AnswerTests: expr_text_has('ggplot', 'caff', 'geom_boxplot')
+  Hint: Type ggplot(caff, aes(x = group, y = conc_ugml)) + geom_boxplot() and press Enter.
+
+- Class: cmd_question
+  Output: Add the individual points with ggplot(caff, aes(x = group, y = conc_ugml)) + geom_boxplot() + geom_jitter(width = 0.1).
+  CorrectAnswer: ggplot(caff, aes(x = group, y = conc_ugml)) + geom_boxplot() + geom_jitter(width = 0.1)
+  AnswerTests: expr_text_has('geom_boxplot', 'geom_jitter', 'width = 0.1')
+  Hint: Type ggplot(caff, aes(x = group, y = conc_ugml)) + geom_boxplot() + geom_jitter(width = 0.1) and press Enter.
+
+- Class: text
+  Output: A histogram uses only an x aesthetic, because the heights are counted for you.
+
+- Class: cmd_question
+  Output: Draw the caffeine histogram with ggplot(caff, aes(x = conc_ugml)) + geom_histogram(bins = 10).
+  CorrectAnswer: ggplot(caff, aes(x = conc_ugml)) + geom_histogram(bins = 10)
+  AnswerTests: expr_text_has('geom_histogram', 'bins = 10')
+  Hint: Type ggplot(caff, aes(x = conc_ugml)) + geom_histogram(bins = 10) and press Enter.
+
+- Class: text
+  Output: To save the last plot you drew, or any plot object, use ggsave(). It chooses the file type from the extension. We save into the temporary folder here.
+
+- Class: cmd_question
+  Output: Save the stored plot p with ggsave(file.path(tempdir(), "calib.png"), plot = p, width = 6, height = 4).
+  CorrectAnswer: ggsave(file.path(tempdir(), "calib.png"), plot = p, width = 6, height = 4)
+  AnswerTests: expr_text_has('ggsave', 'tempdir()', 'calib.png', 'plot = p')
+  Hint: Type ggsave(file.path(tempdir(), "calib.png"), plot = p, width = 6, height = 4) and press Enter.
+
+- Class: cmd_question
+  Output: Check that the file exists with file.exists(file.path(tempdir(), "calib.png")).
+  CorrectAnswer: file.exists(file.path(tempdir(), "calib.png"))
+  AnswerTests: omnitest(correctExpr='file.exists(file.path(tempdir(), "calib.png"))')
+  Hint: Type file.exists(file.path(tempdir(), "calib.png")) and press Enter.
+
+- Class: mult_question
+  Output: In ggplot2, what do you add with a plus sign?
+  AnswerChoices: Layers, scales, labels and themes; Only data; Only colours; Only titles;
+  CorrectAnswer: Layers, scales, labels and themes
+  AnswerTests: omnitest(correctVal='Layers, scales, labels and themes')
+  Hint: Everything you have added in this lesson used a plus sign.
+
+- Class: text
+  Output: You can now build a ggplot2 graph from data, aesthetics and geoms, label it, facet it, change its look and save it. That is enough to read most ggplot2 examples and adapt them to your own data.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about building graphs with ggplot2? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

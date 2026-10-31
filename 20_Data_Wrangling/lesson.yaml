@@ -1,0 +1,273 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Data_Wrangling
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on data wrangling. Before any analysis, data usually has to be filtered, summarised, combined and reshaped. The dplyr and tidyr packages give you a small set of readable verbs for this, and they let you write a whole workflow as one sentence. This supports the coding work in the final lessons.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: I have loaded three synthetic data frames, made up for teaching. The data frame chrom holds results for 40 samples and five compounds, one row per compound per sample. The data frame batches describes the four batches. The data frame results_wide holds the concentrations of 12 samples with one column per compound and a few missing values.
+
+- Class: cmd_question
+  Output: Load the dplyr package with library(dplyr).
+  CorrectAnswer: library(dplyr)
+  AnswerTests: omnitest(correctExpr='library(dplyr)')
+  Hint: Type library(dplyr) and press Enter.
+
+- Class: cmd_question
+  Output: A tibble is a data frame that prints neatly. Convert chrom to one called ch with ch <- as_tibble(chrom).
+  CorrectAnswer: ch <- as_tibble(chrom)
+  AnswerTests: omnitest(correctExpr='ch <- as_tibble(chrom)')
+  Hint: Type ch <- as_tibble(chrom) and press Enter.
+
+- Class: cmd_question
+  Output: Print ch and notice that it shows only the first rows and the type of every column.
+  CorrectAnswer: ch
+  AnswerTests: omnitest(correctExpr='ch')
+  Hint: Type ch and press Enter.
+
+- Class: text
+  Output: The first verb is select(), which picks columns. The first argument is always the data, and the following arguments are the columns you want.
+
+- Class: cmd_question
+  Output: Pick the sample, compound and conc_ugml columns with select(ch, sample, compound, conc_ugml).
+  CorrectAnswer: select(ch, sample, compound, conc_ugml)
+  AnswerTests: omnitest(correctExpr='select(ch, sample, compound, conc_ugml)')
+  Hint: Type select(ch, sample, compound, conc_ugml) and press Enter.
+
+- Class: cmd_question
+  Output: A minus sign drops a column. Drop the rt_min column with select(ch, -rt_min).
+  CorrectAnswer: select(ch, -rt_min)
+  AnswerTests: omnitest(correctExpr='select(ch, -rt_min)')
+  Hint: Type select(ch, -rt_min) and press Enter.
+
+- Class: text
+  Output: The second verb is filter(), which keeps rows that meet a condition.
+
+- Class: cmd_question
+  Output: Keep only the caffeine rows with filter(ch, compound == "caffeine").
+  CorrectAnswer: filter(ch, compound == "caffeine")
+  AnswerTests: omnitest(correctExpr='filter(ch, compound == "caffeine")')
+  Hint: Type filter(ch, compound == "caffeine") and press Enter.
+
+- Class: cmd_question
+  Output: Several conditions separated by commas must all be true. Keep the caffeine rows of the Treated group with filter(ch, compound == "caffeine", group == "Treated").
+  CorrectAnswer: filter(ch, compound == "caffeine", group == "Treated")
+  AnswerTests: omnitest(correctExpr='filter(ch, compound == "caffeine", group == "Treated")')
+  Hint: Type filter(ch, compound == "caffeine", group == "Treated") and press Enter.
+
+- Class: text
+  Output: The third verb is arrange(), which sorts the rows. Wrap a column in desc() to sort from largest to smallest.
+
+- Class: cmd_question
+  Output: Sort by decreasing concentration with arrange(ch, desc(conc_ugml)).
+  CorrectAnswer: arrange(ch, desc(conc_ugml))
+  AnswerTests: omnitest(correctExpr='arrange(ch, desc(conc_ugml))')
+  Hint: Type arrange(ch, desc(conc_ugml)) and press Enter.
+
+- Class: text
+  Output: The fourth verb is mutate(), which creates new columns from existing ones.
+
+- Class: cmd_question
+  Output: Add a column giving the concentration in mg/mL with mutate(ch, conc_mgml = conc_ugml / 1000).
+  CorrectAnswer: mutate(ch, conc_mgml = conc_ugml / 1000)
+  AnswerTests: omnitest(correctExpr='mutate(ch, conc_mgml = conc_ugml / 1000)')
+  Hint: Type mutate(ch, conc_mgml = conc_ugml / 1000) and press Enter.
+
+- Class: text
+  Output: The fifth verb is summarise(), which collapses many rows into one summary. On its own it summarises the whole table, but it becomes powerful when it is combined with group_by(), which splits the data into groups first.
+
+- Class: cmd_question
+  Output: Calculate the overall mean concentration with summarise(ch, mean_conc = mean(conc_ugml)).
+  CorrectAnswer: summarise(ch, mean_conc = mean(conc_ugml))
+  AnswerTests: omnitest(correctExpr='summarise(ch, mean_conc = mean(conc_ugml))')
+  Hint: Type summarise(ch, mean_conc = mean(conc_ugml)) and press Enter.
+
+- Class: cmd_question
+  Output: Group by compound and store the result in by_comp, with by_comp <- group_by(ch, compound).
+  CorrectAnswer: by_comp <- group_by(ch, compound)
+  AnswerTests: omnitest(correctExpr='by_comp <- group_by(ch, compound)')
+  Hint: Type by_comp <- group_by(ch, compound) and press Enter.
+
+- Class: cmd_question
+  Output: Now summarise within each group with summarise(by_comp, mean_conc = mean(conc_ugml), sd_conc = sd(conc_ugml)).
+  CorrectAnswer: summarise(by_comp, mean_conc = mean(conc_ugml), sd_conc = sd(conc_ugml))
+  AnswerTests: omnitest(correctExpr='summarise(by_comp, mean_conc = mean(conc_ugml), sd_conc = sd(conc_ugml))')
+  Hint: Type summarise(by_comp, mean_conc = mean(conc_ugml), sd_conc = sd(conc_ugml)) and press Enter.
+
+- Class: cmd_question
+  Output: The function count() is a shortcut for counting rows in groups. Count the rows for each compound and group with count(ch, compound, group).
+  CorrectAnswer: count(ch, compound, group)
+  AnswerTests: omnitest(correctExpr='count(ch, compound, group)')
+  Hint: Type count(ch, compound, group) and press Enter.
+
+- Class: text
+  Output: So far each step was a separate command with its own intermediate result. The pipe operator, written %>%, passes the result on the left into the first argument of the function on the right. You can read it as and then. It lets you write a chain of steps in the order that you think of them.
+
+- Class: cmd_question
+  Output: Take caffeine in each group with ch %>% filter(compound == "caffeine") %>% group_by(group) %>% summarise(mean_conc = mean(conc_ugml)).
+  CorrectAnswer: ch %>% filter(compound == "caffeine") %>% group_by(group) %>% summarise(mean_conc = mean(conc_ugml))
+  AnswerTests: omnitest(correctExpr='ch %>% filter(compound == "caffeine") %>% group_by(group) %>% summarise(mean_conc = mean(conc_ugml))')
+  Hint: Type ch %>% filter(compound == "caffeine") %>% group_by(group) %>% summarise(mean_conc = mean(conc_ugml)) and press Enter.
+
+- Class: cmd_question
+  Output: Rank the compounds by their %RSD with ch %>% group_by(compound) %>% summarise(rsd = 100 * sd(conc_ugml) / mean(conc_ugml)) %>% arrange(desc(rsd)).
+  CorrectAnswer: ch %>% group_by(compound) %>% summarise(rsd = 100 * sd(conc_ugml) / mean(conc_ugml)) %>% arrange(desc(rsd))
+  AnswerTests: omnitest(correctExpr='ch %>% group_by(compound) %>% summarise(rsd = 100 * sd(conc_ugml) / mean(conc_ugml)) %>% arrange(desc(rsd))')
+  Hint: Type ch %>% group_by(compound) %>% summarise(rsd = 100 * sd(conc_ugml) / mean(conc_ugml)) %>% arrange(desc(rsd)) and press Enter.
+
+- Class: mult_question
+  Output: The %RSD here describes the spread across the 40 samples, not the precision of the instrument. Why?
+  AnswerChoices: Each sample is a different material, so the spread includes real differences between samples; The function sd() is not accurate; Because the data are in a tibble; Because the concentrations are in ug/mL;
+  CorrectAnswer: Each sample is a different material, so the spread includes real differences between samples
+  AnswerTests: omnitest(correctVal='Each sample is a different material, so the spread includes real differences between samples')
+  Hint: Think about what the 40 values represent.
+
+- Class: text
+  Output: Often information is in two tables. A join attaches columns from one table to another by matching a key. The function left_join() keeps every row of the first table and adds the matching columns from the second.
+
+- Class: cmd_question
+  Output: Attach the batch information with joined <- left_join(ch, batches, by = "batch").
+  CorrectAnswer: joined <- left_join(ch, batches, by = "batch")
+  AnswerTests: omnitest(correctExpr='joined <- left_join(ch, batches, by = "batch")')
+  Hint: Type joined <- left_join(ch, batches, by = "batch") and press Enter.
+
+- Class: cmd_question
+  Output: Find how many distinct samples there are with n_distinct(joined$sample).
+  CorrectAnswer: n_distinct(joined$sample)
+  AnswerTests: omnitest(correctExpr='n_distinct(joined$sample)')
+  Hint: Type n_distinct(joined$sample) and press Enter.
+
+- Class: text
+  Output: Now tidying. A table is tidy when each variable is a column, each observation is a row and each value is a cell. The table results_wide has the compound names in the column headings, so the compound is spread across columns. For plotting and for grouping, the long form is easier. The tidyr package converts between the two.
+
+- Class: cmd_question
+  Output: Load tidyr with library(tidyr).
+  CorrectAnswer: library(tidyr)
+  AnswerTests: omnitest(correctExpr='library(tidyr)')
+  Hint: Type library(tidyr) and press Enter.
+
+- Class: cmd_question
+  Output: Look at results_wide.
+  CorrectAnswer: results_wide
+  AnswerTests: omnitest(correctExpr='results_wide')
+  Hint: Type results_wide and press Enter.
+
+- Class: cmd_question
+  Output: Count the missing values in each column with colSums(is.na(results_wide)).
+  CorrectAnswer: colSums(is.na(results_wide))
+  AnswerTests: omnitest(correctExpr='colSums(is.na(results_wide))')
+  Hint: Type colSums(is.na(results_wide)) and press Enter.
+
+- Class: cmd_question
+  Output: Convert to long form with long <- pivot_longer(results_wide, cols = caffeine:quercetin, names_to = "compound", values_to = "conc_ugml").
+  CorrectAnswer: long <- pivot_longer(results_wide, cols = caffeine:quercetin, names_to = "compound", values_to = "conc_ugml")
+  AnswerTests: omnitest(correctExpr='long <- pivot_longer(results_wide, cols = caffeine:quercetin, names_to = "compound", values_to = "conc_ugml")')
+  Hint: Type long <- pivot_longer(results_wide, cols = caffeine:quercetin, names_to = "compound", values_to = "conc_ugml") and press Enter.
+
+- Class: cmd_question
+  Output: Look at the dimensions of long with dim(long).
+  CorrectAnswer: dim(long)
+  AnswerTests: omnitest(correctExpr='dim(long)')
+  Hint: Type dim(long) and press Enter.
+
+- Class: mult_question
+  Output: Why does long have 60 rows when results_wide has 12?
+  AnswerChoices: Each of the 12 samples now has one row for each of five compounds; Five new samples were added; The missing values were duplicated; pivot_longer repeats every row five times by mistake;
+  CorrectAnswer: Each of the 12 samples now has one row for each of five compounds
+  AnswerTests: omnitest(correctVal='Each of the 12 samples now has one row for each of five compounds')
+  Hint: Work out twelve times five.
+
+- Class: cmd_question
+  Output: Go back to the wide form with pivot_wider(long, names_from = compound, values_from = conc_ugml).
+  CorrectAnswer: pivot_wider(long, names_from = compound, values_from = conc_ugml)
+  AnswerTests: omnitest(correctExpr='pivot_wider(long, names_from = compound, values_from = conc_ugml)')
+  Hint: Type pivot_wider(long, names_from = compound, values_from = conc_ugml) and press Enter.
+
+- Class: text
+  Output: Missing values need a decision. Dropping rows with missing values is the simplest, but it throws away the other measurements in those rows. Replacing a missing value with a number such as zero or a mean invents data, and it should always be reported. Never do it silently.
+
+- Class: cmd_question
+  Output: Drop the rows of long that have a missing concentration with drop_na(long).
+  CorrectAnswer: drop_na(long)
+  AnswerTests: omnitest(correctExpr='drop_na(long)')
+  Hint: Type drop_na(long) and press Enter.
+
+- Class: cmd_question
+  Output: Count how many rows remain with nrow(drop_na(long)).
+  CorrectAnswer: nrow(drop_na(long))
+  AnswerTests: omnitest(correctExpr='nrow(drop_na(long))')
+  Hint: Type nrow(drop_na(long)) and press Enter.
+
+- Class: text
+  Output: Two last helpers. The function unite() joins columns into one, and separate() splits one column into several. They are handy for sample names that carry extra information.
+
+- Class: cmd_question
+  Output: Join the sample and group columns with unite(results_wide, "sample_group", sample, group, sep = "_").
+  CorrectAnswer: unite(results_wide, "sample_group", sample, group, sep = "_")
+  AnswerTests: omnitest(correctExpr='unite(results_wide, "sample_group", sample, group, sep = "_")')
+  Hint: Type unite(results_wide, "sample_group", sample, group, sep = "_") and press Enter.
+
+- Class: cmd_question
+  Output: Split it back with separate(unite(results_wide, "sample_group", sample, group, sep = "_"), sample_group, into = c("sample", "group"), sep = "_").
+  CorrectAnswer: separate(unite(results_wide, "sample_group", sample, group, sep = "_"), sample_group, into = c("sample", "group"), sep = "_")
+  AnswerTests: omnitest(correctExpr='separate(unite(results_wide, "sample_group", sample, group, sep = "_"), sample_group, into = c("sample", "group"), sep = "_")')
+  Hint: Type separate(unite(results_wide, "sample_group", sample, group, sep = "_"), sample_group, into = c("sample", "group"), sep = "_") and press Enter.
+
+- Class: text
+  Output: You now have the dplyr verbs select, filter, arrange, mutate, summarise and group_by, the pipe to chain them, joins to combine tables, and the tidyr tools to reshape data and deal with missing values. The final lessons use these skills in complete workouts.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about wrangling data with dplyr and tidyr? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

@@ -1,0 +1,264 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Vectors
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on vectors. A vector is simply an ordered row of values of the same kind, and it is the most basic way R stores data. Almost everything you do later in this course, from calibration curves to PCA, is built on vectors, so it pays to be comfortable with them.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: In R, you give a vector a name using the assignment arrow, which is a less-than sign followed by a hyphen. You can read x <- 5 as 'x gets the value 5'. We will use this arrow constantly.
+
+- Class: text
+  Output: To build a vector from several values, you join them with the function c(), which stands for combine. Imagine you ran a short chromatographic method and recorded the retention times, in minutes, of five peaks.
+
+- Class: cmd_question
+  Output: Create a vector called rt that holds the five retention times 2.1, 3.4, 5.0, 7.7 and 9.2, in that order, using c().
+  CorrectAnswer: rt <- c(2.1, 3.4, 5.0, 7.7, 9.2)
+  AnswerTests: omnitest(correctExpr='rt <- c(2.1, 3.4, 5.0, 7.7, 9.2)')
+  Hint: Type rt <- c(2.1, 3.4, 5.0, 7.7, 9.2) and press Enter.
+
+- Class: cmd_question
+  Output: Typing the name of a variable shows what is stored in it. Show the contents of rt.
+  CorrectAnswer: rt
+  AnswerTests: omnitest(correctExpr='rt')
+  Hint: Type rt and press Enter.
+
+- Class: text
+  Output: The number in square brackets at the start of the printed line is the position of the first value on that line. It becomes useful when a vector is too long to fit on one line.
+
+- Class: cmd_question
+  Output: How many values does rt hold? Use the function length().
+  CorrectAnswer: length(rt)
+  AnswerTests: omnitest(correctExpr='length(rt)')
+  Hint: Type length(rt) and press Enter.
+
+- Class: cmd_question
+  Output: Every vector has a type. Find the type of rt with class().
+  CorrectAnswer: class(rt)
+  AnswerTests: omnitest(correctExpr='class(rt)')
+  Hint: Type class(rt) and press Enter.
+
+- Class: text
+  Output: Numbers are not the only thing a vector can hold. It can also hold text, which R calls character values. Text must always be written inside quotation marks.
+
+- Class: cmd_question
+  Output: Create a character vector called compounds with the five names "gallic acid", "caffeine", "catechin", "rutin" and "quercetin", in that order.
+  CorrectAnswer: compounds <- c("gallic acid", "caffeine", "catechin", "rutin", "quercetin")
+  AnswerTests: omnitest(correctExpr='compounds <- c("gallic acid", "caffeine", "catechin", "rutin", "quercetin")')
+  Hint: Type compounds <- c("gallic acid", "caffeine", "catechin", "rutin", "quercetin") and press Enter.
+
+- Class: cmd_question
+  Output: Check the type of compounds.
+  CorrectAnswer: class(compounds)
+  AnswerTests: omnitest(correctExpr='class(compounds)')
+  Hint: Type class(compounds) and press Enter.
+
+- Class: mult_question
+  Output: A vector can only hold one type of value at a time. If you mix numbers and text in one c() call, R converts everything to the more flexible type. What type would c(12, "blank", TRUE) be?
+  AnswerChoices: numeric; logical; character; list;
+  CorrectAnswer: character
+  AnswerTests: omnitest(correctVal='character')
+  Hint: Text can represent a number or a logical value, but not the other way round.
+
+- Class: text
+  Output: Values in a vector can carry labels, called names. Names make a vector self-explanatory, because you can then pick values by label instead of by position.
+
+- Class: cmd_question
+  Output: Give the elements of rt the names stored in compounds, by assigning compounds to names(rt).
+  CorrectAnswer: names(rt) <- compounds
+  AnswerTests: omnitest(correctExpr='names(rt) <- compounds')
+  Hint: Type names(rt) <- compounds and press Enter.
+
+- Class: cmd_question
+  Output: Print rt again and see how the names appear above the values.
+  CorrectAnswer: rt
+  AnswerTests: omnitest(correctExpr='rt')
+  Hint: Type rt and press Enter.
+
+- Class: text
+  Output: To pick out part of a vector, you put an index inside square brackets directly after its name. The index says which position, or which name, you want.
+
+- Class: cmd_question
+  Output: Extract the retention time of catechin by using its name inside the square brackets, as rt["catechin"].
+  CorrectAnswer: rt["catechin"]
+  AnswerTests: omnitest(correctExpr='rt["catechin"]')
+  Hint: Type rt["catechin"] and press Enter.
+
+- Class: cmd_question
+  Output: Now extract the third value by position.
+  CorrectAnswer: rt[3]
+  AnswerTests: omnitest(correctExpr='rt[3]')
+  Hint: Type rt[3] and press Enter.
+
+- Class: cmd_question
+  Output: To pick several values, give a vector of positions. Extract the first and the fifth values together.
+  CorrectAnswer: rt[c(1, 5)]
+  AnswerTests: omnitest(correctExpr='rt[c(1, 5)]')
+  Hint: Type rt[c(1, 5)] and press Enter.
+
+- Class: cmd_question
+  Output: A range of positions can be written with a colon, so 2:4 means 2, 3 and 4. Extract the second to the fourth values.
+  CorrectAnswer: rt[2:4]
+  AnswerTests: omnitest(correctExpr='rt[2:4]')
+  Hint: Type rt[2:4] and press Enter.
+
+- Class: cmd_question
+  Output: A negative index means leave that one out. Show everything except the first value.
+  CorrectAnswer: rt[-1]
+  AnswerTests: omnitest(correctExpr='rt[-1]')
+  Hint: Type rt[-1] and press Enter.
+
+- Class: text
+  Output: Vectors are also used to build sequences. The function seq() creates evenly spaced numbers. For example, seq(0, 1, by = 0.25) gives 0, 0.25, 0.5, 0.75 and 1.
+
+- Class: cmd_question
+  Output: Create a vector called conc holding concentrations from 0 to 100 in steps of 25, using seq() with the argument by.
+  CorrectAnswer: conc <- seq(0, 100, by = 25)
+  AnswerTests: omnitest(correctExpr='conc <- seq(0, 100, by = 25)')
+  Hint: Type conc <- seq(0, 100, by = 25) and press Enter.
+
+- Class: cmd_question
+  Output: The function rep() repeats values. Use it to make the vector c("blank", "std") repeated three times, using the argument times.
+  CorrectAnswer: rep(c("blank", "std"), times = 3)
+  AnswerTests: omnitest(correctExpr='rep(c("blank", "std"), times = 3)')
+  Hint: Type rep(c("blank", "std"), times = 3) and press Enter.
+
+- Class: cmd_question
+  Output: The argument each repeats every element in turn instead. Repeat c("A", "B") with each = 2.
+  CorrectAnswer: rep(c("A", "B"), each = 2)
+  AnswerTests: omnitest(correctExpr='rep(c("A", "B"), each = 2)')
+  Hint: Type rep(c("A", "B"), each = 2) and press Enter.
+
+- Class: text
+  Output: A comparison such as rt > 5 asks a yes or no question about every value at once. The answer is a logical vector made of TRUE and FALSE. You can use that logical vector as an index to keep only the values where the answer is TRUE.
+
+- Class: cmd_question
+  Output: Ask which retention times are greater than 5 by evaluating rt > 5.
+  CorrectAnswer: rt > 5
+  AnswerTests: omnitest(correctExpr='rt > 5')
+  Hint: Type rt > 5 and press Enter.
+
+- Class: cmd_question
+  Output: Use that same comparison as an index to keep only the late peaks.
+  CorrectAnswer: rt[rt > 5]
+  AnswerTests: omnitest(correctExpr='rt[rt > 5]')
+  Hint: Type rt[rt > 5] and press Enter.
+
+- Class: cmd_question
+  Output: The function which() returns the positions where a comparison is TRUE. Use it with rt > 5.
+  CorrectAnswer: which(rt > 5)
+  AnswerTests: omnitest(correctExpr='which(rt > 5)')
+  Hint: Type which(rt > 5) and press Enter.
+
+- Class: text
+  Output: R has many functions that summarise a whole vector in one go. Three of the most common are mean(), sum() and range().
+
+- Class: cmd_question
+  Output: Find the mean retention time.
+  CorrectAnswer: mean(rt)
+  AnswerTests: omnitest(correctExpr='mean(rt)')
+  Hint: Type mean(rt) and press Enter.
+
+- Class: cmd_question
+  Output: Find the smallest and largest retention time with range().
+  CorrectAnswer: range(rt)
+  AnswerTests: omnitest(correctExpr='range(rt)')
+  Hint: Type range(rt) and press Enter.
+
+- Class: cmd_question
+  Output: Sort the retention times from largest to smallest using sort() with decreasing = TRUE.
+  CorrectAnswer: sort(rt, decreasing = TRUE)
+  AnswerTests: omnitest(correctExpr='sort(rt, decreasing = TRUE)')
+  Hint: Type sort(rt, decreasing = TRUE) and press Enter.
+
+- Class: text
+  Output: Real instrument data often has gaps. R marks a missing value as NA, which stands for not available. NA is not zero and not blank, it is a placeholder meaning no value was recorded.
+
+- Class: cmd_question
+  Output: Create a vector called area holding 1520, NA and 1830.
+  CorrectAnswer: area <- c(1520, NA, 1830)
+  AnswerTests: omnitest(correctExpr='area <- c(1520, NA, 1830)')
+  Hint: Type area <- c(1520, NA, 1830) and press Enter.
+
+- Class: cmd_question
+  Output: Find out which values are missing with is.na().
+  CorrectAnswer: is.na(area)
+  AnswerTests: omnitest(correctExpr='is.na(area)')
+  Hint: Type is.na(area) and press Enter.
+
+- Class: cmd_question
+  Output: Try mean(area). You will see NA, because one unknown value makes the whole mean unknown.
+  CorrectAnswer: mean(area)
+  AnswerTests: omnitest(correctExpr='mean(area)')
+  Hint: Type mean(area) and press Enter.
+
+- Class: cmd_question
+  Output: Tell mean() to ignore missing values by adding na.rm = TRUE.
+  CorrectAnswer: mean(area, na.rm = TRUE)
+  AnswerTests: omnitest(correctExpr='mean(area, na.rm = TRUE)')
+  Hint: Type mean(area, na.rm = TRUE) and press Enter.
+
+- Class: mult_question
+  Output: Which of these is the best description of a vector?
+  AnswerChoices: A table with rows and columns; An ordered set of values of one type; A single number only; A picture of data;
+  CorrectAnswer: An ordered set of values of one type
+  AnswerTests: omnitest(correctVal='An ordered set of values of one type')
+  Hint: Think about what c() builds.
+
+- Class: text
+  Output: Well done. You can now build, name, index, filter and summarise vectors. In the next lesson we will do arithmetic on whole vectors at once.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about creating, indexing and summarising vectors? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

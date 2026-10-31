@@ -1,0 +1,160 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: SVM
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to Swirl exercise on support vector machines! In this exercise we will learn how to perform SVM using R. 
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: In machine learning, support vector machines are supervised learning models with associated learning algorithms that analyse data used for classification and regression analysis.
+
+- Class: text
+  Output: We have covered the basics of SVM and how it works in our video tutorials. I highly recommend watching that video again in case you are not sure about the working of SVM, before you carry on with this exercise.
+
+- Class: text
+  Output: SVM doesn’t need the actual vectors to work its magic, it actually can get by only with the dot products between them. This means that we can sidestep the expensive calculations of the new dimensions!
+
+- Class: text
+  Output: For this tutorial, you should have installed package called e1071. We will load it in the next step.
+
+- Class: cmd_question
+  Output: Use library() command to load e1071 package in our workspace.
+  CorrectAnswer: library(e1071)
+  AnswerTests: omnitest(correctExpr='library(e1071)')
+  Hint: Type library(e1071) and hit Enter.
+
+- Class: text
+  Output: You will notice that I have already loaded the data and a scatter plot for you to see how the data is visually.
+
+- Class: text
+  Output: For SVM, like PLS-DA, we will need to turn Y variable to factor. Remember as.factor()?
+
+- Class: cmd_question
+  Output: Let's make our y variable a factor using as.factor() command.
+  CorrectAnswer: y = as.factor(y)
+  AnswerTests: omnitest(correctExpr='y = as.factor(y)')
+  Hint: Type y = as.factor(y) and hit Enter.
+
+- Class: text
+  Output: Now we will call svm() function such that we will use y as our response variable and all the variables in x as our predictors.
+
+- Class: text
+  Output: There are many svm kernels but for this exercise, we will use linear. You could use other types to see how the separation works, once you have completed the exercise.
+
+- Class: cmd_question
+  Output: Let us combine x and our new y (as factor) into a single data frame. To do this, use data.frame() command. The arguments that this command accepts is x and y variables separated by comma. Call our new data frame 'data'.
+  CorrectAnswer: data <- data.frame(x,y)
+  AnswerTests: omnitest(correctExpr='data <- data.frame(x,y)')
+  Hint: Type data <- data.frame(x,y) and hit Enter.
+
+- Class: text
+  Output: svm() function takes a few arguments. We will use the essential ones. We need to tell svm() what our formula is, what our data is, what kernel to use, what's the cost function and if the data should be scaled or not.
+
+- Class: text
+  Output: The formula in SVM is similar to regression where we use '~' operator. We will write our formula for response variable ~ all other variables. Remember we can just use period '.' to indicate all other data.
+
+- Class: text
+  Output: Our data will be new data frame called 'data'. We will use 'linear' as our kernel and cost function of 10. We will not scale the data for now. But you should scale and check the difference later too.
+
+- Class: cmd_question
+  Output: svm() can be written as 'svm(response~., data=data, kernel="linear", cost=10, scale=FALSE)'. Replace 'response' by our response variable that is y and save the output of this function to a new variable 'svmfit'.
+  CorrectAnswer: svmfit <- svm(y~., data=data, kernel="linear", cost=10, scale=FALSE)
+  AnswerTests: omnitest(correctExpr='svmfit <- svm(y~., data=data, kernel="linear", cost=10, scale=FALSE)')
+  Hint: Type svmfit <- svm(y~., data=data, kernel="linear", cost=10, scale=FALSE) and hit Enter.
+
+- Class: cmd_question
+  Output: Let us check out what the model consists of! Use print() command with our model name as argument.
+  CorrectAnswer: print(svmfit)
+  AnswerTests: omnitest(correctExpr='print(svmfit)')
+  Hint: Type print(svmfit) and hit Enter.
+
+- Class: text
+  Output: You can now see the summary of our model. You can see the number of support vectors in the model - these are the points that are close to the boundary or on the wrong side of the boundary.
+
+- Class: text
+  Output: There is also a plot function for svm that will show this decision boundary.
+
+- Class: cmd_question
+  Output: Let's try the plot() function. The two arguments it needs is name of model and name of data. This will be svmfit and data, in our case. Give it a go..
+  CorrectAnswer: plot(svmfit, data)
+  AnswerTests: omnitest(correctExpr='plot(svmfit, data)')
+  Hint: Type plot(svmfit, data) and hit Enter.
+
+- Class: text
+  Output: Congrats! You've managed to create a SVM model to fit your data. If you remember from our last week's exercise, you could also split your data in train and test sets and only build the model on training data. Then use test data to evaluate the model. 
+
+- Class: text
+  Output: To predict your test data, you will then use predict() function. 
+
+- Class: cmd_question
+  Output: The arguments for predict() are your fitted model and test data. In our case, we did not split our data or have a different test set. So, let's assume our data x is our test set. Can you save predict() with svmfit and x as arguments, to a new variable called 'predictions'?
+  CorrectAnswer: predictions <- predict(svmfit, x)
+  AnswerTests: omnitest(correctExpr='predictions <- predict(svmfit, x)')
+  Hint: Type predictions <- predict(svmfit, x) and hit Enter.
+
+- Class: cmd_question
+  Output: In order to see how well test data were predicted, we use table() function. The arguments for this are prediction model and actual class labels. In our case the actual class labels are y. Give it a go!
+  CorrectAnswer: table(predictions, y)
+  AnswerTests: omnitest(correctExpr='table(predictions, y)')
+  Hint: Type table(predictions, y) and hit Enter.
+
+- Class: text
+  Output: That's all for this exercise! When you deal with your real data, always have a training set to build your models and a separate test set to test it on. Remember your test set is used in predict() command and your confusionMatrix() will have y-labels from your test set.
+  
+- Class: text
+  Output: Once you complete the exercise, all the data will stay in your environment, why don't you try svm() with scale=TRUE and see if it changes anything?
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about building a support vector machine model in R? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

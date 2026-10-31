@@ -1,0 +1,236 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: K_Means_Clustering
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on k-means clustering. Clustering is a way of letting the data suggest its own groups, without telling the computer in advance which sample belongs where. In this lesson you will apply k-means to a set of plant extracts and then check how well the groups it finds match what you know about them.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: The idea behind k-means is simple. You choose how many groups you want, called k. The algorithm places k centres in the data, assigns every sample to its nearest centre, moves each centre to the middle of its samples, and repeats until nothing changes.
+
+- Class: text
+  Output: I have loaded a data frame called extracts. It holds 45 extracts from three regions. Each row is one extract, and the columns m1 to m6 are the measured intensities of six metabolites. These values are synthetic and were generated for teaching, they are not real measurements.
+
+- Class: cmd_question
+  Output: Look at the first six rows with head().
+  CorrectAnswer: head(extracts)
+  AnswerTests: omnitest(correctExpr='head(extracts)')
+  Hint: Type head(extracts) and press Enter.
+
+- Class: cmd_question
+  Output: See how the columns are stored by using str() on extracts.
+  CorrectAnswer: str(extracts)
+  AnswerTests: omnitest(correctExpr='str(extracts)')
+  Hint: Type str(extracts) and press Enter.
+
+- Class: cmd_question
+  Output: Count how many extracts come from each region with table() applied to the origin column.
+  CorrectAnswer: table(extracts$origin)
+  AnswerTests: omnitest(correctExpr='table(extracts$origin)')
+  Hint: Type table(extracts$origin) and press Enter.
+
+- Class: text
+  Output: The origin column is only a label. K-means works on numbers, so we will give it the metabolite columns only. They sit in columns 3 to 8 of the data frame.
+
+- Class: cmd_question
+  Output: Find the standard deviation of each metabolite column by using sapply() to apply sd to extracts[, 3:8].
+  CorrectAnswer: sapply(extracts[, 3:8], sd)
+  AnswerTests: omnitest(correctExpr='sapply(extracts[, 3:8], sd)')
+  Hint: Type sapply(extracts[, 3:8], sd) and press Enter.
+
+- Class: text
+  Output: Distances in k-means are calculated across all variables together, so a variable with large values can dominate the result. The standard remedy is to scale each column to a mean of zero and a standard deviation of one. The function scale() does this.
+
+- Class: cmd_question
+  Output: Scale the metabolite columns and store the result in z.
+  CorrectAnswer: z <- scale(extracts[, 3:8])
+  AnswerTests: omnitest(correctExpr='z <- scale(extracts[, 3:8])')
+  Hint: Type z <- scale(extracts[, 3:8]) and press Enter.
+
+- Class: cmd_question
+  Output: Check the scaling worked. The column means of z should now all be zero apart from tiny rounding errors. Use round(colMeans(z), 3).
+  CorrectAnswer: round(colMeans(z), 3)
+  AnswerTests: omnitest(correctExpr='round(colMeans(z), 3)')
+  Hint: Type round(colMeans(z), 3) and press Enter.
+
+- Class: text
+  Output: K-means starts from random centres, so two runs can give different answers. To make your results repeatable you fix the random number generator with set.seed(). Any whole number will do, and we will use 42.
+
+- Class: cmd_question
+  Output: Fix the random seed to 42.
+  CorrectAnswer: set.seed(42)
+  AnswerTests: omnitest(correctExpr='set.seed(42)')
+  Hint: Type set.seed(42) and press Enter.
+
+- Class: text
+  Output: Now the main step. The function kmeans() needs the data, the number of centres, and an optional argument nstart. Setting nstart = 25 tells R to try 25 different random starts and keep the best one, which protects you from a poor starting position.
+
+- Class: cmd_question
+  Output: Run kmeans() on z with centers = 3 and nstart = 25, and store the result in km.
+  CorrectAnswer: km <- kmeans(z, centers = 3, nstart = 25)
+  AnswerTests: expr_text_has('kmeans', 'centers = 3', 'nstart')
+  Hint: Type km <- kmeans(z, centers = 3, nstart = 25) and press Enter.
+
+- Class: cmd_question
+  Output: The result is a list. See the names of its components with names().
+  CorrectAnswer: names(km)
+  AnswerTests: omnitest(correctExpr='names(km)')
+  Hint: Type names(km) and press Enter.
+
+- Class: cmd_question
+  Output: The component size holds the number of samples in each cluster. Look at km$size.
+  CorrectAnswer: km$size
+  AnswerTests: omnitest(correctExpr='km$size')
+  Hint: Type km$size and press Enter.
+
+- Class: mult_question
+  Output: How many extracts did k-means put in each of the three clusters?
+  AnswerChoices: 10, 15 and 20; 15, 15 and 15; 9, 18 and 18; 5, 20 and 20;
+  CorrectAnswer: 15, 15 and 15
+  AnswerTests: omnitest(correctVal='15, 15 and 15')
+  Hint: Use the output of km$size.
+
+- Class: cmd_question
+  Output: The component centers holds the middle of each cluster, in scaled units. Show it rounded to two decimal places.
+  CorrectAnswer: round(km$centers, 2)
+  AnswerTests: omnitest(correctExpr='round(km$centers, 2)')
+  Hint: Type round(km$centers, 2) and press Enter.
+
+- Class: text
+  Output: Cluster numbers are arbitrary labels. If you run the analysis again, the cluster that was called 1 might now be called 3. So never read meaning into the numbers themselves, only into which samples share a cluster.
+
+- Class: cmd_question
+  Output: Compare the clusters with the known regions by making a table of km$cluster against extracts$origin.
+  CorrectAnswer: table(km$cluster, extracts$origin)
+  AnswerTests: omnitest(correctExpr='table(km$cluster, extracts$origin)')
+  Hint: Type table(km$cluster, extracts$origin) and press Enter.
+
+- Class: mult_question
+  Output: What does the table show about how well k-means recovered the three regions?
+  AnswerChoices: Each cluster contains extracts from only one region; Every cluster mixes all three regions equally; Only one region was found; The clustering failed;
+  CorrectAnswer: Each cluster contains extracts from only one region
+  AnswerTests: omnitest(correctVal='Each cluster contains extracts from only one region')
+  Hint: Look for rows with a single non-zero entry.
+
+- Class: text
+  Output: In real work you rarely know the true number of groups. A common guide is the total within-cluster sum of squares, which measures how tight the clusters are. It always falls as k grows, so you look for an elbow, the point after which adding clusters gives little extra benefit.
+
+- Class: cmd_question
+  Output: 'Calculate the total within-cluster sum of squares for k from 1 to 6, using sapply() with a small function, and store it in wss. Type: wss <- sapply(1:6, function(k) kmeans(z, k, nstart = 25)$tot.withinss)'
+  CorrectAnswer: wss <- sapply(1:6, function(k) kmeans(z, k, nstart = 25)$tot.withinss)
+  AnswerTests: expr_text_has('sapply', 'kmeans', 'tot.withinss', 'wss')
+  Hint: Type wss <- sapply(1:6, function(k) kmeans(z, k, nstart = 25)$tot.withinss) and press Enter.
+
+- Class: cmd_question
+  Output: Show wss rounded to one decimal place.
+  CorrectAnswer: round(wss, 1)
+  AnswerTests: omnitest(correctExpr='round(wss, 1)')
+  Hint: Type round(wss, 1) and press Enter.
+
+- Class: cmd_question
+  Output: Plot wss against the number of clusters with plot(1:6, wss, type = "b"). Add axis labels with xlab and ylab if you like.
+  CorrectAnswer: plot(1:6, wss, type = "b", xlab = "Number of clusters", ylab = "Total within-cluster sum of squares")
+  AnswerTests: expr_text_has('plot', '1:6', 'wss', 'type = "b"')
+  Hint: Type plot(1:6, wss, type = "b", xlab = "Number of clusters", ylab = "Total within-cluster sum of squares") and press Enter.
+
+- Class: mult_question
+  Output: Looking at the values and the plot, where is the elbow?
+  AnswerChoices: k = 1; k = 3; k = 6; There is no elbow;
+  CorrectAnswer: k = 3
+  AnswerTests: omnitest(correctVal='k = 3')
+  Hint: Find the point after which the curve flattens.
+
+- Class: text
+  Output: A picture of the clusters helps. We will plot the first two scaled metabolites and colour each point by its cluster.
+
+- Class: cmd_question
+  Output: Plot z[, 1] against z[, 2], coloured by km$cluster, with filled circles (pch = 19).
+  CorrectAnswer: plot(z[, 1], z[, 2], col = km$cluster, pch = 19, xlab = "m1 (scaled)", ylab = "m2 (scaled)")
+  AnswerTests: expr_text_has('plot', 'z[, 1]', 'z[, 2]', 'col = km$cluster', 'pch = 19')
+  Hint: Type plot(z[, 1], z[, 2], col = km$cluster, pch = 19, xlab = "m1 (scaled)", ylab = "m2 (scaled)") and press Enter.
+
+- Class: cmd_question
+  Output: Mark the cluster centres with crosses. Add points(km$centers[, 1], km$centers[, 2], pch = 4, cex = 2, lwd = 3).
+  CorrectAnswer: points(km$centers[, 1], km$centers[, 2], pch = 4, cex = 2, lwd = 3)
+  AnswerTests: expr_text_has('points', 'km$centers', 'pch = 4')
+  Hint: Type points(km$centers[, 1], km$centers[, 2], pch = 4, cex = 2, lwd = 3) and press Enter.
+
+- Class: text
+  Output: Finally, a very useful habit is to attach the cluster labels back to the original data, so that you can describe each cluster in the original units.
+
+- Class: cmd_question
+  Output: Add the labels to the data frame as a new column called cluster.
+  CorrectAnswer: extracts$cluster <- km$cluster
+  AnswerTests: omnitest(correctExpr='extracts$cluster <- km$cluster')
+  Hint: Type extracts$cluster <- km$cluster and press Enter.
+
+- Class: cmd_question
+  Output: Find the mean of m1 for each cluster with aggregate(m1 ~ cluster, data = extracts, FUN = mean).
+  CorrectAnswer: aggregate(m1 ~ cluster, data = extracts, FUN = mean)
+  AnswerTests: omnitest(correctExpr='aggregate(m1 ~ cluster, data = extracts, FUN = mean)')
+  Hint: Type aggregate(m1 ~ cluster, data = extracts, FUN = mean) and press Enter.
+
+- Class: mult_question
+  Output: Why did we set nstart = 25 instead of using a single random start?
+  AnswerChoices: To make the plot bigger; To reduce the risk of a poor local solution; To change the number of clusters; To remove missing values;
+  CorrectAnswer: To reduce the risk of a poor local solution
+  AnswerTests: omnitest(correctVal='To reduce the risk of a poor local solution')
+  Hint: Think about random starting positions.
+
+- Class: text
+  Output: Well done. You have scaled data, run k-means, checked it against known labels, chosen k with an elbow plot and described the clusters. Remember that k-means finds round groups of similar size, so always check the result against what you know about your samples.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about running and checking a k-means clustering? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.

@@ -1,0 +1,307 @@
+- Class: meta
+  Course: Chemometrics DL
+  Lesson: Data_Frames_and_Structures
+  Author: Drupad Trivedi
+  Type: Standard
+  Organization: The University of Manchester
+  Version: 2.4.5
+
+- Class: text
+  Output: Welcome to this lesson on data structures. Real analytical data arrives as tables, and in R a table is a data frame. In this lesson you will build a data frame, pick out parts of it, add to it, combine two tables, and meet the two other structures you will see most often, lists and matrices.
+
+- Class: text
+  Output: A note before you begin. When you finish this lesson and send your reflection, the commands from the lesson will be saved as an R script in your working folder, or in a local folder if yours is cloud-synced. You can run that script again later or use it as a starting point for your own analyses.
+
+- Class: text
+  Output: When you restart swirl, type your name exactly as you did before, including capital letters, so that you can carry on where you left off.
+
+- Class: text
+  Output: A data frame is a table in which each column is a vector, and the columns can be of different types. Each row is one observation, and each column is one variable. It is the structure behind almost every data analysis in R.
+
+- Class: cmd_question
+  Output: Build a small data frame called peaks with three columns, using peaks <- data.frame(compound = c("caffeine", "catechin", "rutin"), rt = c(4.2, 6.8, 8.1), area = c(15200, 9800, 4300)).
+  CorrectAnswer: peaks <- data.frame(compound = c("caffeine", "catechin", "rutin"), rt = c(4.2, 6.8, 8.1), area = c(15200, 9800, 4300))
+  AnswerTests: omnitest(correctExpr='peaks <- data.frame(compound = c("caffeine", "catechin", "rutin"), rt = c(4.2, 6.8, 8.1), area = c(15200, 9800, 4300))')
+  Hint: Type peaks <- data.frame(compound = c("caffeine", "catechin", "rutin"), rt = c(4.2, 6.8, 8.1), area = c(15200, 9800, 4300)) and press Enter.
+
+- Class: cmd_question
+  Output: Show peaks.
+  CorrectAnswer: peaks
+  AnswerTests: omnitest(correctExpr='peaks')
+  Hint: Type peaks and press Enter.
+
+- Class: cmd_question
+  Output: The function str() shows the structure of any R object. Use it on peaks.
+  CorrectAnswer: str(peaks)
+  AnswerTests: omnitest(correctExpr='str(peaks)')
+  Hint: Type str(peaks) and press Enter.
+
+- Class: cmd_question
+  Output: Find the number of rows and columns together with dim().
+  CorrectAnswer: dim(peaks)
+  AnswerTests: omnitest(correctExpr='dim(peaks)')
+  Hint: Type dim(peaks) and press Enter.
+
+- Class: cmd_question
+  Output: Get the column names with names().
+  CorrectAnswer: names(peaks)
+  AnswerTests: omnitest(correctExpr='names(peaks)')
+  Hint: Type names(peaks) and press Enter.
+
+- Class: text
+  Output: There are several ways to pick out parts of a data frame. The dollar sign takes one column by name. Square brackets with two numbers take rows and columns, written as [row, column]. Leaving one of them empty means all of them.
+
+- Class: cmd_question
+  Output: Get the area column with peaks$area.
+  CorrectAnswer: peaks$area
+  AnswerTests: omnitest(correctExpr='peaks$area')
+  Hint: Type peaks$area and press Enter.
+
+- Class: cmd_question
+  Output: Get the second row, all columns, with peaks[2, ].
+  CorrectAnswer: peaks[2, ]
+  AnswerTests: omnitest(correctExpr='peaks[2, ]')
+  Hint: Type peaks[2, ] and press Enter.
+
+- Class: cmd_question
+  Output: Get the value in row three, column two with peaks[3, 2].
+  CorrectAnswer: peaks[3, 2]
+  AnswerTests: omnitest(correctExpr='peaks[3, 2]')
+  Hint: Type peaks[3, 2] and press Enter.
+
+- Class: cmd_question
+  Output: You can also give column names. Get the compound and area columns with peaks[, c("compound", "area")].
+  CorrectAnswer: peaks[, c("compound", "area")]
+  AnswerTests: omnitest(correctExpr='peaks[, c("compound", "area")]')
+  Hint: Type peaks[, c("compound", "area")] and press Enter.
+
+- Class: text
+  Output: As with vectors, a logical test can select rows. The test peaks$area > 5000 gives TRUE or FALSE for each row, and used as the row index it keeps only the TRUE rows.
+
+- Class: cmd_question
+  Output: Keep only the peaks with an area above 5000 using peaks[peaks$area > 5000, ].
+  CorrectAnswer: peaks[peaks$area > 5000, ]
+  AnswerTests: omnitest(correctExpr='peaks[peaks$area > 5000, ]')
+  Hint: Type peaks[peaks$area > 5000, ] and press Enter.
+
+- Class: text
+  Output: A new column is created by assigning to a name that does not yet exist.
+
+- Class: cmd_question
+  Output: Add a column giving the area in thousands, with peaks$area_k <- peaks$area / 1000.
+  CorrectAnswer: peaks$area_k <- peaks$area / 1000
+  AnswerTests: omnitest(correctExpr='peaks$area_k <- peaks$area / 1000')
+  Hint: Type peaks$area_k <- peaks$area / 1000 and press Enter.
+
+- Class: cmd_question
+  Output: The function order() gives the row order that would sort a column. Sort peaks by decreasing area using peaks[order(peaks$area, decreasing = TRUE), ].
+  CorrectAnswer: peaks[order(peaks$area, decreasing = TRUE), ]
+  AnswerTests: omnitest(correctExpr='peaks[order(peaks$area, decreasing = TRUE), ]')
+  Hint: Type peaks[order(peaks$area, decreasing = TRUE), ] and press Enter.
+
+- Class: cmd_question
+  Output: Add a new row with rbind(peaks, data.frame(compound = "quercetin", rt = 9.5, area = 2100, area_k = 2.1)).
+  CorrectAnswer: rbind(peaks, data.frame(compound = "quercetin", rt = 9.5, area = 2100, area_k = 2.1))
+  AnswerTests: omnitest(correctExpr='rbind(peaks, data.frame(compound = "quercetin", rt = 9.5, area = 2100, area_k = 2.1))')
+  Hint: Type rbind(peaks, data.frame(compound = "quercetin", rt = 9.5, area = 2100, area_k = 2.1)) and press Enter.
+
+- Class: cmd_question
+  Output: Get an overview of every column with summary(peaks).
+  CorrectAnswer: summary(peaks)
+  AnswerTests: omnitest(correctExpr='summary(peaks)')
+  Hint: Type summary(peaks) and press Enter.
+
+- Class: text
+  Output: Most of the time you will not type a data frame by hand but read it from a file. I have loaded a synthetic data frame called chrom, which holds results for 40 samples and five compounds. Each row is one compound in one sample. The function read.csv() is the usual way to read such a file, and you will use it in the final lesson.
+
+- Class: cmd_question
+  Output: Look at the first six rows of chrom.
+  CorrectAnswer: head(chrom)
+  AnswerTests: omnitest(correctExpr='head(chrom)')
+  Hint: Type head(chrom) and press Enter.
+
+- Class: cmd_question
+  Output: Look at its structure.
+  CorrectAnswer: str(chrom)
+  AnswerTests: omnitest(correctExpr='str(chrom)')
+  Hint: Type str(chrom) and press Enter.
+
+- Class: mult_question
+  Output: In chrom, the column compound holds text. What type of vector is a column of text?
+  AnswerChoices: character; numeric; logical; integer;
+  CorrectAnswer: character
+  AnswerTests: omnitest(correctVal='character')
+  Hint: Text values in R are called character values.
+
+- Class: cmd_question
+  Output: Count how many rows there are for each compound with table(chrom$compound).
+  CorrectAnswer: table(chrom$compound)
+  AnswerTests: omnitest(correctExpr='table(chrom$compound)')
+  Hint: Type table(chrom$compound) and press Enter.
+
+- Class: cmd_question
+  Output: Keep only the caffeine rows using subset(chrom, compound == "caffeine") and store them in caff.
+  CorrectAnswer: caff <- subset(chrom, compound == "caffeine")
+  AnswerTests: omnitest(correctExpr='caff <- subset(chrom, compound == "caffeine")')
+  Hint: Type caff <- subset(chrom, compound == "caffeine") and press Enter.
+
+- Class: cmd_question
+  Output: The function aggregate() calculates a summary for each group. Find the mean concentration for each compound with aggregate(conc_ugml ~ compound, data = chrom, FUN = mean).
+  CorrectAnswer: aggregate(conc_ugml ~ compound, data = chrom, FUN = mean)
+  AnswerTests: omnitest(correctExpr='aggregate(conc_ugml ~ compound, data = chrom, FUN = mean)')
+  Hint: Type aggregate(conc_ugml ~ compound, data = chrom, FUN = mean) and press Enter.
+
+- Class: text
+  Output: Often information lives in two tables. The data frame batches describes how each batch was run, with the instrument, the operator and the date. We can attach that information to every row of chrom by matching the batch column. This is called a join, and in base R it is done with merge().
+
+- Class: cmd_question
+  Output: Look at batches.
+  CorrectAnswer: batches
+  AnswerTests: omnitest(correctExpr='batches')
+  Hint: Type batches and press Enter.
+
+- Class: cmd_question
+  Output: Join the two tables with joined <- merge(chrom, batches, by = "batch").
+  CorrectAnswer: joined <- merge(chrom, batches, by = "batch")
+  AnswerTests: omnitest(correctExpr='joined <- merge(chrom, batches, by = "batch")')
+  Hint: Type joined <- merge(chrom, batches, by = "batch") and press Enter.
+
+- Class: cmd_question
+  Output: Check the column names of joined to see the new columns.
+  CorrectAnswer: names(joined)
+  AnswerTests: omnitest(correctExpr='names(joined)')
+  Hint: Type names(joined) and press Enter.
+
+- Class: cmd_question
+  Output: Use the new columns. Find the mean caffeine concentration found on each instrument, with tapply(joined$conc_ugml[joined$compound == "caffeine"], joined$instrument[joined$compound == "caffeine"], mean).
+  CorrectAnswer: tapply(joined$conc_ugml[joined$compound == "caffeine"], joined$instrument[joined$compound == "caffeine"], mean)
+  AnswerTests: omnitest(correctExpr='tapply(joined$conc_ugml[joined$compound == "caffeine"], joined$instrument[joined$compound == "caffeine"], mean)')
+  Hint: Type tapply(joined$conc_ugml[joined$compound == "caffeine"], joined$instrument[joined$compound == "caffeine"], mean) and press Enter.
+
+- Class: text
+  Output: A list is the most flexible structure. Each element of a list can be anything, a number, a vector, a data frame or even another list. Functions that return many results, such as t.test(), return lists, which is why you can pick parts out with the dollar sign.
+
+- Class: cmd_question
+  Output: Build a list with run <- list(id = "R1", temps = c(40, 70), ok = TRUE).
+  CorrectAnswer: run <- list(id = "R1", temps = c(40, 70), ok = TRUE)
+  AnswerTests: omnitest(correctExpr='run <- list(id = "R1", temps = c(40, 70), ok = TRUE)')
+  Hint: Type run <- list(id = "R1", temps = c(40, 70), ok = TRUE) and press Enter.
+
+- Class: cmd_question
+  Output: Pick out one element by name with run$temps.
+  CorrectAnswer: run$temps
+  AnswerTests: omnitest(correctExpr='run$temps')
+  Hint: Type run$temps and press Enter.
+
+- Class: cmd_question
+  Output: Double square brackets also pick by name or position. Get the first element with run[[1]].
+  CorrectAnswer: run[[1]]
+  AnswerTests: omnitest(correctExpr='run[[1]]')
+  Hint: Type run[[1]] and press Enter.
+
+- Class: cmd_question
+  Output: Find the type of run.
+  CorrectAnswer: class(run)
+  AnswerTests: omnitest(correctExpr='class(run)')
+  Hint: Type class(run) and press Enter.
+
+- Class: text
+  Output: A matrix is a table in which every value has the same type, almost always numbers. Matrices are what methods such as PCA work on. You can think of a data frame as a matrix that is allowed to mix types.
+
+- Class: cmd_question
+  Output: Build a matrix with two rows and three columns using m <- matrix(1:6, nrow = 2). Notice that it fills down the columns first.
+  CorrectAnswer: m <- matrix(1:6, nrow = 2)
+  AnswerTests: omnitest(correctExpr='m <- matrix(1:6, nrow = 2)')
+  Hint: Type m <- matrix(1:6, nrow = 2) and press Enter.
+
+- Class: cmd_question
+  Output: Show m.
+  CorrectAnswer: m
+  AnswerTests: omnitest(correctExpr='m')
+  Hint: Type m and press Enter.
+
+- Class: cmd_question
+  Output: Get the value in row two, column three with m[2, 3].
+  CorrectAnswer: m[2, 3]
+  AnswerTests: omnitest(correctExpr='m[2, 3]')
+  Hint: Type m[2, 3] and press Enter.
+
+- Class: cmd_question
+  Output: Swap rows and columns with t(m).
+  CorrectAnswer: t(m)
+  AnswerTests: omnitest(correctExpr='t(m)')
+  Hint: Type t(m) and press Enter.
+
+- Class: cmd_question
+  Output: Sum each row using apply(m, 1, sum). The number one means rows, and a two would mean columns.
+  CorrectAnswer: apply(m, 1, sum)
+  AnswerTests: omnitest(correctExpr='apply(m, 1, sum)')
+  Hint: Type apply(m, 1, sum) and press Enter.
+
+- Class: cmd_question
+  Output: Turn the numeric columns of peaks into a matrix with as.matrix(peaks[, c("rt", "area")]).
+  CorrectAnswer: as.matrix(peaks[, c("rt", "area")])
+  AnswerTests: omnitest(correctExpr='as.matrix(peaks[, c("rt", "area")])')
+  Hint: Type as.matrix(peaks[, c("rt", "area")]) and press Enter.
+
+- Class: mult_question
+  Output: Which structure should you choose for a table that has one text column and several numeric columns?
+  AnswerChoices: A data frame; A matrix; A single vector; A factor;
+  CorrectAnswer: A data frame
+  AnswerTests: omnitest(correctVal='A data frame')
+  Hint: A matrix needs every value to have the same type.
+
+- Class: mult_question
+  Output: What structure does t.test() return, which allows you to pick out its p-value with a dollar sign?
+  AnswerChoices: A list; A single number; A matrix; A character vector;
+  CorrectAnswer: A list
+  AnswerTests: omnitest(correctVal='A list')
+  Hint: Elements of different types are kept in one object.
+
+- Class: text
+  Output: You can now build, inspect, subset, extend, sort and join data frames, and you know when a list or a matrix is the better choice. In the following lessons you will keep using these structures on calibration data and on multivariate data.
+
+- Class: text
+  Output: You have now reached the end of this exercise. Before you finish, please take a few minutes to reflect on what you have done. You will answer a few short questions, and your answers will then be sent to Drupad by email when you type the final command. Apart from your name, please do not include personal or sensitive information about yourself or anyone else in your comments.
+
+- Class: text_question
+  Output: Please type your full name and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('name', 2, 60)
+  Hint: Type your first name and surname, then press Enter.
+
+- Class: text_question
+  Output: How difficult did you find this exercise? Rate it from one (very easy) to five (very hard), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('difficulty')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: How confident do you now feel about data frames, lists and matrices? Rate it from one (not at all confident) to five (very confident), type your rating as a single digit and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_rating('confidence')
+  Hint: Type one digit, either 1, 2, 3, 4 or 5, then press Enter.
+
+- Class: text_question
+  Output: What is the most useful thing you have learned from this exercise? Please keep your answer to 250 characters or fewer and press Enter.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('learned', 1, 250)
+  Hint: Type your answer in a sentence or two, then press Enter.
+
+- Class: text_question
+  Output: What, if anything, did you find difficult or unclear? Please keep your answer to 250 characters or fewer. Type none if nothing was difficult.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('difficult', 1, 250)
+  Hint: Type your answer in a sentence or two, or type none, then press Enter.
+
+- Class: text_question
+  Output: Is there any other feedback you would like to give Drupad about this exercise? Please keep your answer to 250 characters or fewer. Type none if you have nothing to add.
+  CorrectAnswer: NULL
+  AnswerTests: reflect_text('feedback', 1, 250)
+  Hint: Type your feedback in a sentence or two, or type none, then press Enter.
+
+- Class: cmd_question
+  Output: Thank you. Type send_reflection() and press Enter to send your answers to Drupad. If sending does not work, your answers will be shown here and an email will be prepared for you to send yourself.
+  CorrectAnswer: send_reflection()
+  AnswerTests: expr_identical_to('send_reflection()')
+  Hint: Type send_reflection() exactly as shown and press Enter.
