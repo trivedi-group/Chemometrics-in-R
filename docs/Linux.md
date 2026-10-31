@@ -1,4 +1,4 @@
-# Chemometrics DL: setting up on Linux
+# Chemometrics in R: setting up on Linux
 
 [Back to the main guide](../README.md) | [Windows](Windows.md) | [macOS](macOS.md) | [Linux](Linux.md)
 
@@ -96,7 +96,7 @@ Packages are add-ons for R. You install each one **once** per computer, using th
 
 ### Option A: use the install script (easiest)
 
-1. Download the course from this repository as described in Step 5 below, then unzip a **copy** of it, for example with `unzip Chemometrics_DL-main.zip` in a terminal or by right-clicking it in your file manager. Keep the original zip too, because swirl needs the zip itself in Step 5.
+1. Download the course from this repository as described in Step 5 below, then unzip a **copy** of it, for example with `unzip Chemometrics-in-R-main.zip` in a terminal or by right-clicking it in your file manager. Keep the original zip too, because swirl needs the zip itself in Step 5.
 2. In RStudio, click **File**, then **Open File...**, find `install_packages.R` in the unzipped folder (it may be inside a second folder of the same name) and click **Open**.
 3. Click inside the script, then click the **Source** button at the top right of the script window. This runs every line.
 4. Watch the Console. Installation takes **several minutes**, and `tidyverse` is the slowest. Wait until the `>` prompt comes back after each package.
@@ -151,9 +151,9 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
 
 ## Step 5: Download the course from this repository and install it into swirl
 
-1. Open the course page: <https://github.com/trivedi-group/Chemometrics_DL>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
+1. Open the course page: <https://github.com/trivedi-group/Chemometrics-in-R>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
 2. Leave the branch as the default, **main**.
-3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics_DL/archive/refs/heads/main.zip>
+3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics-in-R/archive/refs/heads/main.zip>
 4. Do **not** unzip the file you will give to swirl. A browser usually saves it in your **Downloads** folder.
 5. In the RStudio Console, type these two lines, pressing Enter after each:
 
@@ -162,13 +162,13 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
    install_course_zip(file.choose())
    ```
 
-6. A file window opens. Find the downloaded zip file, usually called `Chemometrics_DL-main.zip`, select it and click **Open**.
-7. Wait for swirl to finish. The course will appear in swirl with a name that starts with **Chemometrics DL** and ends with the branch name, for example **Chemometrics DL-main**. Choose that one when swirl lists the courses.
+6. A file window opens. Find the downloaded zip file, usually called `Chemometrics-in-R-main.zip`, select it and click **Open**.
+7. Wait for swirl to finish. The course will appear in swirl with a name that starts with **Chemometrics-in-R** and ends with the branch name, for example **Chemometrics-in-R-main**. Choose that one when swirl lists the courses.
 
 If the file window does not appear, give R the path instead. Use forward slashes and put the path in quotation marks:
 
 ```
-install_course_zip("/home/yourname/Downloads/Chemometrics_DL-main.zip")
+install_course_zip("/home/yourname/Downloads/Chemometrics-in-R-main.zip")
 ```
 
 Replace `yourname` with your user name. In a terminal R session `file.choose()` asks you to type the path instead of showing a window, so give the path directly as above.

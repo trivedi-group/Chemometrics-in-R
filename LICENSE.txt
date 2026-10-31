@@ -1,4 +1,4 @@
-Chemometrics DL, copyright © 2026 Drupad Trivedi, The University of Manchester. All rights reserved.
+Chemometrics in R, copyright © 2026 Drupad Trivedi, The University of Manchester. All rights reserved.
 
 1. Permitted use. This material is provided to students enrolled on the relevant course at the University of Manchester, for their own personal study on that course.
 

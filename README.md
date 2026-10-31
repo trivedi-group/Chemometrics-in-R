@@ -1,4 +1,4 @@
-# Chemometrics DL: an interactive R course
+# Chemometrics in R: an interactive R course
 
 This is a course of 22 short, interactive lessons that teach data analysis for chemistry with R. It runs inside R using the **swirl** package. You type short commands, swirl checks them, and the course moves on when you get them right. The lessons follow the weekly topics of the course. They start with setting up and basic statistics in R, then cover plotting, experimental design, data structures, calibration and limits of detection, unsupervised methods (PCA, MDS and clustering), supervised methods (PLS-DA), model validation, machine learning (SVM, trees and random forests), data wrangling and an independent workout.
 
@@ -37,7 +37,7 @@ Each guide has the same six steps:
 2. Install RStudio.
 3. Choose a working folder.
 4. Install the packages the course needs.
-5. Download this course from the repository (<https://github.com/trivedi-group/Chemometrics_DL>, branch **main**) and install it into swirl.
+5. Download this course from the repository (<https://github.com/trivedi-group/Chemometrics-in-R>, branch **main**) and install it into swirl.
 6. Come back here and start the course.
 
 **Important: install R 4.5.3.** This course was tested from start to finish on R 4.5.3. Each system guide links to that exact version. Please use it, and do not install a newer R for this course, because newer versions have not been tested with these lessons.
@@ -62,7 +62,7 @@ Do this every time you want to work on the course.
 
    *This image shows real console output from the course, shortened, with the sample name Ada typed in.*
 
-6. swirl lists the courses. Type the number next to **Chemometrics DL** (or the name you installed) and press Enter.
+6. swirl lists the courses. Type the number next to **Chemometrics-in-R** (or the name you installed) and press Enter.
 7. swirl lists the lessons, numbered 01 to 22. Type the number of the lesson you want and press Enter. Start with **01 Getting Started with swirl** and work in order. Lesson 22 is optional.
 
 ## Part 3: How a lesson works
@@ -231,7 +231,7 @@ Install the package with `install.packages("xxx")`, replacing `xxx` with the nam
 The name you typed was different, including capitals and spaces. Type exactly the same name every time.
 
 **The course is not in the course list.**
-The installation did not finish, or you installed under a different name. Run `install_course_zip(file.choose())` again and read the messages. If you used GitHub, look for a name starting with **Chemometrics DL**.
+The installation did not finish, or you installed under a different name. Run `install_course_zip(file.choose())` again and read the messages. If you used GitHub, look for a name starting with **Chemometrics in R**.
 
 **The file window does not appear when I run `file.choose()`.**
 It may be hidden behind another window. If not, give the path directly. See Step 5 of your system guide. On Windows, use forward slashes (`/`) or double backslashes (`\\`).
@@ -309,7 +309,7 @@ Lessons 01 to 07, 09, 11, 14, 15, 19, 20 and 22 were written new for 2026 with s
 
 The full licence notice is in `LICENSE.txt` in the course folder. In summary:
 
-Chemometrics DL, copyright © 2026 Drupad Trivedi, The University of Manchester. All rights reserved.
+Chemometrics in R, copyright © 2026 Drupad Trivedi, The University of Manchester. All rights reserved.
 
 1. **Permitted use.** This material is provided to students enrolled on the relevant course at the University of Manchester, for their own personal study on that course.
 2. **Not permitted.** Without prior written permission from the author and the University of Manchester, you may not copy, share, publish, upload, redistribute, sell or reuse this material, in whole or in part, or any adaptation of it, outside the course.

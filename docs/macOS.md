@@ -1,4 +1,4 @@
-# Chemometrics DL: setting up on macOS
+# Chemometrics in R: setting up on macOS
 
 [Back to the main guide](../README.md) | [Windows](Windows.md) | [macOS](macOS.md) | [Linux](Linux.md)
 
@@ -118,9 +118,9 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
 
 ## Step 5: Download the course from this repository and install it into swirl
 
-1. Open the course page: <https://github.com/trivedi-group/Chemometrics_DL>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
+1. Open the course page: <https://github.com/trivedi-group/Chemometrics-in-R>. You do not need a GitHub account to download the course. If the page says it cannot be found, tell your lecturer.
 2. Leave the branch as the default, **main**.
-3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics_DL/archive/refs/heads/main.zip>
+3. Click the green **Code** button, then **Download ZIP**. You can also download it directly here: <https://github.com/trivedi-group/Chemometrics-in-R/archive/refs/heads/main.zip>
 4. **Safari warning.** Safari often unzips downloads automatically and throws the zip away, leaving only a folder. swirl needs the zip. Either download with Chrome or Firefox, or in Safari open **Safari**, then **Settings**, then **General**, and untick **Open safe files after downloading**, then download again. Alternatively, right-click the unzipped folder in Finder and choose **Compress**.
    If iCloud Drive backs up your Downloads, Desktop or Documents folders, copy the zip to a folder in your home folder, such as `~/Chemometrics`, and install from there.
 5. In the RStudio Console, type these two lines, pressing Enter after each:
@@ -130,13 +130,13 @@ Every item should show `TRUE`. Any `FALSE` shows a package to install again.
    install_course_zip(file.choose())
    ```
 
-6. A file window opens. Find the downloaded zip file, usually called `Chemometrics_DL-main.zip`, select it and click **Open**.
-7. Wait for swirl to finish. The course will appear in swirl with a name that starts with **Chemometrics DL** and ends with the branch name, for example **Chemometrics DL-main**. Choose that one when swirl lists the courses.
+6. A file window opens. Find the downloaded zip file, usually called `Chemometrics-in-R-main.zip`, select it and click **Open**.
+7. Wait for swirl to finish. The course will appear in swirl with a name that starts with **Chemometrics-in-R** and ends with the branch name, for example **Chemometrics-in-R-main**. Choose that one when swirl lists the courses.
 
 If the file window does not appear, give R the path instead. Use forward slashes and put the path in quotation marks:
 
 ```
-install_course_zip("/Users/yourname/Downloads/Chemometrics_DL-main.zip")
+install_course_zip("/Users/yourname/Downloads/Chemometrics-in-R-main.zip")
 ```
 
 Replace `yourname` with your Mac user name. A quick way to get the path is to hold the **Option** key, right-click the file in Finder, and choose **Copy as Pathname**.

@@ -1,4 +1,4 @@
-# Chemometrics DL: weekly schedule
+# Chemometrics in R: weekly schedule
 
 This table shows which lessons to do in each week and how they relate to that week's topic. For the full course guide, see the [main guide](../README.md).
 
